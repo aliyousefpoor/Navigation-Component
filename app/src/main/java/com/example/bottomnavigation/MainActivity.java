@@ -20,6 +20,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         navigationView = findViewById(R.id.navigation);
 
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment selectFragment = null;
+                switch (menuItem.getItemId()){
+                    case R.id.more:
+                        selectFragment =MoreFragment.newInstance();
+                        break;
 
+                }
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.frame,selectFragment).addToBackStack(null);
+                transaction.commit();
+                return true;
+            }
+        });
     }
 }
