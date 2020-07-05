@@ -24,19 +24,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment selectFragment = null;
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.more:
-                        selectFragment =MoreFragment.newInstance();
+                        selectFragment = MoreFragment.newInstance();
                         break;
                     case R.id.grouping:
                         selectFragment = GroupingFragment.newInstance();
                         break;
-
+                    case R.id.home:
+                        selectFragment = HomeFragment.newInstance();
+                        break;
                 }
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.frame,selectFragment).addToBackStack(null);
+                transaction.replace(R.id.frame, selectFragment).addToBackStack(null);
                 transaction.commit();
                 return true;
             }
