@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.more:
                         selectFragment =MoreFragment.newInstance();
                         break;
+                    case R.id.grouping:
+                        selectFragment = GroupingFragment.newInstance();
+                        break;
 
                 }
 
