@@ -11,10 +11,6 @@ import androidx.fragment.app.Fragment;
 
 public class GroupingFragment extends Fragment {
 
-    public static GroupingFragment newInstance(){
-        GroupingFragment fragment = new GroupingFragment();
-        return fragment;
-    }
 
     @Nullable
     @Override

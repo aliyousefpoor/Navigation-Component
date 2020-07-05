@@ -11,10 +11,6 @@ import androidx.fragment.app.Fragment;
 
 public class MoreFragment extends Fragment {
 
-    public static MoreFragment newInstance() {
-        MoreFragment fragment = new MoreFragment();
-        return fragment;
-    }
 
     @Nullable
     @Override
