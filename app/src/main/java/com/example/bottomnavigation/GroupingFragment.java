@@ -7,25 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class GroupingFragment extends Fragment {
     Button button;
     TextView textView;
-
-    public void setText(String param) {
-        textView.setText(param);
-    }
-
-    private void sendBroadCast(String text) {
-        Intent intent = new Intent("GroupingFragment");
-        intent.putExtra("message", text);
-        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent);
-    }
+    NavController navController;
 
     @Nullable
     @Override
@@ -39,11 +33,17 @@ public class GroupingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         button = view.findViewById(R.id.btn);
         textView = view.findViewById(R.id.txt);
+        navController = Navigation.findNavController(view);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBroadCast(textView.toString());
+
+                Bundle bundle = new Bundle();
+                bundle.putString("key",textView.getText().toString());
+                navController.navigate(R.id.action_groupingFragment_to_secondFragment,bundle);
+
+                Toast.makeText(getContext(), "Text is :" + textView.getText(), Toast.LENGTH_SHORT).show();
 
             }
         });

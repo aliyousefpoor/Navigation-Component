@@ -37,5 +37,4 @@ dependencies {
     //noinspection GradleDependency
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
-
 }
