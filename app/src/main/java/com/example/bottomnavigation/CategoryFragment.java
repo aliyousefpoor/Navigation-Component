@@ -1,6 +1,5 @@
 package com.example.bottomnavigation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-public class GroupingFragment extends Fragment {
+public class CategoryFragment extends Fragment {
     Button button;
     TextView textView;
     NavController navController;
@@ -24,14 +22,14 @@ public class GroupingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.groupfragment, container, false);
+        View view = inflater.inflate(R.layout.category_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        button = view.findViewById(R.id.btn);
+        button = view.findViewById(R.id.cat_btn);
         textView = view.findViewById(R.id.txt);
         navController = Navigation.findNavController(view);
 
@@ -40,8 +38,8 @@ public class GroupingFragment extends Fragment {
             public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString("key",textView.getText().toString());
-                navController.navigate(R.id.action_groupingFragment_to_secondFragment,bundle);
+                bundle.putString("key", textView.getText().toString()+ " Second");
+                navController.navigate(R.id.action_categoryFragment_to_secondFragment,bundle);
 
                 Toast.makeText(getContext(), "Text is :" + textView.getText(), Toast.LENGTH_SHORT).show();
 

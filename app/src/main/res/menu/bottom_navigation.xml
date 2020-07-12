@@ -5,13 +5,16 @@
         android:icon="@drawable/more"
         android:title="More"/>
     <item
-        android:id="@+id/groupingFragment"
+        android:id="@+id/categoryFragment"
         android:icon="@drawable/list"
-        android:title="Grouping"/>
+        android:title="Category"
+
+        />
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="Home"
+
         />
 
 

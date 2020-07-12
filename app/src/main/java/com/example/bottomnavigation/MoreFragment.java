@@ -8,11 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class MoreFragment extends Fragment {
     Button button;
@@ -22,14 +24,14 @@ public class MoreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.morefragment, container, false);
+        View view = inflater.inflate(R.layout.more_fragment, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        button = view.findViewById(R.id.btn);
+        button = view.findViewById(R.id.more_btn);
         textView = view.findViewById(R.id.txt);
         navController = Navigation.findNavController(view);
 
@@ -38,11 +40,22 @@ public class MoreFragment extends Fragment {
             public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString("key", textView.getText().toString());
+                bundle.putString("key", textView.getText().toString() + " Second");
                 navController.navigate(R.id.action_moreFragment_to_secondFragment, bundle);
-                
+
                 Toast.makeText(getContext(), "Text is :" + textView.getText(), Toast.LENGTH_SHORT).show();
             }
         });
+
+//        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                NavHostFragment.findNavController(MoreFragment.this).navigateUp();
+//            }
+//        };
+//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
     }
+
+
 }

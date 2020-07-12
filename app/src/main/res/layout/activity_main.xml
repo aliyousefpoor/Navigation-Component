@@ -9,7 +9,7 @@
 
 
     <fragment
-        android:id="@+id/nav_host_fragment"
+        android:id="@+id/nav_host_cat_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -18,20 +18,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/category_nav_graph"/>
+
+    <fragment
+        android:id="@+id/nav_host_more_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/more_nav_graph" />
+
+    <fragment
+        android:id="@+id/nav_host_home_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/home_nav_graph"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#CDCDCD"
+        android:background="#fff"
         app:itemBackground="@drawable/background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
-        app:menu="@menu/bottomnavigation" />
+        app:menu="@menu/bottom_navigation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
