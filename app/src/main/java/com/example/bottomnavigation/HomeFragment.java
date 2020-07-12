@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString("key", textView.getText().toString()+ " Second");
+                bundle.putString("key", textView.getText().toString());
                 navController.navigate(R.id.action_homeFragment_to_secondFragment,bundle);
 
                 Log.d(TAG, "onClick: ");

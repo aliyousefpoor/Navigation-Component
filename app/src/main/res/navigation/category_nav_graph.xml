@@ -22,5 +22,15 @@
         android:name="com.example.bottomnavigation.SecondFragment"
         android:label="SecondFragment"
         tools:layout="@layout/second_fragment"
+        >
+        <action
+            android:id="@+id/action_secondFragment_to_thirdFragment"
+            app:destination="@id/thirdFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/thirdFragment"
+        android:name="com.example.bottomnavigation.ThirdFragment"
+        android:label="ThirdFragment"
+        tools:layout="@layout/third_fragment"
         />
 </navigation>

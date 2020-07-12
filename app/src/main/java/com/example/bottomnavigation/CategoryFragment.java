@@ -38,7 +38,7 @@ public class CategoryFragment extends Fragment {
             public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString("key", textView.getText().toString()+ " Second");
+                bundle.putString("key", textView.getText().toString());
                 navController.navigate(R.id.action_categoryFragment_to_secondFragment,bundle);
 
                 Toast.makeText(getContext(), "Text is :" + textView.getText(), Toast.LENGTH_SHORT).show();
