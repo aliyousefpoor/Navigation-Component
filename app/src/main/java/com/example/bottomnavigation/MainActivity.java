@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         homeNavhost = findViewById(R.id.nav_host_home_fragment);
         categorynavhost = findViewById(R.id.nav_host_cat_fragment);
 
-        homeNavhost.setVisibility(View.GONE);
+        moreNavhost.setVisibility(View.GONE);
         categorynavhost.setVisibility(View.GONE);
         navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_more_fragment);
 

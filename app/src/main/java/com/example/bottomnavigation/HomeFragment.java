@@ -1,37 +1,54 @@
 package com.example.bottomnavigation;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+@SuppressLint("FragmentLiveDataObserve")
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
-    Button button;
-    TextView textView;
+    ViewPager viewPager;
     NavController navController;
+    ImageView arrow;
+    TextView pulldown;
+    SwipeRefreshLayout swipeRefreshLayout;
+    AppViewModel appViewModel;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
-
+        Log.d(TAG, "onCreateView: ");
 
         return view;
     }
@@ -39,38 +56,91 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        button = view.findViewById(R.id.home_btn);
-        textView = view.findViewById(R.id.txt);
+        appViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
+
+
         navController = Navigation.findNavController(view);
+        viewPager = view.findViewById(R.id.viewpager);
+        arrow = view.findViewById(R.id.arrow);
+        pulldown = view.findViewById(R.id.pulldown);
+        swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        Log.d(TAG, "onViewCreated: ");
+
+        pulldown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Bundle bundle = new Bundle();
-                bundle.putString("key", textView.getText().toString());
-                navController.navigate(R.id.action_homeFragment_to_secondFragment,bundle);
-
+                getDataMethod();
                 Log.d(TAG, "onClick: ");
+            }
+        });
 
-                Toast.makeText(getContext(), "Text is :" + textView.getText(), Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                appViewModel.getData();
+            }
+        });
+        getDataMethod();
 
+    }
+
+    public void getDataMethod() {
+
+        pulldown.setVisibility(View.GONE);
+        arrow.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(true);
+
+        appViewModel.getLoadingLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loadingState) {
+                if (loadingState) {
+                    pulldown.setVisibility(View.GONE);
+                    arrow.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(true);
+                } else {
+                    pulldown.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    viewPager.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        appViewModel.getErrorStateLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hasError) {
+                if (hasError) {
+                    pulldown.setVisibility(View.VISIBLE);
+                    arrow.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    viewPager.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
+                } else {
+
+                }
 
             }
         });
 
-//        OnBackPressedCallback callback =new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                NavHostFragment.findNavController(HomeFragment.this).navigateUp();
-//            }
-//        };
-//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),callback);
+        appViewModel.getStoreList().observe(this, new Observer<Store>() {
+            @Override
+            public void onChanged(Store store) {
+                viewPagerAdapter(store);
+            }
+        });
+
 
     }
 
+    private void viewPagerAdapter(Store response) {
+        Log.d(TAG, "viewPagerAdapter: " + response.getHeaderitem());
+        List<Headeritem> list = response.getHeaderitem();
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(HomeFragment.this, list, getContext());
+        viewPager.setAdapter(viewPagerAdapter);
 
 
+    }
 
 }
