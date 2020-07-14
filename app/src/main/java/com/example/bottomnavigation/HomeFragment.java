@@ -21,6 +21,10 @@ import androidx.navigation.NavController;
 
 import androidx.navigation.Navigation;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
@@ -42,6 +46,7 @@ public class HomeFragment extends Fragment {
     TextView pulldown;
     SwipeRefreshLayout swipeRefreshLayout;
     AppViewModel appViewModel;
+    RecyclerView recyclerView;
 
 
     @Nullable
@@ -60,10 +65,11 @@ public class HomeFragment extends Fragment {
 
 
         navController = Navigation.findNavController(view);
-        viewPager = view.findViewById(R.id.viewpager);
+//        viewPager = view.findViewById(R.id.viewpager);
         arrow = view.findViewById(R.id.arrow);
         pulldown = view.findViewById(R.id.pulldown);
         swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
+        recyclerView = view.findViewById(R.id.rec_view);
 
 
         Log.d(TAG, "onViewCreated: ");
@@ -98,12 +104,12 @@ public class HomeFragment extends Fragment {
                 if (loadingState) {
                     pulldown.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
-                    viewPager.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
                 } else {
                     pulldown.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    viewPager.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -115,7 +121,7 @@ public class HomeFragment extends Fragment {
                     pulldown.setVisibility(View.VISIBLE);
                     arrow.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
-                    viewPager.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -135,10 +141,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void viewPagerAdapter(Store response) {
-        Log.d(TAG, "viewPagerAdapter: " + response.getHeaderitem());
-        List<Headeritem> list = response.getHeaderitem();
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(HomeFragment.this, list, getContext());
-        viewPager.setAdapter(viewPagerAdapter);
+        Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
+        List<Homeitem> homeList = response.getHomeitem();
+
+        MultipleTypeAdapter adapter = new MultipleTypeAdapter( getContext(), homeList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
     }

@@ -2,12 +2,10 @@ package com.example.bottomnavigation;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -26,13 +24,12 @@ public class ViewPagerAdapter extends PagerAdapter {
     private Context context;
     private List<Headeritem> list;
     ImageView imageView;
-    HomeFragment homeFragment;
 
 
-    public ViewPagerAdapter(HomeFragment homeFragment, List<Headeritem> list, Context context) {
-        this.context = context;
+    public ViewPagerAdapter( List<Headeritem> list) {
+
         this.list = list;
-        this.homeFragment = homeFragment;
+
     }
 
 
@@ -50,22 +47,15 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NotNull ViewGroup container, final int position) {
 
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.viewpager_layout, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_layout, container, false);
         id = list.get(position).getId();
-        imageView = view.findViewById(R.id.vp_img);
+//        imageView = view.findViewById(R.id.view_pager);
 
 
         Uri uri = Uri.parse("https://api.vasapi.click/" + list.get(position).getFeatureAvatar().getXxxdpi());
 
         Glide.with(context).load(uri).into(imageView);
 
-        Log.d(TAG, "instantiateItem: " + list.get(position).getName());
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Image" + list.get(position).getId(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         ViewPager viewPager = (ViewPager) container;
         viewPager.addView(view, 0);

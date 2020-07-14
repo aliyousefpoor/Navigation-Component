@@ -1,5 +1,7 @@
 package com.example.bottomnavigation;
 
+import android.view.View;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
