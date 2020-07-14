@@ -1,4 +1,4 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_adapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,10 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.homeTab.h_model.Product;
 
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private Context context;
     private List<Product> productList;
 
@@ -35,10 +38,11 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final ProductViewHolder pholder = (ProductViewHolder) holder;
-        pholder.textView.setText(productList.get(position).getName());
-        Uri uri2 = Uri.parse("https://api.vasapi.click/"+productList.get(position).getFeatureAvatar().getXxxdpi());
-        Glide.with(context).load(uri2).into(pholder.imageView);
+        final ProductViewHolder pro_holder = (ProductViewHolder) holder;
+
+        pro_holder.textView.setText(productList.get(position).getName());
+        Uri uri = Uri.parse("https://api.vasapi.click/"+productList.get(position).getFeatureAvatar().getXxxdpi());
+        Glide.with(context).load(uri).into(pro_holder.imageView);
 
 
     }
@@ -49,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder{
+    public static class ProductViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView imageView;
         public TextView textView;

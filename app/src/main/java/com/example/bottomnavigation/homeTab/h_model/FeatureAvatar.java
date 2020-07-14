@@ -1,9 +1,9 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FeatureAvatar_ {
+public class FeatureAvatar {
     @SerializedName("xxxdpi")
     @Expose
     private String xxxdpi;
@@ -59,4 +59,5 @@ public class FeatureAvatar_ {
     public void setMdpi(String mdpi) {
         this.mdpi = mdpi;
     }
+
 }

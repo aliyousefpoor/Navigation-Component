@@ -1,11 +1,11 @@
 package com.example.bottomnavigation;
 
 import android.util.Log;
-import android.util.Printer;
-import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.bottomnavigation.homeTab.h_model.Store;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,4 +1,4 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_adapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,6 +11,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.homeTab.h_model.Headeritem;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,9 +28,10 @@ public class ViewPagerAdapter extends PagerAdapter {
     ImageView imageView;
 
 
-    public ViewPagerAdapter( List<Headeritem> list) {
+    public ViewPagerAdapter( List<Headeritem> list ,Context context) {
 
         this.list = list;
+        this.context=context;
 
     }
 
@@ -49,7 +52,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_layout, container, false);
         id = list.get(position).getId();
-//        imageView = view.findViewById(R.id.view_pager);
+        imageView = view.findViewById(R.id.view_pager);
 
 
         Uri uri = Uri.parse("https://api.vasapi.click/" + list.get(position).getFeatureAvatar().getXxxdpi());

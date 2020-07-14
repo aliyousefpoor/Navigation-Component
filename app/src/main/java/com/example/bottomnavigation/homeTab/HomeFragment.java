@@ -1,4 +1,4 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -22,25 +22,24 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
+
+
+import com.example.bottomnavigation.AppViewModel;
+import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.homeTab.h_adapter.MultipleTypeAdapter;
+import com.example.bottomnavigation.homeTab.h_model.Headeritem;
+import com.example.bottomnavigation.homeTab.h_model.Homeitem;
+import com.example.bottomnavigation.homeTab.h_model.Store;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @SuppressLint("FragmentLiveDataObserve")
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
-    ViewPager viewPager;
+
     NavController navController;
     ImageView arrow;
     TextView pulldown;
@@ -65,7 +64,6 @@ public class HomeFragment extends Fragment {
 
 
         navController = Navigation.findNavController(view);
-//        viewPager = view.findViewById(R.id.viewpager);
         arrow = view.findViewById(R.id.arrow);
         pulldown = view.findViewById(R.id.pulldown);
         swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
@@ -143,8 +141,9 @@ public class HomeFragment extends Fragment {
     private void viewPagerAdapter(Store response) {
         Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
         List<Homeitem> homeList = response.getHomeitem();
+        List<Headeritem> headerList = response.getHeaderitem();
 
-        MultipleTypeAdapter adapter = new MultipleTypeAdapter( getContext(), homeList);
+        MultipleTypeAdapter adapter = new MultipleTypeAdapter( getContext(), homeList,headerList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

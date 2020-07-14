@@ -1,39 +1,40 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_adapter;
 
 import android.content.Context;
-import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
+import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.homeTab.h_model.Headeritem;
+import com.example.bottomnavigation.homeTab.h_model.Homeitem;
 
 import java.util.List;
 
 public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = "MultipleTypeAdapter";
 
     private static final int ViewPager_Type = 1;
-    private static final int CardView_Type = 2;
+    private static final int HorizontalList_Type = 2;
 
     private Context context;
     private List<Homeitem> homeList;
-    public AppViewModel appViewModel;
+    private List<Headeritem> headerList;
 
 
-    public MultipleTypeAdapter(Context context, List<Homeitem> homeList) {
+    public MultipleTypeAdapter(Context context, List<Homeitem> homeList , List<Headeritem> headerList) {
 
         this.context = context;
         this.homeList = homeList;
+        this.headerList = headerList;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) {
             return ViewPager_Type;
         } else {
-            return CardView_Type;
+            return HorizontalList_Type;
         }
     }
 
@@ -56,15 +57,15 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         switch (viewType) {
             case ViewPager_Type:
-                View pagerview = inflater.inflate(R.layout.header_layout, parent, false);
+                View pagerview = inflater.inflate(R.layout.header_item_layout, parent, false);
                 holder = new ViewPagerVH(pagerview);
                 break;
-            case CardView_Type:
-                View listview = inflater.inflate(R.layout.home_item, parent, false);
+
+            case HorizontalList_Type:
+                View listview = inflater.inflate(R.layout.home_item_layout, parent, false);
                 holder = new ListVH(listview);
                 break;
         }
-
 
         return holder;
     }
@@ -76,22 +77,22 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (getItemViewType(position)) {
 
             case ViewPager_Type:
-                final ViewPagerVH vholder = (ViewPagerVH) holder;
-                Uri uri = Uri.parse("https://api.vasapi.click/" + homeList.get(position).getProducts().get(position).getFeatureAvatar().getXxxdpi());
-                Glide.with(context).load(uri).into(vholder.imageView);
-
-
+                Log.d(TAG, "ViewPager_Type: "+ position);
+                final ViewPagerVH pager_holder = (ViewPagerVH) holder;
+                pager_holder.viewPager.setAdapter(new ViewPagerAdapter(headerList,context));
                 break;
 
-            case CardView_Type:
+            case HorizontalList_Type:
 
-                final ListVH lholder = (ListVH) holder;
+                final ListVH list_holder = (ListVH) holder;
+                Log.d(TAG, "HorizontalList_Type: " + position);
+                list_holder.title.setText(homeList.get(position -1).getTitle());
 
-                lholder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position).getProducts(), context));
-                lholder.pro_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                lholder.pro_recyclerView.setHasFixedSize(true);
-                lholder.title.setText(homeList.get(position).getTitle());
 
+                list_holder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position -1).getProducts(), context));
+                list_holder.pro_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                list_holder.pro_recyclerView.setHasFixedSize(true);
+                break;
 
         }
 
@@ -100,33 +101,27 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return homeList.size();
+        return homeList.size() + 1;
     }
 
 
     static class ViewPagerVH extends RecyclerView.ViewHolder {
 
-
-        private ImageView imageView;
+        private ViewPager viewPager;
 
         public ViewPagerVH(@NonNull View itemView) {
             super(itemView);
 
-
-            imageView = itemView.findViewById(R.id.vp_img);
-
+            viewPager = itemView.findViewById(R.id.vp_img);
 
         }
-
 
     }
 
     static class ListVH extends RecyclerView.ViewHolder {
 
         private TextView title;
-
         private RecyclerView pro_recyclerView;
-
 
         public ListVH(@NonNull View itemView) {
             super(itemView);
@@ -134,6 +129,5 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             pro_recyclerView = itemView.findViewById(R.id.product_rv);
 
         }
-
     }
 }

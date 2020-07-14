@@ -1,11 +1,11 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_model;
+
+import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class Headeritem {
+public class Product {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -32,10 +32,10 @@ public class Headeritem {
     private Object priceShow;
     @SerializedName("avatar")
     @Expose
-    private Avatar avatar;
+    private Avatar_ avatar;
     @SerializedName("feature_avatar")
     @Expose
-    private FeatureAvatar featureAvatar;
+    private FeatureAvatar_ featureAvatar;
     @SerializedName("rank")
     @Expose
     private Double rank;
@@ -71,7 +71,7 @@ public class Headeritem {
     private List<Object> productStaff = null;
     @SerializedName("support")
     @Expose
-    private Support support;
+    private Support_ support;
     @SerializedName("is_special")
     @Expose
     private Boolean isSpecial;
@@ -152,19 +152,19 @@ public class Headeritem {
         this.priceShow = priceShow;
     }
 
-    public Avatar getAvatar() {
+    public Avatar_ getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Avatar avatar) {
+    public void setAvatar(Avatar_ avatar) {
         this.avatar = avatar;
     }
 
-    public FeatureAvatar getFeatureAvatar() {
+    public FeatureAvatar_ getFeatureAvatar() {
         return featureAvatar;
     }
 
-    public void setFeatureAvatar(FeatureAvatar featureAvatar) {
+    public void setFeatureAvatar(FeatureAvatar_ featureAvatar) {
         this.featureAvatar = featureAvatar;
     }
 
@@ -256,11 +256,11 @@ public class Headeritem {
         this.productStaff = productStaff;
     }
 
-    public Support getSupport() {
+    public Support_ getSupport() {
         return support;
     }
 
-    public void setSupport(Support support) {
+    public void setSupport(Support_ support) {
         this.support = support;
     }
 
@@ -303,5 +303,4 @@ public class Headeritem {
     public void setApprovedAge(Object approvedAge) {
         this.approvedAge = approvedAge;
     }
-
 }

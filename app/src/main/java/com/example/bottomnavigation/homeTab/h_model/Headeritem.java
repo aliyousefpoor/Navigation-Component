@@ -1,10 +1,11 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_model;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+import java.util.List;
+
+public class Headeritem {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -31,10 +32,10 @@ public class Product {
     private Object priceShow;
     @SerializedName("avatar")
     @Expose
-    private Avatar_ avatar;
+    private Avatar avatar;
     @SerializedName("feature_avatar")
     @Expose
-    private FeatureAvatar_ featureAvatar;
+    private FeatureAvatar featureAvatar;
     @SerializedName("rank")
     @Expose
     private Double rank;
@@ -70,7 +71,7 @@ public class Product {
     private List<Object> productStaff = null;
     @SerializedName("support")
     @Expose
-    private Support_ support;
+    private Support support;
     @SerializedName("is_special")
     @Expose
     private Boolean isSpecial;
@@ -151,19 +152,19 @@ public class Product {
         this.priceShow = priceShow;
     }
 
-    public Avatar_ getAvatar() {
+    public Avatar getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Avatar_ avatar) {
+    public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
     }
 
-    public FeatureAvatar_ getFeatureAvatar() {
+    public FeatureAvatar getFeatureAvatar() {
         return featureAvatar;
     }
 
-    public void setFeatureAvatar(FeatureAvatar_ featureAvatar) {
+    public void setFeatureAvatar(FeatureAvatar featureAvatar) {
         this.featureAvatar = featureAvatar;
     }
 
@@ -255,11 +256,11 @@ public class Product {
         this.productStaff = productStaff;
     }
 
-    public Support_ getSupport() {
+    public Support getSupport() {
         return support;
     }
 
-    public void setSupport(Support_ support) {
+    public void setSupport(Support support) {
         this.support = support;
     }
 
@@ -302,4 +303,5 @@ public class Product {
     public void setApprovedAge(Object approvedAge) {
         this.approvedAge = approvedAge;
     }
+
 }

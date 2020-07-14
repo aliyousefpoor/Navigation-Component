@@ -1,4 +1,4 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.homeTab.h_model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
