@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="275dp"
+    android:layout_height="260dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_item_cv"
     >
@@ -14,19 +14,21 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
+            android:textColor="#111"
             />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_rv"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:foregroundGravity="right"
             app:layout_constraintTop_toBottomOf="@id/title"
             />
 

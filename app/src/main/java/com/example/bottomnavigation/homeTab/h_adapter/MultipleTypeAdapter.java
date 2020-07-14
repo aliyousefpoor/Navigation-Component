@@ -1,19 +1,23 @@
 package com.example.bottomnavigation.homeTab.h_adapter;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.RtlLinearLayoutManager;
 import com.example.bottomnavigation.homeTab.h_model.Headeritem;
 import com.example.bottomnavigation.homeTab.h_model.Homeitem;
 
@@ -28,6 +32,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private List<Homeitem> homeList;
     private List<Headeritem> headerList;
+
 
 
     public MultipleTypeAdapter(Context context, List<Homeitem> homeList , List<Headeritem> headerList) {
@@ -72,7 +77,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
         switch (getItemViewType(position)) {
 
@@ -86,16 +91,15 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 final ListVH list_holder = (ListVH) holder;
                 Log.d(TAG, "HorizontalList_Type: " + position);
+
                 list_holder.title.setText(homeList.get(position -1).getTitle());
-
-
                 list_holder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position -1).getProducts(), context));
-                list_holder.pro_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                list_holder.pro_recyclerView.setLayoutManager(new RtlLinearLayoutManager(context, RtlLinearLayoutManager.HORIZONTAL, false));
                 list_holder.pro_recyclerView.setHasFixedSize(true);
+
+
                 break;
-
         }
-
 
     }
 
@@ -129,5 +133,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             pro_recyclerView = itemView.findViewById(R.id.product_rv);
 
         }
+
+
     }
 }
