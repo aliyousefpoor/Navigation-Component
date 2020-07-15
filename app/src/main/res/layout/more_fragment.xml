@@ -14,7 +14,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/amiri"
+
+        />
 
     <Button
         android:id="@+id/more_btn"
@@ -25,5 +28,6 @@
         app:layout_constraintTop_toBottomOf="@id/txt"
         android:layout_marginTop="40dp"
         android:text="next"
+        android:fontFamily="@font/amiri"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

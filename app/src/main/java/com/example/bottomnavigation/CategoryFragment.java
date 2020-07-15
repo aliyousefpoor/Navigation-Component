@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,12 +27,12 @@ public class CategoryFragment extends Fragment {
         return view;
     }
 
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         button = view.findViewById(R.id.cat_btn);
         textView = view.findViewById(R.id.txt);
         navController = Navigation.findNavController(view);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

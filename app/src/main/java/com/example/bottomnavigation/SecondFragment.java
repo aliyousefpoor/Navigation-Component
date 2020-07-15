@@ -1,6 +1,5 @@
 package com.example.bottomnavigation;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,7 +19,7 @@ public class SecondFragment extends Fragment {
     private static final String TAG = "SecondFragment";
     TextView textView;
     NavController navController;
-Button button;
+    Button button;
 
     @Nullable
     @Override
@@ -29,7 +29,7 @@ Button button;
         return view;
     }
 
-    @SuppressLint("SetTextI18n")
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -38,22 +38,20 @@ Button button;
 
         navController = Navigation.findNavController(view);
 
-        textView.setText( "Second " + getArguments().getString("key"));
+        textView.setText("Second " + getArguments().getString("key"));
 
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("Key",textView.getText().toString());
-                navController.navigate(R.id.action_secondFragment_to_thirdFragment,bundle);
-                Toast.makeText(getContext(),textView.getText() + " In Third Fragment",Toast.LENGTH_SHORT).show();
+                bundle.putString("Key", textView.getText().toString());
+                navController.navigate(R.id.action_secondFragment_to_thirdFragment, bundle);
+                Toast.makeText(getContext(), textView.getText() + " In Third Fragment", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-
-
 
 
 }

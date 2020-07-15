@@ -1,18 +1,15 @@
 package com.example.bottomnavigation.homeTab.h_adapter;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -34,8 +31,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Headeritem> headerList;
 
 
-
-    public MultipleTypeAdapter(Context context, List<Homeitem> homeList , List<Headeritem> headerList) {
+    public MultipleTypeAdapter(Context context, List<Homeitem> homeList, List<Headeritem> headerList) {
 
         this.context = context;
         this.homeList = homeList;
@@ -62,13 +58,13 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         switch (viewType) {
             case ViewPager_Type:
-                View pagerview = inflater.inflate(R.layout.header_item_layout, parent, false);
-                holder = new ViewPagerVH(pagerview);
+                View pager_view = inflater.inflate(R.layout.header_item_layout, parent, false);
+                holder = new ViewPagerVH(pager_view);
                 break;
 
             case HorizontalList_Type:
-                View listview = inflater.inflate(R.layout.home_item_layout, parent, false);
-                holder = new ListVH(listview);
+                View list_view = inflater.inflate(R.layout.home_item_layout, parent, false);
+                holder = new ListVH(list_view);
                 break;
         }
 
@@ -76,15 +72,15 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
         switch (getItemViewType(position)) {
 
             case ViewPager_Type:
-                Log.d(TAG, "ViewPager_Type: "+ position);
+                Log.d(TAG, "ViewPager_Type: " + position);
                 final ViewPagerVH pager_holder = (ViewPagerVH) holder;
-                pager_holder.viewPager.setAdapter(new ViewPagerAdapter(headerList,context));
+                pager_holder.viewPager.setAdapter(new ViewPagerAdapter(headerList, context));
+
                 break;
 
             case HorizontalList_Type:
@@ -92,8 +88,8 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 final ListVH list_holder = (ListVH) holder;
                 Log.d(TAG, "HorizontalList_Type: " + position);
 
-                list_holder.title.setText(homeList.get(position -1).getTitle());
-                list_holder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position -1).getProducts(), context));
+                list_holder.title.setText(homeList.get(position - 1).getTitle());
+                list_holder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position - 1).getProducts(), context));
                 list_holder.pro_recyclerView.setLayoutManager(new RtlLinearLayoutManager(context, RtlLinearLayoutManager.HORIZONTAL, false));
                 list_holder.pro_recyclerView.setHasFixedSize(true);
 
@@ -117,6 +113,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
 
             viewPager = itemView.findViewById(R.id.vp_img);
+            viewPager.setRotationY(180);
 
         }
 
@@ -131,6 +128,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             title = itemView.findViewById(R.id.title);
             pro_recyclerView = itemView.findViewById(R.id.product_rv);
+
 
         }
 

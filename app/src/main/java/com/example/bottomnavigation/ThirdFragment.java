@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 
 public class ThirdFragment extends Fragment {
@@ -27,6 +28,7 @@ public class ThirdFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         textView = view.findViewById(R.id.third_txt);
+
 
         textView.setText(getArguments().getString("Key")+ " In ThirdFragment");
 

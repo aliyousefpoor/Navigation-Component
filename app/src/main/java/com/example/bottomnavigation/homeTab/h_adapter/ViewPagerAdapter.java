@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     Integer id;
     private Context context;
     private List<Headeritem> list;
-    ImageView imageView;
+     ImageView imageView;
 
 
     public ViewPagerAdapter( List<Headeritem> list ,Context context) {
