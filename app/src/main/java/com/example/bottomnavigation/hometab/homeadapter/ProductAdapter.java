@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.utils.AppConstants;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         product_holder.textView.setText(productList.get(position).getName());
 
-        Uri uri = Uri.parse("https://api.vasapi.click/"+productList.get(position).getFeatureAvatar().getXxxdpi());
+        Uri uri = Uri.parse(AppConstants.baseUrl+productList.get(position).getFeatureAvatar().getXxxdpi());
         Glide.with(context).load(uri).into(product_holder.imageView);
 
         product_holder.cardView.setOnClickListener(new View.OnClickListener() {

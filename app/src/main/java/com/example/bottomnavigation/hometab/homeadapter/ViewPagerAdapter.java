@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.utils.AppConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,9 +57,15 @@ public class ViewPagerAdapter extends PagerAdapter {
         imageView = view.findViewById(R.id.view_pager);
 
 
-        Uri uri = Uri.parse("https://api.vasapi.click/" + list.get(position).getFeatureAvatar().getXxxdpi());
+        Uri uri = Uri.parse(AppConstants.baseUrl + list.get(position).getFeatureAvatar().getXxxdpi());
 
         Glide.with(context).load(uri).into(imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,list.get(position).getName(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
