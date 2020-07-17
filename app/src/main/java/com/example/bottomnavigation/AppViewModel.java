@@ -2,77 +2,76 @@ package com.example.bottomnavigation;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.homeTab.h_model.Store;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.bottomnavigation.data.model.Store;
 
 public class AppViewModel extends ViewModel {
     private static final String TAG = "AppViewModel";
+    DataRepository dataRepository = DataRepository.getInstance();
+
 
     public AppViewModel() {
         getData();
     }
 
-    private MutableLiveData<Store> storeListLivedata = new MutableLiveData<>();
 
-    public MutableLiveData<Store> getStoreList() {
-        return storeListLivedata;
-    }
+    //nokte
+    private MutableLiveData<Store> _storeListLivedata = new MutableLiveData<>();
+    public LiveData<Store> storeListLivedata = _storeListLivedata;
 
-    private MutableLiveData<Boolean> loadingLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
 
-    public MutableLiveData<Boolean> getLoadingLiveData() {
-        return loadingLiveData;
-    }
+    public LiveData<Boolean> loadingLiveData = _loadingLiveData;
 
-    private MutableLiveData<Boolean> errorStateLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
 
-    public MutableLiveData<Boolean> getErrorStateLiveData() {
-        return errorStateLiveData;
-    }
+    public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
 
     public void getData() {
         Log.d(TAG, "getData: ");
-        loadingLiveData.setValue(true);
+        _loadingLiveData.setValue(true);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.vasapi.click/")
-                .addConverterFactory(GsonConverterFactory.create()).build();
+//        CallBackListener callBack = new CallBackListener() {
+//            @Override
+//            public void onResponse(Store store) {
+//                _loadingLiveData.setValue(false);
+//                _errorStateLiveData.setValue(false);
+//                _storeListLivedata.setValue(store);
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable throwable) {
+//                _loadingLiveData.setValue(false);
+//                _errorStateLiveData.setValue(true);
+//            }
+//        };
 
-        Interface api = retrofit.create(Interface.class);
-        Call<Store> call = api.getString();
 
-        Log.d(TAG, "getData: ");
-        call.enqueue(new Callback<Store>() {
+        dataRepository.onCallBackListener(new CallBackListener() {
             @Override
-            public void onResponse(Call<Store> call, Response<Store> response) {
-                loadingLiveData.setValue(false);
-                errorStateLiveData.setValue(false);
+            public void onResponse(Store store) {
 
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        storeListLivedata.setValue(response.body());
-                    } else {
-                        errorStateLiveData.setValue(true);
-                    }
-                }
+                _loadingLiveData.setValue(false);
+                _errorStateLiveData.setValue(false);
+                _storeListLivedata.setValue(store);
             }
 
             @Override
-            public void onFailure(Call<Store> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
 
-                loadingLiveData.setValue(false);
-                errorStateLiveData.setValue(true);
-
-                t.printStackTrace();
+                _loadingLiveData.setValue(false);
+                _errorStateLiveData.setValue(true);
             }
         });
+
+        dataRepository.getStore();
+
     }
+
+
 }

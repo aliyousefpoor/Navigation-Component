@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.bottomnavigation.homeTab.HomeFragment"
+        android:name="com.example.bottomnavigation.hometab.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/home_fragment"
 

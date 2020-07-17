@@ -1,6 +1,5 @@
-package com.example.bottomnavigation.homeTab.h_model;
+package com.example.bottomnavigation.data.model;
 
-import com.example.bottomnavigation.homeTab.h_model.Product;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

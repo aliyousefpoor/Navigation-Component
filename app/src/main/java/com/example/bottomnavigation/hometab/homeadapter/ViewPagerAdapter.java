@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.homeTab.h_adapter;
+package com.example.bottomnavigation.hometab.homeadapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.homeTab.h_model.Headeritem;
+import com.example.bottomnavigation.data.model.Product;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,11 +24,11 @@ public class ViewPagerAdapter extends PagerAdapter {
     private static final String TAG = "ViewPagerAdapter";
     Integer id;
     private Context context;
-    private List<Headeritem> list;
+    private List<Product> list;
      ImageView imageView;
 
 
-    public ViewPagerAdapter( List<Headeritem> list ,Context context) {
+    public ViewPagerAdapter(List<Product> list , Context context) {
 
         this.list = list;
         this.context=context;

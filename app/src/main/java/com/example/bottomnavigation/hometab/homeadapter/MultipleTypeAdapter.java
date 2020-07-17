@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.homeTab.h_adapter;
+package com.example.bottomnavigation.hometab.homeadapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,13 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.RtlLinearLayoutManager;
-import com.example.bottomnavigation.homeTab.h_model.Headeritem;
-import com.example.bottomnavigation.homeTab.h_model.Homeitem;
+import com.example.bottomnavigation.data.model.Homeitem;
+import com.example.bottomnavigation.data.model.Product;
 
 import java.util.List;
 
@@ -28,10 +28,10 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context context;
     private List<Homeitem> homeList;
-    private List<Headeritem> headerList;
+    private List<Product> headerList;
 
 
-    public MultipleTypeAdapter(Context context, List<Homeitem> homeList, List<Headeritem> headerList) {
+    public MultipleTypeAdapter(Context context, List<Homeitem> homeList, List<Product> headerList) {
 
         this.context = context;
         this.homeList = homeList;
@@ -59,12 +59,12 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case ViewPager_Type:
                 View pager_view = inflater.inflate(R.layout.header_item_layout, parent, false);
-                holder = new ViewPagerVH(pager_view);
+                holder = new ViewPagerViewHolder(pager_view);
                 break;
 
             case HorizontalList_Type:
                 View list_view = inflater.inflate(R.layout.home_item_layout, parent, false);
-                holder = new ListVH(list_view);
+                holder = new ListViewHolder(list_view);
                 break;
         }
 
@@ -78,21 +78,20 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             case ViewPager_Type:
                 Log.d(TAG, "ViewPager_Type: " + position);
-                final ViewPagerVH pager_holder = (ViewPagerVH) holder;
+                final ViewPagerViewHolder pager_holder = (ViewPagerViewHolder) holder;
                 pager_holder.viewPager.setAdapter(new ViewPagerAdapter(headerList, context));
 
                 break;
 
             case HorizontalList_Type:
 
-                final ListVH list_holder = (ListVH) holder;
+                final ListViewHolder list_holder = (ListViewHolder) holder;
                 Log.d(TAG, "HorizontalList_Type: " + position);
 
                 list_holder.title.setText(homeList.get(position - 1).getTitle());
                 list_holder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position - 1).getProducts(), context));
-                list_holder.pro_recyclerView.setLayoutManager(new RtlLinearLayoutManager(context, RtlLinearLayoutManager.HORIZONTAL, false));
+                list_holder.pro_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                 list_holder.pro_recyclerView.setHasFixedSize(true);
-
 
                 break;
         }
@@ -105,11 +104,11 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    static class ViewPagerVH extends RecyclerView.ViewHolder {
+    static class ViewPagerViewHolder extends RecyclerView.ViewHolder {
 
         private ViewPager viewPager;
 
-        public ViewPagerVH(@NonNull View itemView) {
+        public ViewPagerViewHolder(@NonNull View itemView) {
             super(itemView);
 
             viewPager = itemView.findViewById(R.id.vp_img);
@@ -119,12 +118,12 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    static class ListVH extends RecyclerView.ViewHolder {
+    static class ListViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private RecyclerView pro_recyclerView;
 
-        public ListVH(@NonNull View itemView) {
+        public ListViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             pro_recyclerView = itemView.findViewById(R.id.product_rv);

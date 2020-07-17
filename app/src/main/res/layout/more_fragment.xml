@@ -29,5 +29,6 @@
         android:layout_marginTop="40dp"
         android:text="next"
         android:fontFamily="@font/amiri"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

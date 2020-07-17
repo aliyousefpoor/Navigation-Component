@@ -2,10 +2,14 @@ package com.example.bottomnavigation;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         more_Nav_host.setVisibility(View.GONE);
         category_Nav_host.setVisibility(View.GONE);
         navigationView.setSelectedItemId(R.id.homeFragment);
+
 
         navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_more_fragment);
 

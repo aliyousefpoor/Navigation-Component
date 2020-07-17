@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.homeTab.h_adapter;
+package com.example.bottomnavigation.hometab.homeadapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.homeTab.h_model.Product;
+import com.example.bottomnavigation.data.model.Product;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.homeTab;
+package com.example.bottomnavigation.hometab;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -27,11 +27,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.bottomnavigation.AppViewModel;
+import com.example.bottomnavigation.DataRepository;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.homeTab.h_adapter.MultipleTypeAdapter;
-import com.example.bottomnavigation.homeTab.h_model.Headeritem;
-import com.example.bottomnavigation.homeTab.h_model.Homeitem;
-import com.example.bottomnavigation.homeTab.h_model.Store;
+import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
+import com.example.bottomnavigation.data.model.Homeitem;
+import com.example.bottomnavigation.data.model.Store;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     AppViewModel appViewModel;
     RecyclerView recyclerView;
+    DataRepository dataRepository;
 
 
     @Nullable
@@ -75,7 +77,7 @@ public class HomeFragment extends Fragment {
         pulldown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataMethod();
+                observeViewMethod();
                 Log.d(TAG, "onClick: ");
             }
         });
@@ -86,17 +88,17 @@ public class HomeFragment extends Fragment {
                 appViewModel.getData();
             }
         });
-        getDataMethod();
+        observeViewMethod();
 
     }
 
-    public void getDataMethod() {
+    public void observeViewMethod() {
 
         pulldown.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
 
-        appViewModel.getLoadingLiveData().observe(this, new Observer<Boolean>() {
+        appViewModel.loadingLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loadingState) {
                 if (loadingState) {
@@ -112,7 +114,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        appViewModel.getErrorStateLiveData().observe(this, new Observer<Boolean>() {
+        appViewModel.errorStateLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hasError) {
                 if (hasError) {
@@ -128,25 +130,24 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        appViewModel.getStoreList().observe(this, new Observer<Store>() {
+        appViewModel.storeListLivedata.observe(this, new Observer<Store>() {
             @Override
             public void onChanged(Store store) {
-                viewPagerAdapter(store);
+                showData(store);
             }
         });
 
 
     }
 
-    private void viewPagerAdapter(Store response) {
+    private void showData(Store response) {
         Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
         List<Homeitem> homeList = response.getHomeitem();
-        List<Headeritem> headerList = response.getHeaderitem();
+        List<Product> headerList = response.getHeaderitem();
 
         MultipleTypeAdapter adapter = new MultipleTypeAdapter( getContext(), homeList,headerList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
 
     }
