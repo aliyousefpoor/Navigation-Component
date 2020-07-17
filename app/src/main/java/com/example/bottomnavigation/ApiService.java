@@ -8,5 +8,5 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    @GET("store/16")Call<Store> getString();
+    @GET("store/16")Call<Store> getStore();
 }

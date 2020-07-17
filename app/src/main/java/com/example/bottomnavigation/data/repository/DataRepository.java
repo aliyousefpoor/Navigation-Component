@@ -1,9 +1,11 @@
-package com.example.bottomnavigation;
+package com.example.bottomnavigation.data.repository;
 
 
 import android.util.Log;
 
 
+import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.ResponseListener;
 import com.example.bottomnavigation.data.model.Store;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
@@ -16,7 +18,7 @@ import retrofit2.Response;
 public class DataRepository {
     private static final String TAG = "DataRepository";
     private ApiService api;
-    private CallBackListener callBackListener ;
+    private ResponseListener responseListener ;
     private static final DataRepository ourInstance = new DataRepository();
 
 
@@ -29,8 +31,8 @@ public class DataRepository {
         Log.d(TAG, "DataRepository: Constructor");
     }
 
-    public void onCallBackListener(CallBackListener callBackListener) {
-        this.callBackListener = callBackListener;
+    public void CallBack(ResponseListener responseListener) {
+        this.responseListener = responseListener;
 
     }
 
@@ -38,13 +40,13 @@ public class DataRepository {
 
 
     public void getStore() {
-        api.getString().enqueue(new Callback<Store>() {
+        api.getStore().enqueue(new Callback<Store>() {
             @Override
             public void onResponse(@NotNull Call<Store> call, @NotNull Response<Store> response) {
 
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        callBackListener.onResponse(response.body());
+                        responseListener.onResponse(response.body());
                     }
                 }
 
@@ -55,7 +57,7 @@ public class DataRepository {
             public void onFailure(@NotNull Call<Store> call, @NotNull Throwable t) {
                 Log.d(TAG, "onFailure: ");
 
-                callBackListener.onFailure(t);
+                responseListener.onFailure(t);
 
             }
         });

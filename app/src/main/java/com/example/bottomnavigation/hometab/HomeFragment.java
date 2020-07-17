@@ -27,7 +27,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.bottomnavigation.AppViewModel;
-import com.example.bottomnavigation.DataRepository;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
@@ -43,11 +42,11 @@ public class HomeFragment extends Fragment {
 
     NavController navController;
     ImageView arrow;
-    TextView pulldown;
+    TextView pullDown;
     SwipeRefreshLayout swipeRefreshLayout;
     AppViewModel appViewModel;
     RecyclerView recyclerView;
-    DataRepository dataRepository;
+
 
 
     @Nullable
@@ -67,14 +66,14 @@ public class HomeFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
         arrow = view.findViewById(R.id.arrow);
-        pulldown = view.findViewById(R.id.pulldown);
+        pullDown = view.findViewById(R.id.pulldown);
         swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
         recyclerView = view.findViewById(R.id.rec_view);
 
 
         Log.d(TAG, "onViewCreated: ");
 
-        pulldown.setOnClickListener(new View.OnClickListener() {
+        pullDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 observeViewMethod();
@@ -94,7 +93,7 @@ public class HomeFragment extends Fragment {
 
     public void observeViewMethod() {
 
-        pulldown.setVisibility(View.GONE);
+        pullDown.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
 
@@ -102,12 +101,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Boolean loadingState) {
                 if (loadingState) {
-                    pulldown.setVisibility(View.GONE);
+                    pullDown.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
                 } else {
-                    pulldown.setVisibility(View.GONE);
+                    pullDown.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     recyclerView.setVisibility(View.VISIBLE);
                 }
@@ -118,7 +117,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Boolean hasError) {
                 if (hasError) {
-                    pulldown.setVisibility(View.VISIBLE);
+                    pullDown.setVisibility(View.VISIBLE);
                     arrow.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
                     recyclerView.setVisibility(View.GONE);
@@ -142,6 +141,7 @@ public class HomeFragment extends Fragment {
 
     private void showData(Store response) {
         Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
+
         List<Homeitem> homeList = response.getHomeitem();
         List<Product> headerList = response.getHeaderitem();
 

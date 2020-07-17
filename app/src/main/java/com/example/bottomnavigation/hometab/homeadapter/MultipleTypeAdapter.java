@@ -51,10 +51,8 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-
         RecyclerView.ViewHolder holder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
 
         switch (viewType) {
             case ViewPager_Type:
@@ -89,9 +87,9 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 Log.d(TAG, "HorizontalList_Type: " + position);
 
                 list_holder.title.setText(homeList.get(position - 1).getTitle());
-                list_holder.pro_recyclerView.setAdapter(new ProductAdapter(homeList.get(position - 1).getProducts(), context));
-                list_holder.pro_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                list_holder.pro_recyclerView.setHasFixedSize(true);
+                list_holder.product_recyclerView.setAdapter(new ProductAdapter(homeList.get(position - 1).getProducts(), context));
+                list_holder.product_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                list_holder.product_recyclerView.setHasFixedSize(true);
 
                 break;
         }
@@ -121,12 +119,12 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
-        private RecyclerView pro_recyclerView;
+        private RecyclerView product_recyclerView;
 
         public ListViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
-            pro_recyclerView = itemView.findViewById(R.id.product_rv);
+            product_recyclerView = itemView.findViewById(R.id.product_rv);
 
 
         }

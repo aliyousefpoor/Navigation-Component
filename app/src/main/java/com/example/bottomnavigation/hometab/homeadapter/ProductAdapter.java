@@ -41,20 +41,19 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        final ProductViewHolder pro_holder = (ProductViewHolder) holder;
+        final ProductViewHolder product_holder = (ProductViewHolder) holder;
 
-        pro_holder.textView.setText(productList.get(position).getName());
+        product_holder.textView.setText(productList.get(position).getName());
 
         Uri uri = Uri.parse("https://api.vasapi.click/"+productList.get(position).getFeatureAvatar().getXxxdpi());
-        Glide.with(context).load(uri).into(pro_holder.imageView);
+        Glide.with(context).load(uri).into(product_holder.imageView);
 
-        pro_holder.cardView.setOnClickListener(new View.OnClickListener() {
+        product_holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,productList.get(position).getName(),Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }

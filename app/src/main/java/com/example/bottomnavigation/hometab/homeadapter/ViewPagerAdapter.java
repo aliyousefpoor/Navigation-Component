@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -58,6 +59,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         Uri uri = Uri.parse("https://api.vasapi.click/" + list.get(position).getFeatureAvatar().getXxxdpi());
 
         Glide.with(context).load(uri).into(imageView);
+
 
 
         ViewPager viewPager = (ViewPager) container;
