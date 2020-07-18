@@ -6,15 +6,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.RepositoryCategoryListener;
+import com.example.bottomnavigation.data.datasource.CategorySource;
+import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Category;
-import com.example.bottomnavigation.data.repository.DataRepository;
 
 import java.util.List;
 
 public class CategoryViewModel extends ViewModel {
     private static final String TAG = "CategoryViewModel";
-    DataRepository dataRepository = DataRepository.getInstance();
+    CategorySource categorySource = CategorySource.getInstance();
 
     public CategoryViewModel(){
         getCategoryData();
@@ -31,25 +31,28 @@ public class CategoryViewModel extends ViewModel {
 
 
     public void getCategoryData(){
-        Log.d(TAG, "getCategoryData:1 ");
+        Log.d(TAG, "getCategoryData: ");
         _loadingLiveData.setValue(true);
 
-        dataRepository.repositoryCategoryCallBack(new RepositoryCategoryListener() {
+        categorySource.categoryCallBack(new DataSourceListener<List<Category>>() {
             @Override
-            public void onCategoryResponse(List<Category> category) {
-                _loadingLiveData.setValue(false);
-                _errorStateLiveData.setValue(false);
-                _categoryListLiveData.setValue(category);
-                Log.d(TAG, "onCategoryResponse: " +category.toString());
+            public void onResponse(List<Category> category) {
+
+                    _loadingLiveData.setValue(false);
+                    _errorStateLiveData.setValue(false);
+                    _categoryListLiveData.setValue(category);
+                    Log.d(TAG, "onCategoryResponse: " +category.toString());
+
             }
 
             @Override
-            public void onCategoryFailure(Throwable throwable) {
+            public void onFailure(Throwable throwable) {
                 _errorStateLiveData.setValue(true);
                 _loadingLiveData.setValue(false);
+
             }
         });
 
-        dataRepository.getCategoryCallBack();
+        categorySource.getCategory();
     }
 }

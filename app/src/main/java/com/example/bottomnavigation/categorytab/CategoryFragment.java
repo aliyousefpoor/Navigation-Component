@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -34,7 +35,7 @@ public class CategoryFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     CategoryViewModel categoryViewModel;
-    NavController navController;
+
 
 
     @Nullable
@@ -49,11 +50,12 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");
 
-        navController = Navigation.findNavController(view);
+
         pull_Down = view.findViewById(R.id.pull_down);
         arrow = view.findViewById(R.id.cat_arrow);
         swipeRefreshLayout = view.findViewById(R.id.refreshing);
@@ -63,7 +65,7 @@ public class CategoryFragment extends Fragment {
         pull_Down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoryViewMethod();
+                categoryViewModel();
                 Log.d(TAG, "onClick: ");
             }
         });
@@ -75,11 +77,12 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-        categoryViewMethod();
+        categoryViewModel();
     }
 
     @SuppressLint("FragmentLiveDataObserve")
-    public void categoryViewMethod() {
+
+    public void categoryViewModel() {
 
         pull_Down.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
@@ -100,7 +103,7 @@ public class CategoryFragment extends Fragment {
                     arrow.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
-                    Log.d(TAG, "onChanged: else");
+                    Log.d(TAG, "onChanged:");
                 }
 
             }
@@ -129,10 +132,11 @@ public class CategoryFragment extends Fragment {
 
     }
 
-    public void showData(List<Category> category) {
-        List<Category> categoryList = category;
-        Log.d(TAG, "showData: " + categoryList.toString());
-        CategoryAdapter adapter = new CategoryAdapter(categoryList, getContext());
+    public void showData(List<Category> categories) {
+
+        Log.d(TAG, "showData: " + categories.toString());
+
+        CategoryAdapter adapter = new CategoryAdapter(categories, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -25,35 +25,25 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private List<Category> categoryList;
 
-    public CategoryAdapter (List<Category> categoryList,Context context){
-        this.context=context;
-        this.categoryList=categoryList;
+    public CategoryAdapter(List<Category> categoryList, Context context) {
+        this.context = context;
+        this.categoryList = categoryList;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view;
-       view = LayoutInflater.from(context).inflate(R.layout.category_adapter_layout,parent,false);
+        View view;
+        view = LayoutInflater.from(context).inflate(R.layout.category_adapter_layout, parent, false);
 
         return new CategoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        final CategoryViewHolder categoryViewHolder =(CategoryViewHolder) holder;
+        final CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
 
-        categoryViewHolder.textView.setText(categoryList.get(position).getTitle());
-        Uri uri = Uri.parse(AppConstants.baseUrl+categoryList.get(position).getAvatar());
-        Glide.with(context).load(uri).into(categoryViewHolder.imageView);
-
-        categoryViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,categoryList.get(position).getTitle(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        categoryViewHolder.onBind(categoryList.get(position), context);
 
     }
 
@@ -62,7 +52,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return categoryList.size();
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder{
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView textView;
@@ -74,6 +64,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             imageView = itemView.findViewById(R.id.image);
             textView = itemView.findViewById(R.id.title);
             cardView = itemView.findViewById(R.id.card_view);
+        }
+
+        public void onBind(final Category category, final Context context) {
+            textView.setText(category.getTitle());
+            Uri uri = Uri.parse(AppConstants.baseUrl + category.getAvatar());
+            Glide.with(context).load(uri).into(imageView);
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, category.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

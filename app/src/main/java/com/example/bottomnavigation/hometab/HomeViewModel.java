@@ -6,22 +6,20 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.RepositoryStoreListener;
-import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.data.datasource.StoreSource;
+import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Store;
-import com.example.bottomnavigation.data.repository.DataRepository;
-
-import java.util.List;
 
 public class HomeViewModel extends ViewModel {
+
     private static final String TAG = "AppViewModel";
-    DataRepository dataRepository = DataRepository.getInstance();
+    StoreSource storeSource = StoreSource.getInstance();
 
 
     public HomeViewModel() {
+
         getStoreData();
     }
-
 
 
     private MutableLiveData<Store> _storeListLiveData = new MutableLiveData<>();
@@ -35,19 +33,19 @@ public class HomeViewModel extends ViewModel {
 
 
     public void getStoreData() {
-        Log.d(TAG, "getStoreData: ");  
+        Log.d(TAG, "getStoreData: ");
         _loadingLiveData.setValue(true);
 
-        dataRepository.repositoryStoreCallBack(new RepositoryStoreListener() {
+        storeSource.storeCallBack(new DataSourceListener<Store>() {
             @Override
-            public void onStoreResponse(Store store) {
+            public void onResponse(Store store) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
                 _storeListLiveData.setValue(store);
             }
 
             @Override
-            public void onStoreFailure(Throwable throwable) {
+            public void onFailure(Throwable throwable) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(true);
             }
@@ -55,7 +53,7 @@ public class HomeViewModel extends ViewModel {
 
         });
 
-        dataRepository.getStoreCallback();
+        storeSource.getStore();
 
     }
 
