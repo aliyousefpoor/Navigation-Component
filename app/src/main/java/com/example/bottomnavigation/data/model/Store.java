@@ -12,7 +12,10 @@ public class Store {
     private Integer id;
     @SerializedName("parent_categories")
     @Expose
-    private List<ParentCategory> parentCategories = null;
+    private List<Category> parentCategories = null;
+    @SerializedName("category")
+    @Expose
+    private List<Category> category = null;
     @SerializedName("tabStrip")
     @Expose
     private List<Object> tabStrip = null;
@@ -31,12 +34,18 @@ public class Store {
         this.id = id;
     }
 
-    public List<ParentCategory> getParentCategories() {
+    public List<Category> getParentCategories() {
         return parentCategories;
     }
 
-    public void setParentCategories(List<ParentCategory> parentCategories) {
+    public void setParentCategories(List<Category> parentCategories) {
         this.parentCategories = parentCategories;
+    }
+    public List<Category> getCategory(){
+        return category;
+    }
+    public void setCategory(List<Category> category){
+        this.category= category;
     }
 
     public List<Object> getTabStrip() {

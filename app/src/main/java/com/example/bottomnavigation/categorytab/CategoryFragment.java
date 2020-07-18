@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.hometab;
+package com.example.bottomnavigation.categorytab;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,40 +17,31 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
-
 import androidx.navigation.Navigation;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.model.Product;
-import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
-import com.example.bottomnavigation.data.model.Homeitem;
-import com.example.bottomnavigation.data.model.Store;
+import com.example.bottomnavigation.data.model.Category;
 
 import java.util.List;
 
-@SuppressLint("FragmentLiveDataObserve")
-
-public class HomeFragment extends Fragment {
-    private static final String TAG = "HomeFragment";
-
-    NavController navController;
+public class CategoryFragment extends Fragment {
+    private static final String TAG = "CategoryFragment";
+    TextView pull_Down;
     ImageView arrow;
-    TextView pullDown;
     SwipeRefreshLayout swipeRefreshLayout;
-    HomeViewModel homeViewModel;
     RecyclerView recyclerView;
+    CategoryViewModel categoryViewModel;
+    NavController navController;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_fragment, container, false);
-        Log.d(TAG, "onCreateView: ");
+        View view;
+        view = inflater.inflate(R.layout.category_fragment, container, false);
 
         return view;
     }
@@ -59,22 +49,21 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-
-
-        navController = Navigation.findNavController(view);
-        arrow = view.findViewById(R.id.arrow);
-        pullDown = view.findViewById(R.id.pulldown);
-        swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
-        recyclerView = view.findViewById(R.id.rec_view);
-
+        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");
 
-        pullDown.setOnClickListener(new View.OnClickListener() {
+        navController = Navigation.findNavController(view);
+        pull_Down = view.findViewById(R.id.pull_down);
+        arrow = view.findViewById(R.id.cat_arrow);
+        swipeRefreshLayout = view.findViewById(R.id.refreshing);
+        recyclerView = view.findViewById(R.id.recycler_view);
+
+
+        pull_Down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                observeViewModel();
+                categoryViewMethod();
                 Log.d(TAG, "onClick: ");
             }
         });
@@ -82,71 +71,70 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                homeViewModel.getStoreData();
+                categoryViewModel.getCategoryData();
             }
         });
 
-        observeViewModel();
-
+        categoryViewMethod();
     }
 
-    public void observeViewModel() {
+    @SuppressLint("FragmentLiveDataObserve")
+    public void categoryViewMethod() {
 
-        pullDown.setVisibility(View.GONE);
+        pull_Down.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
 
-        homeViewModel.loadingLiveData.observe(this, new Observer<Boolean>() {
+        categoryViewModel.loadingLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loadingState) {
                 if (loadingState) {
-                    pullDown.setVisibility(View.GONE);
+                    pull_Down.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
-                } else {
-                    pullDown.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(false);
-                    recyclerView.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "loadingOnChanged: ");
                 }
+                else {
+                    pull_Down.setVisibility(View.GONE);
+                    arrow.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    Log.d(TAG, "onChanged: else");
+                }
+
             }
         });
 
-        homeViewModel.errorStateLiveData.observe(this, new Observer<Boolean>() {
+        categoryViewModel.errorStateLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hasError) {
                 if (hasError) {
-                    pullDown.setVisibility(View.VISIBLE);
+                    pull_Down.setVisibility(View.VISIBLE);
                     arrow.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setRefreshing(false);
                     recyclerView.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
-        homeViewModel.storeListLiveData.observe(this, new Observer<Store>() {
+        categoryViewModel.categoryLiveData.observe(this, new Observer<List<Category>>() {
             @Override
-            public void onChanged(Store store) {
-                showData(store);
+            public void onChanged(List<Category> categoryList) {
+                showData(categoryList);
             }
         });
 
 
     }
 
-    private void showData(Store response) {
-        Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
-
-        List<Homeitem> homeList = response.getHomeitem();
-        List<Product> headerList = response.getHeaderitem();
-
-        MultipleTypeAdapter adapter = new MultipleTypeAdapter(getContext(), homeList, headerList);
+    public void showData(List<Category> category) {
+        List<Category> categoryList = category;
+        Log.d(TAG, "showData: " + categoryList.toString());
+        CategoryAdapter adapter = new CategoryAdapter(categoryList, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
     }
-
 }

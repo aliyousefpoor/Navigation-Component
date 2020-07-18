@@ -8,29 +8,10 @@
 
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.example.bottomnavigation.CategoryFragment"
+        android:name="com.example.bottomnavigation.categorytab.CategoryFragment"
         android:label="CategoryFragment"
         tools:layout="@layout/category_fragment"
         >
-        <action
-            android:id="@+id/action_categoryFragment_to_secondFragment"
-            app:destination="@id/secondFragment"
-            />
     </fragment>
-    <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.example.bottomnavigation.SecondFragment"
-        android:label="SecondFragment"
-        tools:layout="@layout/second_fragment"
-        >
-        <action
-            android:id="@+id/action_secondFragment_to_thirdFragment"
-            app:destination="@id/thirdFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/thirdFragment"
-        android:name="com.example.bottomnavigation.ThirdFragment"
-        android:label="ThirdFragment"
-        tools:layout="@layout/third_fragment"
-        />
+
 </navigation>
