@@ -23,8 +23,8 @@ import java.util.List;
 public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "MultipleTypeAdapter";
 
-    private static final int ViewPager_Type = 1;
-    private static final int HorizontalList_Type = 2;
+    private static final int ViewPagerType = 1;
+    private static final int HorizontalListType = 2;
 
     private Context context;
     private List<Homeitem> homeList;
@@ -41,9 +41,9 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return ViewPager_Type;
+            return ViewPagerType;
         } else {
-            return HorizontalList_Type;
+            return HorizontalListType;
         }
     }
 
@@ -55,12 +55,12 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType) {
-            case ViewPager_Type:
+            case ViewPagerType:
                 View pager_view = inflater.inflate(R.layout.header_item_layout, parent, false);
                 holder = new ViewPagerViewHolder(pager_view);
                 break;
 
-            case HorizontalList_Type:
+            case HorizontalListType:
                 View list_view = inflater.inflate(R.layout.home_item_layout, parent, false);
                 holder = new ListViewHolder(list_view);
                 break;
@@ -74,14 +74,14 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         switch (getItemViewType(position)) {
 
-            case ViewPager_Type:
+            case ViewPagerType:
                 Log.d(TAG, "ViewPager_Type: " + position);
                 final ViewPagerViewHolder pager_holder = (ViewPagerViewHolder) holder;
                 pager_holder.viewPager.setAdapter(new ViewPagerAdapter(headerList, context));
 
                 break;
 
-            case HorizontalList_Type:
+            case HorizontalListType:
 
                 final ListViewHolder list_holder = (ListViewHolder) holder;
                 Log.d(TAG, "HorizontalList_Type: " + position);

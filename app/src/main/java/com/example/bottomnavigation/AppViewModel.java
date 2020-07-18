@@ -19,9 +19,9 @@ public class AppViewModel extends ViewModel {
     }
 
 
-    //nokte
-    private MutableLiveData<Store> _storeListLivedata = new MutableLiveData<>();
-    public LiveData<Store> storeListLivedata = _storeListLivedata;
+
+    private MutableLiveData<Store> _storeListLiveData = new MutableLiveData<>();
+    public LiveData<Store> storeListLiveData = _storeListLiveData;
 
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
     public LiveData<Boolean> loadingLiveData = _loadingLiveData;
@@ -34,13 +34,13 @@ public class AppViewModel extends ViewModel {
         Log.d(TAG, "getData: ");
         _loadingLiveData.setValue(true);
 
-        dataRepository.CallBack(new ResponseListener() {
+        dataRepository.callBack(new RepositoryListener() {
             @Override
             public void onResponse(Store store) {
 
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
-                _storeListLivedata.setValue(store);
+                _storeListLiveData.setValue(store);
             }
 
             @Override
@@ -51,7 +51,7 @@ public class AppViewModel extends ViewModel {
             }
         });
 
-        dataRepository.getStore();
+        dataRepository.getCallback();
 
     }
 }

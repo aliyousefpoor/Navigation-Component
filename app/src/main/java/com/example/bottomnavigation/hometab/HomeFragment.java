@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,6 +86,7 @@ public class HomeFragment extends Fragment {
                 appViewModel.getData();
             }
         });
+
         observeViewMethod();
 
     }
@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        appViewModel.storeListLivedata.observe(this, new Observer<Store>() {
+        appViewModel.storeListLiveData.observe(this, new Observer<Store>() {
             @Override
             public void onChanged(Store store) {
                 showData(store);
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
         List<Homeitem> homeList = response.getHomeitem();
         List<Product> headerList = response.getHeaderitem();
 
-        MultipleTypeAdapter adapter = new MultipleTypeAdapter( getContext(), homeList,headerList);
+        MultipleTypeAdapter adapter = new MultipleTypeAdapter(getContext(), homeList, headerList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
