@@ -8,8 +8,11 @@ import com.example.bottomnavigation.data.datasource.StoreSource;
 
 
 public class HomeViewModelFactory implements ViewModelProvider.Factory {
-    private StoreSource storeSource = new StoreSource();
+    private StoreSource storeSource;
 
+    public HomeViewModelFactory(StoreSource storeSource) {
+        this.storeSource = storeSource;
+    }
 
     @NonNull
     @Override

@@ -15,12 +15,14 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.CategorySource;
 import com.example.bottomnavigation.data.model.Category;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public class CategoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
     private CategoryViewModelFactory categoryViewModelFactory;
+    private CategorySource categorySource = new CategorySource();
 
 
 
@@ -50,7 +53,7 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        categoryViewModelFactory = new CategoryViewModelFactory();
+        categoryViewModelFactory = new CategoryViewModelFactory(categorySource);
         categoryViewModel = ViewModelProviders.of(this,categoryViewModelFactory).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");

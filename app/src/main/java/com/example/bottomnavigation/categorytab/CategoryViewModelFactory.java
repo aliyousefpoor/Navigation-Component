@@ -7,12 +7,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.data.datasource.CategorySource;
 
 public class CategoryViewModelFactory implements ViewModelProvider.Factory {
-    private CategorySource categorySource = new CategorySource();
+    private CategorySource categorySource;
+
+    public CategoryViewModelFactory(CategorySource categorySource) {
+        this.categorySource = categorySource;
+    }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(CategoryViewModel.class)){
+        if (modelClass.isAssignableFrom(CategoryViewModel.class)) {
             return (T) new CategoryViewModel(categorySource);
         }
         throw new IllegalArgumentException("Unknown Class");
