@@ -6,17 +6,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.data.datasource.StoreSource;
+import com.example.bottomnavigation.data.datasource.HomeSource;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Store;
 
 public class HomeViewModel extends ViewModel {
 
     private static final String TAG = "AppViewModel";
-    private StoreSource storeSource ;
+    private HomeSource storeSource ;
 
 
-    public HomeViewModel(StoreSource storeSource) {
+    public HomeViewModel(HomeSource storeSource) {
         this.storeSource=storeSource;
         getStoreData();
     }

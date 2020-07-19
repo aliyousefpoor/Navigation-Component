@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.CategorySource;
 import com.example.bottomnavigation.data.model.Category;
 
@@ -35,7 +36,7 @@ public class CategoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
     private CategoryViewModelFactory categoryViewModelFactory;
-    private CategorySource categorySource = new CategorySource();
+    private CategorySource categorySource = CategoryTabModule.provideCategorySource();
 
 
 

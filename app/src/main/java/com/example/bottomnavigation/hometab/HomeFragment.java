@@ -25,8 +25,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.StoreSource;
+import com.example.bottomnavigation.data.datasource.HomeSource;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.hometab.di.HomeTabModule;
 import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
 import com.example.bottomnavigation.data.model.Homeitem;
 import com.example.bottomnavigation.data.model.Store;
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private HomeViewModelFactory homeViewModelFactory;
     private RecyclerView recyclerView;
-    private StoreSource storeSource =new StoreSource();
+    private HomeSource homeSource =HomeTabModule.provideCategorySource();
 
 
     @Nullable
@@ -60,7 +61,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeViewModelFactory = new HomeViewModelFactory(storeSource);
+        homeViewModelFactory = new HomeViewModelFactory(homeSource);
         homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel.class);
         //remove
 

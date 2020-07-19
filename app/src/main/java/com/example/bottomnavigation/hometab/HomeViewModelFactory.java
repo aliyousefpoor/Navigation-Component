@@ -4,13 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.datasource.StoreSource;
+import com.example.bottomnavigation.data.datasource.HomeSource;
 
 
 public class HomeViewModelFactory implements ViewModelProvider.Factory {
-    private StoreSource storeSource;
+    private HomeSource storeSource;
 
-    public HomeViewModelFactory(StoreSource storeSource) {
+    public HomeViewModelFactory(HomeSource storeSource) {
         this.storeSource = storeSource;
     }
 

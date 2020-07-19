@@ -11,12 +11,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoreSource {
+public class HomeSource {
     private static final String TAG = "StoreSource";
     private ApiService apiService;
     private DataSourceListener<Store> dataSourceListener;
 
-    public StoreSource(){
+    public HomeSource(){
 
         apiService= ApiBuilder.create(ApiService.class);
     }
