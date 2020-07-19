@@ -15,10 +15,7 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -30,11 +27,13 @@ import java.util.List;
 
 public class CategoryFragment extends Fragment {
     private static final String TAG = "CategoryFragment";
-    TextView pull_Down;
-    ImageView arrow;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
-    CategoryViewModel categoryViewModel;
+    private TextView pull_Down;
+    private ImageView arrow;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private CategoryViewModel categoryViewModel;
+    private CategoryViewModelFactory categoryViewModelFactory;
+
 
 
 
@@ -50,8 +49,9 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
-        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+
+        categoryViewModelFactory = new CategoryViewModelFactory();
+        categoryViewModel = ViewModelProviders.of(this,categoryViewModelFactory).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");
 

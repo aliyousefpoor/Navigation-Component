@@ -14,9 +14,10 @@ import java.util.List;
 
 public class CategoryViewModel extends ViewModel {
     private static final String TAG = "CategoryViewModel";
-    CategorySource categorySource = CategorySource.getInstance();
+    private CategorySource categorySource;
 
-    public CategoryViewModel(){
+    public CategoryViewModel(CategorySource categorySource) {
+        this.categorySource = categorySource;
         getCategoryData();
     }
 
@@ -30,7 +31,7 @@ public class CategoryViewModel extends ViewModel {
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
 
-    public void getCategoryData(){
+    public void getCategoryData() {
         Log.d(TAG, "getCategoryData: ");
         _loadingLiveData.setValue(true);
 
@@ -38,10 +39,10 @@ public class CategoryViewModel extends ViewModel {
             @Override
             public void onResponse(List<Category> category) {
 
-                    _loadingLiveData.setValue(false);
-                    _errorStateLiveData.setValue(false);
-                    _categoryListLiveData.setValue(category);
-                    Log.d(TAG, "onCategoryResponse: " +category.toString());
+                _loadingLiveData.setValue(false);
+                _errorStateLiveData.setValue(false);
+                _categoryListLiveData.setValue(category);
+                Log.d(TAG, "onCategoryResponse: " + category.toString());
 
             }
 

@@ -13,11 +13,11 @@ import com.example.bottomnavigation.data.model.Store;
 public class HomeViewModel extends ViewModel {
 
     private static final String TAG = "AppViewModel";
-    StoreSource storeSource = StoreSource.getInstance();
+    private StoreSource storeSource ;
 
 
-    public HomeViewModel() {
-
+    public HomeViewModel(StoreSource storeSource) {
+        this.storeSource=storeSource;
         getStoreData();
     }
 
@@ -30,7 +30,6 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
-
 
     public void getStoreData() {
         Log.d(TAG, "getStoreData: ");

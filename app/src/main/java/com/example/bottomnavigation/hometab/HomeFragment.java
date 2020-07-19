@@ -16,8 +16,9 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -37,11 +38,12 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
 
-    ImageView arrow;
-    TextView pullDown;
-    SwipeRefreshLayout swipeRefreshLayout;
-    HomeViewModel homeViewModel;
-    RecyclerView recyclerView;
+    private ImageView arrow;
+    private TextView pullDown;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private HomeViewModel homeViewModel;
+    private HomeViewModelFactory homeViewModelFactory;
+    private RecyclerView recyclerView;
 
 
     @Nullable
@@ -56,25 +58,17 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        homeViewModelFactory = new HomeViewModelFactory();
+        homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel.class);
         //remove
 
         arrow = view.findViewById(R.id.arrow);
-        pullDown = view.findViewById(R.id.pulldown);
-        swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
+        pullDown = view.findViewById(R.id.pull_down);
+        swipeRefreshLayout = view.findViewById(R.id.swipRefreshing);
         recyclerView = view.findViewById(R.id.rec_view);
 
 
         Log.d(TAG, "onViewCreated: ");
-
-        // befahm chie
-        pullDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                observeViewModel();
-                Log.d(TAG, "onClick: ");
-            }
-        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -99,7 +93,7 @@ public class HomeFragment extends Fragment {
                 if (loadingState) {
                     pullDown.setVisibility(View.GONE);
                     //barresi
-
+                    arrow.setVisibility(View.GONE);
                     //barresi
 
                     swipeRefreshLayout.setRefreshing(true);

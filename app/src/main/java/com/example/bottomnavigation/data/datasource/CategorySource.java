@@ -18,13 +18,8 @@ public class CategorySource {
     private static final String TAG = "RemoteDataSource";
     private ApiService apiService;
     private DataSourceListener<List<Category>> dataSourceListener;
-    private static final CategorySource remoteInstance = new CategorySource();
 
-    public static CategorySource getInstance(){
-        return remoteInstance;
-    }
-
-    private CategorySource() {
+    public CategorySource() {
         apiService = ApiBuilder.create(ApiService.class);
         Log.d(TAG, "RemoteDataSource: ");
     }

@@ -6,6 +6,7 @@ import com.example.bottomnavigation.utils.ApiBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,13 +15,9 @@ public class StoreSource {
     private static final String TAG = "StoreSource";
     private ApiService apiService;
     private DataSourceListener<Store> dataSourceListener;
-    private static final StoreSource storeInstance =new StoreSource();
 
-    public static StoreSource getInstance(){
-        return storeInstance;
-    }
+    public StoreSource(){
 
-    private StoreSource(){
         apiService= ApiBuilder.create(ApiService.class);
     }
 
