@@ -35,25 +35,20 @@ public class CategoryViewModel extends ViewModel {
         Log.d(TAG, "getCategoryData: ");
         _loadingLiveData.setValue(true);
 
-        categorySource.categoryCallBack(new DataSourceListener<List<Category>>() {
+        categorySource.getCategory(new DataSourceListener<List<Category>>() {
             @Override
-            public void onResponse(List<Category> category) {
-
+            public void onResponse(List<Category> response) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
-                _categoryListLiveData.setValue(category);
-                Log.d(TAG, "onCategoryResponse: " + category.toString());
-
+                _categoryListLiveData.setValue(response);
+                Log.d(TAG, "onCategoryResponse: " + response.toString());
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 _errorStateLiveData.setValue(true);
                 _loadingLiveData.setValue(false);
-
             }
         });
-
-        categorySource.getCategory();
     }
 }

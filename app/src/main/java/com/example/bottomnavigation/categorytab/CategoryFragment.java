@@ -21,10 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.CategorySource;
 import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.di.ApiBuilderModule;
 
 import java.util.List;
 
@@ -36,8 +38,8 @@ public class CategoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
     private CategoryViewModelFactory categoryViewModelFactory;
-    private CategorySource categorySource = CategoryTabModule.provideCategorySource();
-
+    private ApiService apiService = ApiBuilderModule.provideApiService();
+    private CategorySource categorySource = CategoryTabModule.provideCategorySource(apiService);
 
 
 
@@ -98,13 +100,11 @@ public class CategoryFragment extends Fragment {
                 if (loadingState) {
                     pull_Down.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
                     Log.d(TAG, "loadingOnChanged: ");
                 }
                 else {
                     pull_Down.setVisibility(View.GONE);
-                    arrow.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
                     Log.d(TAG, "onChanged:");

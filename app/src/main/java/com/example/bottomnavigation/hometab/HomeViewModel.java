@@ -13,11 +13,11 @@ import com.example.bottomnavigation.data.model.Store;
 public class HomeViewModel extends ViewModel {
 
     private static final String TAG = "AppViewModel";
-    private HomeSource storeSource ;
+    private HomeSource homeSource;
 
 
-    public HomeViewModel(HomeSource storeSource) {
-        this.storeSource=storeSource;
+    public HomeViewModel(HomeSource homeSource) {
+        this.homeSource = homeSource;
         getStoreData();
     }
 
@@ -35,12 +35,12 @@ public class HomeViewModel extends ViewModel {
         Log.d(TAG, "getStoreData: ");
         _loadingLiveData.setValue(true);
 
-        storeSource.storeCallBack(new DataSourceListener<Store>() {
+        homeSource.getStore(new DataSourceListener<Store>() {
             @Override
-            public void onResponse(Store store) {
+            public void onResponse(Store response) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
-                _storeListLiveData.setValue(store);
+                _storeListLiveData.setValue(response);
             }
 
             @Override
@@ -48,11 +48,7 @@ public class HomeViewModel extends ViewModel {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(true);
             }
-
-
         });
-
-        storeSource.getStore();
 
     }
 

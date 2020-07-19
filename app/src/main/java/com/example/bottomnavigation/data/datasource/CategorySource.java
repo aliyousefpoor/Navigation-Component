@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.model.Category;
-import com.example.bottomnavigation.utils.ApiBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,28 +16,21 @@ import retrofit2.Response;
 public class CategorySource {
     private static final String TAG = "RemoteDataSource";
     private ApiService apiService;
-    private DataSourceListener<List<Category>> dataSourceListener;
 
-    public CategorySource() {
-        apiService = ApiBuilder.create(ApiService.class);
-        Log.d(TAG, "RemoteDataSource: ");
+
+    public CategorySource(ApiService apiService) {
+        this.apiService = apiService;
+
     }
 
-
-
-    public void categoryCallBack(DataSourceListener<List<Category>> dataSourceListener){
-        this.dataSourceListener =dataSourceListener;
-    }
-
-
-    public void getCategory(){
+    public void getCategory(final DataSourceListener<List<Category>> dataSourceListener) {
         apiService.getCategory().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(@NotNull Call<List<Category>> call, @NotNull Response<List<Category>> response) {
-                if (response.isSuccessful()){
-                    if (response.body() != null){
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
                         dataSourceListener.onResponse(response.body());
-                        Log.d(TAG, "onCategoryResponse: " +response.body().toString());
+                        Log.d(TAG, "onCategoryResponse: " + response.body().toString());
                     }
                 }
             }

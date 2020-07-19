@@ -24,9 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
+import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.HomeSource;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.hometab.di.HomeTabModule;
 import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
 import com.example.bottomnavigation.data.model.Homeitem;
@@ -46,7 +48,8 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private HomeViewModelFactory homeViewModelFactory;
     private RecyclerView recyclerView;
-    private HomeSource homeSource =HomeTabModule.provideCategorySource();
+    private ApiService apiService = ApiBuilderModule.provideApiService();
+    private HomeSource homeSource = HomeTabModule.provideCategorySource(apiService);
 
 
     @Nullable
@@ -98,7 +101,6 @@ public class HomeFragment extends Fragment {
                     //barresi
                     arrow.setVisibility(View.GONE);
                     //barresi
-
                     swipeRefreshLayout.setRefreshing(true);
                 } else {
                     pullDown.setVisibility(View.GONE);

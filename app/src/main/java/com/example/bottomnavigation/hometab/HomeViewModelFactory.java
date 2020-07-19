@@ -8,10 +8,10 @@ import com.example.bottomnavigation.data.datasource.HomeSource;
 
 
 public class HomeViewModelFactory implements ViewModelProvider.Factory {
-    private HomeSource storeSource;
+    private HomeSource homeSource;
 
-    public HomeViewModelFactory(HomeSource storeSource) {
-        this.storeSource = storeSource;
+    public HomeViewModelFactory(HomeSource homeSource) {
+        this.homeSource = homeSource;
     }
 
     @NonNull
@@ -20,7 +20,7 @@ public class HomeViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
 
         if (modelClass.isAssignableFrom(HomeViewModel.class)) {
-            return (T) new HomeViewModel(storeSource);
+            return (T) new HomeViewModel(homeSource);
         }
         throw new IllegalArgumentException("Unknown Class");
 
