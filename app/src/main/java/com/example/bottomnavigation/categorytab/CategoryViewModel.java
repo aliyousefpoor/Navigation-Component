@@ -48,7 +48,9 @@ public class CategoryViewModel extends ViewModel {
             public void onFailure(Throwable throwable) {
                 _errorStateLiveData.setValue(true);
                 _loadingLiveData.setValue(false);
+
             }
         });
+
     }
 }

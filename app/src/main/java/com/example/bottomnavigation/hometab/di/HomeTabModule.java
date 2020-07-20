@@ -5,7 +5,7 @@ import com.example.bottomnavigation.data.datasource.HomeSource;
 
 
 public class HomeTabModule {
-    public static HomeSource provideCategorySource(ApiService apiService) {
+    public static HomeSource provideHomeSource(ApiService apiService) {
         return new HomeSource(apiService);
     }
 }

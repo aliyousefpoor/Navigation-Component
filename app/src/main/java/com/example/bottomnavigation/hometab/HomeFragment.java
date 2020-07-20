@@ -18,13 +18,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.HomeSource;
 import com.example.bottomnavigation.data.model.Product;
@@ -33,8 +35,11 @@ import com.example.bottomnavigation.hometab.di.HomeTabModule;
 import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
 import com.example.bottomnavigation.data.model.Homeitem;
 import com.example.bottomnavigation.data.model.Store;
+import com.example.bottomnavigation.utils.ApiBuilder;
 
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 @SuppressLint("FragmentLiveDataObserve")
 
@@ -48,8 +53,10 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private HomeViewModelFactory homeViewModelFactory;
     private RecyclerView recyclerView;
-    private ApiService apiService = ApiBuilderModule.provideApiService();
-    private HomeSource homeSource = HomeTabModule.provideCategorySource(apiService);
+    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
+    private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
+    private ApiService apiService = ApiBuilderModule.provideApiService(builder);
+    private HomeSource homeSource = HomeTabModule.provideHomeSource(apiService);
 
 
     @Nullable
@@ -65,7 +72,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         homeViewModelFactory = new HomeViewModelFactory(homeSource);
-        homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel.class);
         //remove
 
         arrow = view.findViewById(R.id.arrow);
@@ -80,6 +87,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 homeViewModel.getStoreData();
+                Log.d(TAG, "onRefresh() called");
             }
         });
 
@@ -101,6 +109,7 @@ public class HomeFragment extends Fragment {
                     //barresi
                     arrow.setVisibility(View.GONE);
                     //barresi
+                    recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
                 } else {
                     pullDown.setVisibility(View.GONE);
@@ -119,6 +128,7 @@ public class HomeFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                     recyclerView.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onChanged: Error");
                 }
 
             }

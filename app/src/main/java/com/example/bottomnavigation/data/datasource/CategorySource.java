@@ -13,7 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategorySource {
+public class CategorySource implements CategoryDataSource {
     private static final String TAG = "RemoteDataSource";
     private ApiService apiService;
 
@@ -23,6 +23,7 @@ public class CategorySource {
 
     }
 
+    @Override
     public void getCategory(final DataSourceListener<List<Category>> dataSourceListener) {
         apiService.getCategory().enqueue(new Callback<List<Category>>() {
             @Override
@@ -30,7 +31,6 @@ public class CategorySource {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         dataSourceListener.onResponse(response.body());
-                        Log.d(TAG, "onCategoryResponse: " + response.body().toString());
                     }
                 }
             }
@@ -38,8 +38,9 @@ public class CategorySource {
             @Override
             public void onFailure(@NotNull Call<List<Category>> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
+
             }
         });
-
     }
+
 }

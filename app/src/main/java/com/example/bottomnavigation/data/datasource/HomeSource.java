@@ -11,7 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeSource {
+public class HomeSource implements HomeDataSource {
     private static final String TAG = "StoreSource";
     private ApiService apiService;
 
@@ -19,6 +19,7 @@ public class HomeSource {
         this.apiService = apiService;
     }
 
+    @Override
     public void getStore(final DataSourceListener<Store> dataSourceListener) {
         apiService.getStore().enqueue(new Callback<Store>() {
             @Override
@@ -35,5 +36,6 @@ public class HomeSource {
                 dataSourceListener.onFailure(t);
             }
         });
+
     }
 }

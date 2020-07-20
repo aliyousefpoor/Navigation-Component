@@ -16,19 +16,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.CategorySource;
 import com.example.bottomnavigation.data.model.Category;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.di.AppModule;
+import com.example.bottomnavigation.utils.ApiBuilder;
 
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 public class CategoryFragment extends Fragment {
     private static final String TAG = "CategoryFragment";
@@ -38,9 +43,10 @@ public class CategoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
     private CategoryViewModelFactory categoryViewModelFactory;
-    private ApiService apiService = ApiBuilderModule.provideApiService();
+    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
+    private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
+    private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private CategorySource categorySource = CategoryTabModule.provideCategorySource(apiService);
-
 
 
     @Nullable
@@ -57,7 +63,7 @@ public class CategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         categoryViewModelFactory = new CategoryViewModelFactory(categorySource);
-        categoryViewModel = ViewModelProviders.of(this,categoryViewModelFactory).get(CategoryViewModel.class);
+        categoryViewModel = new ViewModelProvider(this, categoryViewModelFactory).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");
 
@@ -80,6 +86,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onRefresh() {
                 categoryViewModel.getCategoryData();
+                Log.d(TAG, "onRefresh: ");
             }
         });
 
@@ -100,14 +107,14 @@ public class CategoryFragment extends Fragment {
                 if (loadingState) {
                     pull_Down.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
                     Log.d(TAG, "loadingOnChanged: ");
-                }
-                else {
-                    pull_Down.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    pull_Down.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    Log.d(TAG, "onChanged:");
+                    Log.d(TAG, "onChanged:loading false");
                 }
 
             }
@@ -122,6 +129,12 @@ public class CategoryFragment extends Fragment {
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onChanged: Error");
+                } else {
+                    pull_Down.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+
                 }
             }
         });
