@@ -68,9 +68,9 @@ public class MoreFragment extends Fragment {
     public List<MoreModel> fill_with_Data() {
 
         List<MoreModel> moreLists = new ArrayList<>();
-        moreLists.add(new MoreModel("پروفایل", 0));
-        moreLists.add(new MoreModel("درباره ما", 1));
-        moreLists.add(new MoreModel("تماس با ما", 2));
+        moreLists.add(new MoreModel("پروفایل"));
+        moreLists.add(new MoreModel("درباره ما"));
+        moreLists.add(new MoreModel("تماس با ما"));
 
         return moreLists;
     }

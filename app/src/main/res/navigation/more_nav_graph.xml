@@ -18,18 +18,27 @@
         <action
             android:id="@+id/action_moreFragment_to_aboutUsFragment"
             app:destination="@id/aboutUsFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.example.bottomnavigation.AboutUsFragment"
+        android:name="com.example.bottomnavigation.moretab.AboutUsFragment"
         android:label="AboutUsFragment"
         tools:layout="@layout/about_fragment"
         />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.bottomnavigation.ProfileFragment"
+        android:name="com.example.bottomnavigation.moretab.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_fragment"
+        />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.bottomnavigation.moretab.ContactFragment"
+        android:label="ContactFragment"
+        tools:layout="@layout/contact_fragment"
         />
 
 </navigation>

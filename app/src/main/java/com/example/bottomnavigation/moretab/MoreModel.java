@@ -6,11 +6,11 @@ public class MoreModel {
 
 
     public String title;
-    public int id;
 
-    public MoreModel(String title , int id ) {
+
+    public MoreModel(String title  ) {
         this.title = title;
-        this.id=id;
+
 
     }
 }

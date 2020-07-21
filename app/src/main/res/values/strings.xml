@@ -4,4 +4,7 @@
     <string name="more_fragment">More Fragment</string>
     <string name="home_fragment">Home Fragment</string>
     <string name="second_btn">Next</string>
+    <string name="contact">تماس با ما</string>
+    <string name="about">درباره ما</string>
+
 </resources>
