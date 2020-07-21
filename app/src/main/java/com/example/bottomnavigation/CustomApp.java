@@ -5,8 +5,6 @@ import android.util.Log;
 
 import com.example.bottomnavigation.di.AppModule;
 
-import retrofit2.Retrofit;
-
 
 public class CustomApp extends Application {
     private static final String TAG = "CustomApp";
@@ -14,12 +12,9 @@ public class CustomApp extends Application {
 
     private static CustomApp instance;
 
-
     public static CustomApp getInstance() {
         return instance;
     }
-
-
 
     public  AppModule getAppModule(){
         return appModule;

@@ -28,7 +28,6 @@ import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.CategorySource;
 import com.example.bottomnavigation.data.model.Category;
 import com.example.bottomnavigation.di.ApiBuilderModule;
-import com.example.bottomnavigation.di.AppModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 import java.util.List;

@@ -12,13 +12,13 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 
-public class ThirdFragment extends Fragment {
+public class AboutUsFragment extends Fragment {
     TextView textView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.third_fragment, container, false);
+        View view = inflater.inflate(R.layout.about_fragment, container, false);
 
         return view;
     }
@@ -29,8 +29,6 @@ public class ThirdFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         textView = view.findViewById(R.id.third_txt);
 
-
-        textView.setText(getArguments().getString("Key")+ " In ThirdFragment");
 
     }
 }
