@@ -4,7 +4,14 @@
     <string name="more_fragment">More Fragment</string>
     <string name="home_fragment">Home Fragment</string>
     <string name="second_btn">Next</string>
+    <string name="profile">پروفایل</string>
     <string name="contact">تماس با ما</string>
     <string name="about">درباره ما</string>
+    <string name="name">نام و نام خانوادگی</string>
+    <string name="date">تاریخ تولد</string>
+    <string name="change">ثبت تغییرات</string>
+    <string name="cancle">انصراف</string>
+    <string name="male">مرد</string>
+    <string name="female">زن</string>
 
 </resources>
