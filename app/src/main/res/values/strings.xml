@@ -13,5 +13,6 @@
     <string name="cancle">انصراف</string>
     <string name="male">مرد</string>
     <string name="female">زن</string>
+    <string name="appName">MyApp</string>
 
 </resources>

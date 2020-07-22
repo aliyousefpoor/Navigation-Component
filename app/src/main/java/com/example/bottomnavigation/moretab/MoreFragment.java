@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,16 +84,15 @@ public class MoreFragment extends Fragment {
                 switch (id) {
                     case 0:
                         navController.navigate(R.id.action_moreFragment_to_profileFragment);
+
                         break;
                     case 1:
                         navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
                         break;
+                    case 2:
+                        navController.navigate(R.id.action_moreFragment_to_contactFragment);
                 }
             }
         };
-
-
     }
-
-
 }
