@@ -84,7 +84,6 @@ public class MoreFragment extends Fragment {
                 switch (id) {
                     case 0:
                         navController.navigate(R.id.action_moreFragment_to_profileFragment);
-
                         break;
                     case 1:
                         navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
