@@ -23,7 +23,6 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     MoreItemListener moreItemListener;
 
 
-
     public MoreAdapter(List<MoreModel> moreLists, Context context, MoreItemListener moreItemListener) {
         this.context = context;
         this.moreLists = moreLists;
@@ -44,7 +43,7 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final MoreViewHolder moreViewHolder = (MoreViewHolder) holder;
         MoreModel moreList = moreLists.get(position);
-        moreViewHolder.onBind(moreList, context , position,moreItemListener);
+        moreViewHolder.onBind(moreList, context, position, moreItemListener);
     }
 
     @Override
@@ -57,15 +56,14 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         CardView cardView;
 
 
-
-        public MoreViewHolder(@NonNull View itemView ) {
+        public MoreViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text);
             cardView = itemView.findViewById(R.id.card_view);
 
         }
 
-        public void onBind(final MoreModel moreList, final Context context , final int position, final MoreItemListener moreItemListener) {
+        public void onBind(final MoreModel moreList, final Context context, final int position, final MoreItemListener moreItemListener) {
             textView.setText(moreList.title);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
