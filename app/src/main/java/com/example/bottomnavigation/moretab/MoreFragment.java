@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 
 import androidx.annotation.NonNull;
@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
-import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,9 @@ public class MoreFragment extends Fragment {
     NavController navController;
     RecyclerView recyclerView;
     View view;
+    Button button;
     private MoreItemListener moreItemListener;
+    private FirstDialogFragment firstDialogFragment;
 
 
     @Nullable
@@ -50,6 +51,7 @@ public class MoreFragment extends Fragment {
 
 
         recyclerView = view.findViewById(R.id.recycler_view);
+        button = view.findViewById(R.id.btn);
         navController = Navigation.findNavController(view);
 
         List<MoreModel> moreList = fill_with_Data();
@@ -61,6 +63,15 @@ public class MoreFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firstDialogFragment = new FirstDialogFragment();
+                firstDialogFragment.show(getParentFragmentManager(),"FirstDialogFragment");
+            }
+        });
 
 
     }

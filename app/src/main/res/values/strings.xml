@@ -14,5 +14,13 @@
     <string name="male">مرد</string>
     <string name="female">زن</string>
     <string name="appName">MyApp</string>
+    <string name="sing_in">SignIn</string>
+    <string name="dialog_title">ورود از طریق شماره موبایل</string>
+    <string name="dialog_hint">شماره تلفن همراه خود را وارد کنید</string>
+    <string name="submit">ثبت</string>
+    <string name="second_dialog_title">کد فعال سازی را وارد کنید</string>
+    <string name="second_dialog_hint">کد فعال سازی</string>
+    <string name="second_dialog_text">کد را دریافت نکردید ؟</string>
+    <string name="change_number"> تصحیح شماره</string>
 
 </resources>

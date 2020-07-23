@@ -42,8 +42,8 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final MoreViewHolder moreViewHolder = (MoreViewHolder) holder;
-        MoreModel moreList = moreLists.get(position);
-        moreViewHolder.onBind(moreList, context, position, moreItemListener);
+        MoreModel item = moreLists.get(position);
+        moreViewHolder.onBind(item, context, position, moreItemListener);
     }
 
     @Override
