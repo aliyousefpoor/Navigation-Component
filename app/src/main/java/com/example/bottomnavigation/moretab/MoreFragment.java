@@ -1,5 +1,6 @@
 package com.example.bottomnavigation.moretab;
 
+import android.bluetooth.le.ScanSettings;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 
 
 import androidx.annotation.NonNull;
@@ -80,9 +82,9 @@ public class MoreFragment extends Fragment {
     public List<MoreModel> fill_with_Data() {
 
         List<MoreModel> moreLists = new ArrayList<>();
-        moreLists.add(new MoreModel("پروفایل"));
-        moreLists.add(new MoreModel("درباره ما"));
-        moreLists.add(new MoreModel("تماس با ما"));
+        moreLists.add(new MoreModel("پروفایل", MoreModel.Type.Profile));
+        moreLists.add(new MoreModel("درباره ما" , MoreModel.Type.About));
+        moreLists.add(new MoreModel("تماس با ما" , MoreModel.Type.Contact));
 
         return moreLists;
     }
@@ -90,17 +92,22 @@ public class MoreFragment extends Fragment {
     public void getItemId() {
         moreItemListener = new MoreItemListener() {
             @Override
-            public void onClick(int id) {
+            public void onClick(MoreModel item) {
 
-                switch (id) {
-                    case 0:
+                switch (item.type){
+
+                    case Profile:
                         navController.navigate(R.id.action_moreFragment_to_profileFragment);
                         break;
-                    case 1:
+
+                    case About:
                         navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
                         break;
-                    case 2:
+
+                    case Contact:
                         navController.navigate(R.id.action_moreFragment_to_contactFragment);
+                        break;
+
                 }
             }
         };

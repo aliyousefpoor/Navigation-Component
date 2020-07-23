@@ -69,7 +69,7 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, moreList.title + "کلیک شد ", Toast.LENGTH_SHORT).show();
-                    moreItemListener.onClick(position);
+                    moreItemListener.onClick(moreList);
                 }
             });
         }

@@ -6,13 +6,16 @@ public class MoreModel {
 
     public String title;
 
-    public static enum row {
-
+    public enum Type {
+        Profile, About, Contact
     }
 
+    public Type type;
 
-    public MoreModel(String title ) {
+
+    public MoreModel(String title, Type type) {
         this.title = title;
+        this.type = type;
 
     }
 }

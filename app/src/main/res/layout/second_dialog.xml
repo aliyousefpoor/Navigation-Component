@@ -60,10 +60,12 @@
         android:background="@color/colorPrimary"
         android:text="@string/change_number"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/submit"
-        app:layout_constraintEnd_toStartOf="@id/submit"
+        app:layout_constraintBottom_toBottomOf="@id/second_dialog_submit"
+        app:layout_constraintEnd_toStartOf="@id/second_dialog_submit"
         app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toTopOf="@id/submit" />
+        app:layout_constraintTop_toTopOf="@id/second_dialog_submit"
+
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

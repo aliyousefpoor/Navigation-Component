@@ -7,10 +7,12 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 
 public interface ApiService {
 
     @GET("store/16")Call<Store> getStore();
     @GET("category/16/463")Call<List<Category>> getCategory();
+
 }
