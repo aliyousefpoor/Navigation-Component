@@ -1,6 +1,5 @@
 package com.example.bottomnavigation.moretab;
 
-import android.bluetooth.le.ScanSettings;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Switch;
 
 
 import androidx.annotation.NonNull;
@@ -22,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.model.MoreModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +70,9 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 firstDialogFragment = new FirstDialogFragment();
-                firstDialogFragment.show(getParentFragmentManager(),"FirstDialogFragment");
+                firstDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
             }
         });
-
-
     }
 
 
@@ -83,8 +80,8 @@ public class MoreFragment extends Fragment {
 
         List<MoreModel> moreLists = new ArrayList<>();
         moreLists.add(new MoreModel("پروفایل", MoreModel.Type.Profile));
-        moreLists.add(new MoreModel("درباره ما" , MoreModel.Type.About));
-        moreLists.add(new MoreModel("تماس با ما" , MoreModel.Type.Contact));
+        moreLists.add(new MoreModel("درباره ما", MoreModel.Type.About));
+        moreLists.add(new MoreModel("تماس با ما", MoreModel.Type.Contact));
 
         return moreLists;
     }
@@ -94,7 +91,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(MoreModel item) {
 
-                switch (item.type){
+                switch (item.type) {
 
                     case Profile:
                         navController.navigate(R.id.action_moreFragment_to_profileFragment);

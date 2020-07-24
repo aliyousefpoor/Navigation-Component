@@ -1,14 +1,16 @@
 package com.example.bottomnavigation.moretab.di;
 
 
-import android.view.View;
 
-import com.example.bottomnavigation.moretab.MoreAdapter;
+import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.data.datasource.UserSource;
+import com.example.bottomnavigation.data.model.User;
+
 
 
 public class MoreModule {
-    public static MoreAdapter.MoreViewHolder provideMoreViewHolder(View view) {
-        return new MoreAdapter.MoreViewHolder(view);
-    }
+ public static UserSource provideUserSource(ApiService apiService ){
+     return new UserSource(apiService);
+ }
 
 }

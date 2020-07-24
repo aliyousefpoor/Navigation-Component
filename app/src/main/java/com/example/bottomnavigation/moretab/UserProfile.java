@@ -6,7 +6,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
-public class User {
+public class UserProfile {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "name")
@@ -16,7 +16,7 @@ public class User {
     @ColumnInfo(name = "gender")
     private String gender;
 
-    public User(int id, String name, double date, String gender) {
+    public UserProfile(int id, String name, double date, String gender) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -24,7 +24,7 @@ public class User {
     }
 
     @Ignore
-    public User(String name, double date, String gender) {
+    public UserProfile(String name, double date, String gender) {
         this.name = name;
         this.date = date;
         this.gender = gender;

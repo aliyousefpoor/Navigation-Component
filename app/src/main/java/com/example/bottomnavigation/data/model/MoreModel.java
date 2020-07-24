@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.moretab;
+package com.example.bottomnavigation.data.model;
 
 
 public class MoreModel {

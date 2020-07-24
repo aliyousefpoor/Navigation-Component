@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.model.MoreModel;
 
 
 import java.util.List;
