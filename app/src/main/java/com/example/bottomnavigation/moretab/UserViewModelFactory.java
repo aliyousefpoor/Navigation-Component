@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.categorytab.CategoryViewModel;
+
 import com.example.bottomnavigation.data.datasource.UserSource;
 
 public class UserViewModelFactory implements ViewModelProvider.Factory {
