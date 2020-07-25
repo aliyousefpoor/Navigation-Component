@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.MoreModel;
+import com.example.bottomnavigation.data.model.ResponseVerificationBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,9 @@ public class MoreFragment extends Fragment {
     Button button;
     private MoreItemListener moreItemListener;
     private FirstDialogFragment firstDialogFragment;
+    private VerificationCodeListener verificationCodeListener;
+
+
 
 
     @Nullable
@@ -42,6 +46,7 @@ public class MoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.more_fragment, container, false);
         getItemId();
+        setUpLogin();
         return view;
     }
 
@@ -69,10 +74,14 @@ public class MoreFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firstDialogFragment = new FirstDialogFragment();
+
+                firstDialogFragment = new FirstDialogFragment(verificationCodeListener);
                 firstDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
             }
         });
+
+
+
     }
 
 
@@ -108,5 +117,18 @@ public class MoreFragment extends Fragment {
                 }
             }
         };
+    }
+
+    public void setUpLogin() {
+
+        verificationCodeListener = new VerificationCodeListener() {
+            @Override
+            public void onResponse(ResponseVerificationBody responseVerificationBody) {
+                Log.d(TAG, "onResponse: listener");
+
+                navController.navigate(R.id.action_moreFragment_to_profileFragment);
+            }
+        };
+
     }
 }

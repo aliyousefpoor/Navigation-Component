@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@id/title" />
 
     <TextView
-        android:id="@+id/resend_code"
+        android:id="@+id/resendCode"
         android:layout_width="170dp"
         android:layout_height="50dp"
         android:text="@string/second_dialog_text"
@@ -50,7 +50,7 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/resend_code" />
+        app:layout_constraintTop_toBottomOf="@id/resendCode" />
 
     <Button
         android:id="@+id/changeNumber"
@@ -60,10 +60,10 @@
         android:background="@color/colorPrimary"
         android:text="@string/change_number"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/second_dialog_submit"
-        app:layout_constraintEnd_toStartOf="@id/second_dialog_submit"
+        app:layout_constraintBottom_toBottomOf="@id/secondDialogSubmit"
+        app:layout_constraintEnd_toStartOf="@id/secondDialogSubmit"
         app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toTopOf="@id/second_dialog_submit"
+        app:layout_constraintTop_toTopOf="@id/secondDialogSubmit"
 
         />
 

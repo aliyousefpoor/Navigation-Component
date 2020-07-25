@@ -5,26 +5,26 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.datasource.UserSource;
-import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.datasource.LoginSource;
+import com.example.bottomnavigation.data.model.ResponseLoginBody;
 
 public class UserViewModel extends ViewModel {
     private static final String TAG = "UserViewModel";
-    private UserSource userSource;
+    private LoginSource loginSource;
 
-    public UserViewModel(UserSource userSource){
-        this.userSource=userSource;
+    public UserViewModel(LoginSource loginSource){
+        this.loginSource = loginSource;
     }
 
-    MutableLiveData<User> _userLiveData = new MutableLiveData<>();
-    LiveData<User> userLiveData = _userLiveData;
+    MutableLiveData<ResponseLoginBody> _userLiveData = new MutableLiveData<>();
+    LiveData<ResponseLoginBody> userLiveData = _userLiveData;
 
 
     public void postUserNumber( String number ,String androidId,String deviceModel,String deviceOs ){
 
-        userSource.postNumber(number,androidId,deviceModel,deviceOs,new DataSourceListener<User>() {
+        loginSource.postNumber(number,androidId,deviceModel,deviceOs,new DataSourceListener<ResponseLoginBody>() {
             @Override
-            public void onResponse(User response) {
+            public void onResponse(ResponseLoginBody response) {
                 _userLiveData.setValue(response);
             }
 

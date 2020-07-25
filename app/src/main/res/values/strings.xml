@@ -22,5 +22,6 @@
     <string name="second_dialog_hint">کد فعال سازی</string>
     <string name="second_dialog_text">کد را دریافت نکردید ؟</string>
     <string name="change_number"> تصحیح شماره</string>
-
+    <string name="progressDialog">Loading</string>
+    <string name="loadingProgress">webPage_being_loaded</string>
 </resources>

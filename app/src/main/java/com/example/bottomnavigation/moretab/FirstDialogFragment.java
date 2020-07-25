@@ -1,10 +1,12 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,30 +23,40 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.UserSource;
-import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.datasource.LoginSource;
+import com.example.bottomnavigation.data.model.ResponseLoginBody;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 import retrofit2.Retrofit;
 
+
 public class FirstDialogFragment extends DialogFragment {
+    private static final String TAG = "FirstDialogFragment";
 
     TextView title;
     EditText number;
     Button submit;
     private SecondDialogFragment secondDialogFragment;
+    private VerificationCodeListener verificationCodeListener;
     private UserViewModel userViewModel;
     private UserViewModelFactory userViewModelFactory;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private UserSource userSource = MoreModule.provideUserSource(apiService);
+    private LoginSource loginSource = MoreModule.provideUserSource(apiService);
     @SuppressLint("HardwareIds")
     private String androidId;
-    private  String deviceModel = getDeviceName();
+    private String deviceModel = getDeviceName();
     private String deviceOs = getAndroidVersion();
+    private ProgressDialog dialog;
+
+
+    public FirstDialogFragment(VerificationCodeListener verificationCodeListener) {
+        this.verificationCodeListener = verificationCodeListener;
+    }
+
 
     @SuppressLint("HardwareIds")
     @Nullable
@@ -61,24 +73,31 @@ public class FirstDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userViewModelFactory = new UserViewModelFactory(userSource);
+        userViewModelFactory = new UserViewModelFactory(loginSource);
         userViewModel = new ViewModelProvider(this, userViewModelFactory).get(UserViewModel.class);
 
         title = view.findViewById(R.id.title);
         number = view.findViewById(R.id.edit_txt);
         submit = view.findViewById(R.id.submit);
+        postRequest();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                userViewModel.postUserNumber(number.getText().toString(),androidId , deviceModel ,deviceOs);
+                userViewModel.postUserNumber(number.getText().toString(), androidId, deviceModel, deviceOs);
+//
+//                 dialog = new ProgressDialog(getActivity(), getTheme());
+//                dialog.setTitle(getString(R.string.progressDialog));
+//                dialog.setMessage(getString(R.string.loadingProgress));
+//                dialog.setIndeterminate(true);
+//                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-                postRequest();
             }
         });
 
     }
+
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
@@ -110,19 +129,25 @@ public class FirstDialogFragment extends DialogFragment {
         return phrase.toString();
     }
 
-    public String getAndroidVersion(){
+    public String getAndroidVersion() {
         String release = Build.VERSION.RELEASE;
         int sdkVersion = Build.VERSION.SDK_INT;
         return "Android" + sdkVersion + "(" + release + ")";
     }
 
-    public void postRequest(){
-        userViewModel.userLiveData.observe(this, new Observer<User>() {
+    public void postRequest() {
+        userViewModel.userLiveData.observe(this, new Observer<ResponseLoginBody>() {
             @Override
-            public void onChanged(User user) {
-                secondDialogFragment = new SecondDialogFragment();
-                secondDialogFragment.show(getParentFragmentManager(),"SecondDialogFragment");
+            public void onChanged(ResponseLoginBody loginBody) {
+                secondDialogFragment = new SecondDialogFragment(number.getText().toString(), verificationCodeListener);
+                secondDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
+                Log.d(TAG, "onChanged: " + loginBody);
+                dismiss();
+
+
+
             }
         });
     }
+
 }
