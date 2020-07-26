@@ -1,7 +1,7 @@
 package com.example.bottomnavigation.moretab;
 
-import com.example.bottomnavigation.data.model.ResponseVerificationBody;
+import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
 public interface VerificationCodeListener {
-    void onResponse(ResponseVerificationBody responseVerificationBody);
+    void onResponse(VerificationResponseBody verificationResponseBody);
 }

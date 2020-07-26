@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.model.LoginBody;
-import com.example.bottomnavigation.data.model.ResponseLoginBody;
+import com.example.bottomnavigation.data.model.LoginResponseBody;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,12 +21,12 @@ public class LoginSource implements UserLoginDataSource {
     }
 
     @Override
-    public void postNumber(String number, String androidId, String deviceModel, String deviceOs, final DataSourceListener<ResponseLoginBody> dataSourceListener) {
+    public void postNumber(String number, String androidId, String deviceModel, String deviceOs, final DataSourceListener<LoginResponseBody> dataSourceListener) {
 
         LoginBody loginBody = new LoginBody(number, androidId, deviceModel, deviceOs);
-        apiService.createUser(loginBody).enqueue(new Callback<ResponseLoginBody>() {
+        apiService.createUser(loginBody).enqueue(new Callback<LoginResponseBody>() {
             @Override
-            public void onResponse(@NotNull Call<ResponseLoginBody> call, @NotNull Response<ResponseLoginBody> response) {
+            public void onResponse(@NotNull Call<LoginResponseBody> call, @NotNull Response<LoginResponseBody> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         dataSourceListener.onResponse(response.body());
@@ -36,7 +36,7 @@ public class LoginSource implements UserLoginDataSource {
             }
 
             @Override
-            public void onFailure(@NotNull Call<ResponseLoginBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<LoginResponseBody> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

@@ -7,16 +7,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.data.datasource.LoginSource;
 
-public class UserViewModelFactory implements ViewModelProvider.Factory {
+public class LoginViewModelFactory implements ViewModelProvider.Factory {
     private LoginSource loginSource;
-    public UserViewModelFactory(LoginSource loginSource){
+    public LoginViewModelFactory(LoginSource loginSource){
         this.loginSource = loginSource;
     }
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(UserViewModel.class)){
-            return (T) new UserViewModel(loginSource);
+        if (modelClass.isAssignableFrom(LoginViewModel.class)){
+            return (T) new LoginViewModel(loginSource);
         }
         throw new IllegalArgumentException("UnKnown Class");
     }

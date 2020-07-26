@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -24,7 +23,7 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.VerificationSource;
-import com.example.bottomnavigation.data.model.ResponseVerificationBody;
+import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -37,19 +36,20 @@ public class SecondDialogFragment extends DialogFragment {
     Button submit, changeNumber;
     TextView resendCode;
     String number;
-    private UserVerificationViewModel verificationViewModel;
-    private UserVerificationViewModelFactory verificationViewModelFactory;
+    private VerificationViewModel verificationViewModel;
+    private VerificationViewModelFactory verificationViewModelFactory;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private VerificationSource verificationSource = MoreModule.provideUserVerificationSource(apiService);
     private String androidId;
     private VerificationCodeListener verificationCodeListener;
+    private ProgressDialog dialog;
 
 
-    public SecondDialogFragment(String number,VerificationCodeListener verificationCodeListener) {
+    public SecondDialogFragment(String number, VerificationCodeListener verificationCodeListener) {
         this.number = number;
-        this.verificationCodeListener=verificationCodeListener;
+        this.verificationCodeListener = verificationCodeListener;
     }
 
     @SuppressLint("HardwareIds")
@@ -58,7 +58,6 @@ public class SecondDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.second_dialog, container, false);
         androidId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        setCancelable(false);
         return view;
 
     }
@@ -67,8 +66,8 @@ public class SecondDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        verificationViewModelFactory = new UserVerificationViewModelFactory(verificationSource);
-        verificationViewModel = new ViewModelProvider(this, verificationViewModelFactory).get(UserVerificationViewModel.class);
+        verificationViewModelFactory = new VerificationViewModelFactory(verificationSource);
+        verificationViewModel = new ViewModelProvider(this, verificationViewModelFactory).get(VerificationViewModel.class);
         code = view.findViewById(R.id.verificationCode);
         submit = view.findViewById(R.id.secondDialogSubmit);
         changeNumber = view.findViewById(R.id.changeNumber);
@@ -81,7 +80,11 @@ public class SecondDialogFragment extends DialogFragment {
                 verificationViewModel.postVerificationCode(number, androidId, code.getText().toString());
                 Log.d(TAG, "onClick: " + number);
 
-
+                dialog = new ProgressDialog(getContext());
+                dialog.setTitle(R.string.progressDialogTitle);
+                dialog.setMessage(getString(R.string.loadingProgress));
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.show();
             }
         });
 
@@ -104,15 +107,16 @@ public class SecondDialogFragment extends DialogFragment {
 
 
     public void postVerificationCodeRequest() {
-        verificationViewModel.verificationLiveData.observe(this, new Observer<ResponseVerificationBody>() {
+        verificationViewModel.verificationLiveData.observe(this, new Observer<VerificationResponseBody>() {
 
             @Override
-            public void onChanged(ResponseVerificationBody responseVerificationBody) {
-                Log.d(TAG, "onChanged: "+responseVerificationBody);
+            public void onChanged(VerificationResponseBody verificationResponseBody) {
+                Log.d(TAG, "onChanged: " + verificationResponseBody);
 
-                if (responseVerificationBody != null) {
-                    verificationCodeListener.onResponse(responseVerificationBody);
+                if (verificationResponseBody != null) {
+                    verificationCodeListener.onResponse(verificationResponseBody);
                     dismiss();
+                    dialog.dismiss();
 
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();

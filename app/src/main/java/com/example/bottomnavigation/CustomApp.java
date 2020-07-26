@@ -8,7 +8,7 @@ import com.example.bottomnavigation.di.AppModule;
 
 public class CustomApp extends Application {
     private static final String TAG = "CustomApp";
-    public  AppModule appModule= new AppModule() ;
+    public AppModule appModule = new AppModule();
 
     private static CustomApp instance;
 
@@ -16,10 +16,9 @@ public class CustomApp extends Application {
         return instance;
     }
 
-    public  AppModule getAppModule(){
+    public AppModule getAppModule() {
         return appModule;
     }
-
 
 
     @Override

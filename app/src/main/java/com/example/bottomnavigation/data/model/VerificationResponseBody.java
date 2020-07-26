@@ -1,13 +1,13 @@
 package com.example.bottomnavigation.data.model;
 
-public class ResponseVerificationBody {
+public class VerificationResponseBody {
     private String user_id;
     private String token;
     private String message;
     private String nickname;
     private String fino_token;
 
-    public ResponseVerificationBody(String user_id, String token, String message, String nickname, String fino_token) {
+    public VerificationResponseBody(String user_id, String token, String message, String nickname, String fino_token) {
         this.user_id = user_id;
         this.token = token;
         this.message = message;

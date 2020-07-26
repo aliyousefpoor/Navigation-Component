@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.MoreModel;
-import com.example.bottomnavigation.data.model.ResponseVerificationBody;
+import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +123,7 @@ public class MoreFragment extends Fragment {
 
         verificationCodeListener = new VerificationCodeListener() {
             @Override
-            public void onResponse(ResponseVerificationBody responseVerificationBody) {
+            public void onResponse(VerificationResponseBody verificationResponseBody) {
                 Log.d(TAG, "onResponse: listener");
 
                 navController.navigate(R.id.action_moreFragment_to_profileFragment);

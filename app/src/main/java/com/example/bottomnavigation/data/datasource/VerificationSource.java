@@ -1,8 +1,8 @@
 package com.example.bottomnavigation.data.datasource;
 
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.model.LoginVerificationBody;
-import com.example.bottomnavigation.data.model.ResponseVerificationBody;
+import com.example.bottomnavigation.data.model.VerificationBody;
+import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,16 +21,16 @@ public class VerificationSource implements LoginVerificationDataSource {
 
 
     @Override
-    public void postCode(String number, String androidId, String code, final DataSourceListener<ResponseVerificationBody> dataSourceListener) {
-        LoginVerificationBody verification = new LoginVerificationBody(number, androidId, code);
-        apiService.postCode(verification).enqueue(new Callback<ResponseVerificationBody>() {
+    public void postCode(String number, String androidId, String code, final DataSourceListener<VerificationResponseBody> dataSourceListener) {
+        VerificationBody verification = new VerificationBody(number, androidId, code);
+        apiService.postCode(verification).enqueue(new Callback<VerificationResponseBody>() {
             @Override
-            public void onResponse(@NotNull Call<ResponseVerificationBody> call, @NotNull Response<ResponseVerificationBody> response) {
+            public void onResponse(@NotNull Call<VerificationResponseBody> call, @NotNull Response<VerificationResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<ResponseVerificationBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<VerificationResponseBody> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

@@ -6,27 +6,26 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.bumptech.glide.load.HttpException;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.VerificationSource;
-import com.example.bottomnavigation.data.model.ResponseVerificationBody;
+import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
-public class UserVerificationViewModel extends ViewModel {
+public class VerificationViewModel extends ViewModel {
     private static final String TAG = "UserVerificationViewMod";
     private VerificationSource verificationSource;
 
-    public UserVerificationViewModel(VerificationSource verificationSource) {
+    public VerificationViewModel(VerificationSource verificationSource) {
         this.verificationSource = verificationSource;
     }
 
-    private MutableLiveData<ResponseVerificationBody> _verificationLiveData = new MutableLiveData<>();
-    public LiveData<ResponseVerificationBody> verificationLiveData = _verificationLiveData;
+    private MutableLiveData<VerificationResponseBody> _verificationLiveData = new MutableLiveData<>();
+    public LiveData<VerificationResponseBody> verificationLiveData = _verificationLiveData;
 
-    public void postVerificationCode(String number, String androidId ,String code) {
-        verificationSource.postCode( number ,androidId,code ,new DataSourceListener<ResponseVerificationBody>() {
+    public void postVerificationCode(String number, String androidId, String code) {
+        verificationSource.postCode(number, androidId, code, new DataSourceListener<VerificationResponseBody>() {
 
             @Override
-            public void onResponse(ResponseVerificationBody response) {
+            public void onResponse(VerificationResponseBody response) {
                 _verificationLiveData.setValue(response);
 
                 Log.d(TAG, "onResponse:Verification ");
@@ -36,8 +35,6 @@ public class UserVerificationViewModel extends ViewModel {
             @Override
             public void onFailure(Throwable throwable) {
                 Log.d(TAG, "onFailure: " + throwable);
-
-
             }
 
         });
