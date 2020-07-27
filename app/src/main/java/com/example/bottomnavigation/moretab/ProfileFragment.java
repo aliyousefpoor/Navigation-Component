@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.moretab;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,11 @@ import com.example.bottomnavigation.data.database.UserDataBase;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
+import java.util.List;
+
 
 public class ProfileFragment extends Fragment {
-    private static final String TAG = "SecondFragment";
+    private static final String TAG = "ProfileFragment";
 
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
@@ -46,6 +49,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        assert getArguments() != null;
         final VerificationResponseBody verificationResponseBody = getArguments().getParcelable("user_id");
 
         radioSexGroup = view.findViewById(R.id.radio_group);
@@ -59,15 +63,49 @@ public class ProfileFragment extends Fragment {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserDataBase dataBase = UserDataBase.getInstance(getContext());
-                User user = new User();
-                if (verificationResponseBody.getUser_id() == user.getUser_id()) {
 
-                    user.setName(name.getText().toString());
-                    user.setDate(date.getText().toString());
-                    user.setGender(radioSexButton.getText().toString());
-                    dataBase.userDao().updateUser(user);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UserDataBase dataBase = UserDataBase.getInstance(getContext());
+                        User user = new User();
+                        assert verificationResponseBody != null;
+                        user.setUser_id(verificationResponseBody.getUser_id());
+                        user.setToken(verificationResponseBody.getToken());
+                        user.setName(name.getText().toString());
+                        user.setDate(date.getText().toString());
+                        user.setGender(radioSexButton.getText().toString());
+                        dataBase.userDao().updateUser(user);
+                        Log.d(TAG, "run: ");
+
+                    }
+                }).start();
+
+            }
+        });
+
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String info = " ";
+                        UserDataBase dataBase = UserDataBase.getInstance(getContext());
+                        List<User> users = dataBase.userDao().getAll();
+                        for (User usr : users) {
+                            int id = usr.getUser_id();
+                            String token = usr.getToken();
+                            String name = usr.getName();
+                            String date = usr.getDate();
+
+                            info = info + "\n\n" + "Id :" + id + "\n" + "Token : " + token + "\n" + "Name :" + name + "\n" + "Date :" + date;
+                            Log.d(TAG, "run: " + info);
+
+                        }
+                    }
+                }).start();
+
             }
         });
 

@@ -7,22 +7,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.datasource.VerificationSource;
+
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 
 public class VerificationViewModel extends ViewModel {
     private static final String TAG = "UserVerificationViewMod";
-    private VerificationSource verificationSource;
+    private LoginRepository loginRepository;
 
-    public VerificationViewModel(VerificationSource verificationSource) {
-        this.verificationSource = verificationSource;
+    public VerificationViewModel(LoginRepository loginRepository) {
+        this.loginRepository = loginRepository;
     }
 
     private MutableLiveData<VerificationResponseBody> _verificationLiveData = new MutableLiveData<>();
     public LiveData<VerificationResponseBody> verificationLiveData = _verificationLiveData;
 
     public void postVerificationCode(String number, String androidId, String code) {
-        verificationSource.postCode(number, androidId, code, new DataSourceListener<VerificationResponseBody>() {
+        loginRepository.repoPostCode(number, androidId, code, new DataSourceListener<VerificationResponseBody>() {
 
             @Override
             public void onResponse(VerificationResponseBody response) {

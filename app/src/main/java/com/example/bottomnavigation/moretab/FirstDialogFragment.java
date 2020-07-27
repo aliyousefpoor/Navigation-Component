@@ -21,8 +21,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.LoginSource;
+import com.example.bottomnavigation.data.datasource.LoginRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -44,13 +45,13 @@ public class FirstDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginSource loginSource = MoreModule.provideUserSource(apiService);
+    private LoginRemoteDataSource loginRemoteDataSource = MoreModule.provideUserSource(apiService);
+    private LoginRepository loginRepository =MoreModule.provideLoginSource(loginRemoteDataSource);
     @SuppressLint("HardwareIds")
     private String androidId;
     private String deviceModel = AppConstants.getDeviceName();
     private String deviceOs = AppConstants.getAndroidVersion();
     private ProgressDialog dialog;
-
 
 
     public FirstDialogFragment(VerificationCodeListener verificationCodeListener) {
@@ -72,7 +73,7 @@ public class FirstDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loginViewModelFactory = new LoginViewModelFactory(loginSource);
+        loginViewModelFactory = new LoginViewModelFactory(loginRepository);
         loginViewModel = new ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel.class);
 
         title = view.findViewById(R.id.title);

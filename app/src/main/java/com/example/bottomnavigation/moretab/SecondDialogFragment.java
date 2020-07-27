@@ -2,12 +2,7 @@ package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,9 +23,10 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.database.UserDataBase;
-import com.example.bottomnavigation.data.datasource.VerificationSource;
+import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -48,10 +44,12 @@ public class SecondDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private VerificationSource verificationSource = MoreModule.provideUserVerificationSource(apiService);
+    private VerificationRemoteDataSource verificationRemoteDataSource = MoreModule.provideUserVerificationSource(apiService);
+    private LoginRepository loginRepository = MoreModule.provideVerificationSource(verificationRemoteDataSource);
     private String androidId;
     private VerificationCodeListener verificationCodeListener;
     private ProgressDialog dialog;
+
 
 
     public SecondDialogFragment(String number, VerificationCodeListener verificationCodeListener) {
@@ -73,7 +71,7 @@ public class SecondDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        verificationViewModelFactory = new VerificationViewModelFactory(verificationSource);
+        verificationViewModelFactory = new VerificationViewModelFactory(loginRepository);
         verificationViewModel = new ViewModelProvider(this, verificationViewModelFactory).get(VerificationViewModel.class);
         code = view.findViewById(R.id.verificationCode);
         submit = view.findViewById(R.id.secondDialogSubmit);
@@ -117,7 +115,7 @@ public class SecondDialogFragment extends DialogFragment {
         verificationViewModel.verificationLiveData.observe(this, new Observer<VerificationResponseBody>() {
 
             @Override
-            public void onChanged(VerificationResponseBody verificationResponseBody) {
+            public void onChanged(final VerificationResponseBody verificationResponseBody) {
                 Log.d(TAG, "onChanged: " + verificationResponseBody);
 
                 if (verificationResponseBody != null) {
@@ -125,8 +123,18 @@ public class SecondDialogFragment extends DialogFragment {
                     dismiss();
                     dialog.dismiss();
 
-                    MyAsyncTask myAsyncTask = new MyAsyncTask(verificationCodeListener,getContext());
+//                    MyAsyncTask myAsyncTask = new MyAsyncTask(verificationCodeListener,getContext());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            UserDataBase dataBase = UserDataBase.getInstance(getContext());
+                            User user = new User();
+                            user.setUser_id(verificationResponseBody.getUser_id());
+                            user.setToken(verificationResponseBody.getToken());
+                            dataBase.userDao().insertUser(user);
 
+                        }
+                    }).start();
 
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
@@ -137,32 +145,32 @@ public class SecondDialogFragment extends DialogFragment {
     }
 }
 
-class MyAsyncTask extends AsyncTask<Void, Void, Void> {
-
-    VerificationCodeListener verificationCodeListener;
-    Context context;
-
-    public MyAsyncTask(VerificationCodeListener verificationCodeListener, Context context ) {
-        this.verificationCodeListener = verificationCodeListener;
-        this.context=context;
-    }
-
-    @Override
-    protected Void doInBackground(Void... voids) {
-        verificationCodeListener = new VerificationCodeListener() {
-            @Override
-            public void onResponse(VerificationResponseBody verificationResponseBody) {
-                UserDataBase dataBase = UserDataBase.getInstance(context);
-                User user = new User();
-                user.setUser_id(verificationResponseBody.getUser_id());
-                user.setToken(verificationResponseBody.getToken());
-                dataBase.userDao().insertUser(user);
-            }
-        };
-
-        return null;
-    }
-}
+//class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+//
+//    VerificationCodeListener verificationCodeListener;
+//    Context context;
+//
+//    public MyAsyncTask(VerificationCodeListener verificationCodeListener, Context context ) {
+//        this.verificationCodeListener = verificationCodeListener;
+//        this.context=context;
+//    }
+//
+//    @Override
+//    protected Void doInBackground(Void... voids) {
+//        verificationCodeListener = new VerificationCodeListener() {
+//            @Override
+//            public void onResponse(VerificationResponseBody verificationResponseBody) {
+//                UserDataBase dataBase = UserDataBase.getInstance(context);
+//                User user = new User();
+//                user.setUser_id(verificationResponseBody.getUser_id());
+//                user.setToken(verificationResponseBody.getToken());
+//                dataBase.userDao().insertUser(user);
+//            }
+//        };
+//
+//        return null;
+//    }
+//}
 
 
 

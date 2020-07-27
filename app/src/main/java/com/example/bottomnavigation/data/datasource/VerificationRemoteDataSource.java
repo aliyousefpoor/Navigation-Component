@@ -11,11 +11,11 @@ import retrofit2.Callback;
 
 import retrofit2.Response;
 
-public class VerificationSource implements LoginVerificationDataSource {
+public class VerificationRemoteDataSource implements LoginVerificationDataSource {
     private static final String TAG = "UserVerificationSource";
     private ApiService apiService;
 
-    public VerificationSource(ApiService apiService) {
+    public VerificationRemoteDataSource(ApiService apiService) {
         this.apiService = apiService;
     }
 

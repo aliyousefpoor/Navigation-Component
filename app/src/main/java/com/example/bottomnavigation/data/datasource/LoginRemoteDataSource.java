@@ -12,11 +12,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginSource implements UserLoginDataSource {
+public class LoginRemoteDataSource implements UserLoginDataSource {
     private static final String TAG = "UserSource";
     private ApiService apiService;
 
-    public LoginSource(ApiService apiService) {
+    public LoginRemoteDataSource(ApiService apiService) {
         this.apiService = apiService;
     }
 

@@ -128,7 +128,7 @@ public class MoreFragment extends Fragment {
                 bundle.putParcelable("user_id", verificationResponseBody);
 
 
-                navController.navigate(R.id.action_moreFragment_to_profileFragment);
+                navController.navigate(R.id.action_moreFragment_to_profileFragment,bundle);
                 profileFragment.setArguments(bundle);
             }
         };
