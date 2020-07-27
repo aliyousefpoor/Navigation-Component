@@ -39,8 +39,6 @@ public class MoreFragment extends Fragment {
     private VerificationCodeListener verificationCodeListener;
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,7 +77,6 @@ public class MoreFragment extends Fragment {
                 firstDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
             }
         });
-
 
 
     }
@@ -125,8 +122,14 @@ public class MoreFragment extends Fragment {
             @Override
             public void onResponse(VerificationResponseBody verificationResponseBody) {
                 Log.d(TAG, "onResponse: listener");
+                ProfileFragment profileFragment = new ProfileFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user_id", verificationResponseBody);
+
 
                 navController.navigate(R.id.action_moreFragment_to_profileFragment);
+                profileFragment.setArguments(bundle);
             }
         };
 

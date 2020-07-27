@@ -2,7 +2,12 @@ package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +27,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.database.UserDataBase;
 import com.example.bottomnavigation.data.datasource.VerificationSource;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
@@ -118,6 +125,9 @@ public class SecondDialogFragment extends DialogFragment {
                     dismiss();
                     dialog.dismiss();
 
+                    MyAsyncTask myAsyncTask = new MyAsyncTask(verificationCodeListener,getContext());
+
+
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
                 }
@@ -125,6 +135,34 @@ public class SecondDialogFragment extends DialogFragment {
         });
 
     }
-
-
 }
+
+class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+
+    VerificationCodeListener verificationCodeListener;
+    Context context;
+
+    public MyAsyncTask(VerificationCodeListener verificationCodeListener, Context context ) {
+        this.verificationCodeListener = verificationCodeListener;
+        this.context=context;
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+        verificationCodeListener = new VerificationCodeListener() {
+            @Override
+            public void onResponse(VerificationResponseBody verificationResponseBody) {
+                UserDataBase dataBase = UserDataBase.getInstance(context);
+                User user = new User();
+                user.setUser_id(verificationResponseBody.getUser_id());
+                user.setToken(verificationResponseBody.getToken());
+                dataBase.userDao().insertUser(user);
+            }
+        };
+
+        return null;
+    }
+}
+
+
+
