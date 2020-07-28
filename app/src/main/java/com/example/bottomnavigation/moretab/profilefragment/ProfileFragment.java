@@ -1,7 +1,7 @@
-package com.example.bottomnavigation.moretab;
+package com.example.bottomnavigation.moretab.profilefragment;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
+import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.moretab.UserInformationListener;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 
 
@@ -34,8 +36,8 @@ public class ProfileFragment extends Fragment {
     private EditText name, date;
     private ProfileViewModel profileViewModel;
     private ProfileViewModelFactory profileViewModelFactory;
-    private UserLocaleDataSource userLocaleDataSource = MoreModule.provideUserLocaleDataSource();
-    private LoginRepository loginRepository =MoreModule.provideUserLocaleDataSource(userLocaleDataSource);
+    private UserLocalDataSource userLocalDataSource = MoreModule.provideUserLocaleDataSource();
+    private LoginRepository loginRepository = MoreModule.provideUserLocaleDataSource(userLocalDataSource);
 
     @Nullable
     @Override
@@ -51,7 +53,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         profileViewModelFactory = new ProfileViewModelFactory(loginRepository);
-        profileViewModel = new ViewModelProvider( this,profileViewModelFactory).get(ProfileViewModel.class);
+        profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
         assert getArguments() != null;
         final VerificationResponseBody verificationResponseBody = getArguments().getParcelable("body");

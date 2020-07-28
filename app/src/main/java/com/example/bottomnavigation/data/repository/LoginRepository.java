@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.LoginRemoteDataSource;
-import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
+import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
 import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
@@ -15,7 +15,7 @@ public class LoginRepository {
 
     private LoginRemoteDataSource loginRemoteDataSource;
     private VerificationRemoteDataSource verificationRemoteDataSource;
-    private UserLocaleDataSource userLocaleDataSource;
+    private UserLocalDataSource userLocalDataSource;
 
 
     public LoginRepository(LoginRemoteDataSource loginRemoteDataSource) {
@@ -25,8 +25,8 @@ public class LoginRepository {
     public LoginRepository(VerificationRemoteDataSource verificationRemoteDataSource) {
         this.verificationRemoteDataSource = verificationRemoteDataSource;
     }
-    public LoginRepository(UserLocaleDataSource userLocaleDataSource){
-        this.userLocaleDataSource=userLocaleDataSource;
+    public LoginRepository(UserLocalDataSource userLocalDataSource){
+        this.userLocalDataSource = userLocalDataSource;
     }
 
 
@@ -40,7 +40,7 @@ public class LoginRepository {
     }
 
     public void saveUser(int id, String token , String name, String date , String gender , Context context){
-        userLocaleDataSource.saveInformation(id,token,name ,date,gender,context);
+        userLocalDataSource.saveInformation(id,token,name ,date,gender,context);
     }
 
 }

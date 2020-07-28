@@ -3,7 +3,7 @@ package com.example.bottomnavigation.moretab.di;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.LoginRemoteDataSource;
-import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
+import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
 import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 
@@ -17,8 +17,8 @@ public class MoreModule {
         return new VerificationRemoteDataSource(apiService);
     }
 
-    public static UserLocaleDataSource provideUserLocaleDataSource(){
-        return new UserLocaleDataSource();
+    public static UserLocalDataSource provideUserLocaleDataSource(){
+        return new UserLocalDataSource();
     }
 
     public static LoginRepository provideLoginSource(LoginRemoteDataSource loginRemoteDataSource) {
@@ -29,8 +29,8 @@ public class MoreModule {
         return new LoginRepository(verificationRemoteDataSource);
     }
 
-    public static LoginRepository provideUserLocaleDataSource(UserLocaleDataSource userLocaleDataSource) {
-        return new LoginRepository(userLocaleDataSource);
+    public static LoginRepository provideUserLocaleDataSource(UserLocalDataSource userLocalDataSource) {
+        return new LoginRepository(userLocalDataSource);
     }
 
 }

@@ -9,7 +9,6 @@ import com.example.bottomnavigation.di.AppModule;
 public class CustomApp extends Application {
     private static final String TAG = "CustomApp";
     public AppModule appModule = new AppModule();
-
     private static CustomApp instance;
 
     public static CustomApp getInstance() {

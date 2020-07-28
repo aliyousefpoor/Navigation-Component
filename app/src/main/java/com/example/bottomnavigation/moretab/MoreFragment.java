@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
+import com.example.bottomnavigation.moretab.profilefragment.LoginDialogFragment;
+import com.example.bottomnavigation.moretab.profilefragment.ProfileFragment;
+import com.example.bottomnavigation.moretab.profilefragment.VerificationCodeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ public class MoreFragment extends Fragment {
     View view;
     Button button;
     private MoreItemListener moreItemListener;
-    private FirstDialogFragment firstDialogFragment;
+    private LoginDialogFragment loginDialogFragment;
     private VerificationCodeListener verificationCodeListener;
 
 
@@ -73,8 +76,8 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                firstDialogFragment = new FirstDialogFragment(verificationCodeListener);
-                firstDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+                loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
+                loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
             }
         });
 

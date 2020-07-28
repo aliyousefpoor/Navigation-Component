@@ -3,9 +3,9 @@ package com.example.bottomnavigation.data.datasource;
 import android.content.Context;
 
 
-import com.example.bottomnavigation.moretab.UpdateAsyncTask;
+import com.example.bottomnavigation.moretab.profilefragment.UpdateAsyncTask;
 
-public class UserLocaleDataSource implements LocaleUserDataSource {
+public class UserLocalDataSource implements LocalUserDataSource {
 
     @Override
     public void saveInformation(int userId, String token, String name, String date, String

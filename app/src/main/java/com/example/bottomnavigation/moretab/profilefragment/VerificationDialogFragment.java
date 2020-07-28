@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.moretab;
+package com.example.bottomnavigation.moretab.profilefragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -31,7 +31,7 @@ import com.example.bottomnavigation.utils.ApiBuilder;
 
 import retrofit2.Retrofit;
 
-public class SecondDialogFragment extends DialogFragment {
+public class VerificationDialogFragment extends DialogFragment {
     private static final String TAG = "SecondDialogFragment";
     EditText code;
     Button submit, changeNumber;
@@ -49,8 +49,7 @@ public class SecondDialogFragment extends DialogFragment {
     private ProgressDialog dialog;
 
 
-
-    public SecondDialogFragment(String number, VerificationCodeListener verificationCodeListener) {
+    public VerificationDialogFragment(String number, VerificationCodeListener verificationCodeListener) {
         this.number = number;
         this.verificationCodeListener = verificationCodeListener;
     }
@@ -77,6 +76,7 @@ public class SecondDialogFragment extends DialogFragment {
         resendCode = view.findViewById(R.id.resendCode);
         postVerificationCodeRequest();
 
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,8 +94,9 @@ public class SecondDialogFragment extends DialogFragment {
         changeNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirstDialogFragment firstDialogFragment = new FirstDialogFragment(verificationCodeListener);
-                firstDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+
+                LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
+                loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
 
             }
         });
@@ -124,7 +125,7 @@ public class SecondDialogFragment extends DialogFragment {
                     dismiss();
                     dialog.dismiss();
 
-                    LoginAsyncTask loginAsyncTask = new LoginAsyncTask(verificationResponseBody,getContext());
+                    LoginAsyncTask loginAsyncTask = new LoginAsyncTask(verificationResponseBody, getContext());
                     loginAsyncTask.execute();
 
 

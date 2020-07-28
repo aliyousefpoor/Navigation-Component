@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.moretab;
+package com.example.bottomnavigation.moretab.profilefragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -32,13 +32,13 @@ import com.example.bottomnavigation.utils.AppConstants;
 import retrofit2.Retrofit;
 
 
-public class FirstDialogFragment extends DialogFragment {
+public class LoginDialogFragment extends DialogFragment {
     private static final String TAG = "FirstDialogFragment";
 
     TextView title;
     EditText number;
     Button submit;
-    private SecondDialogFragment secondDialogFragment;
+    private VerificationDialogFragment verificationDialogFragment;
     private VerificationCodeListener verificationCodeListener;
     private LoginViewModel loginViewModel;
     private LoginViewModelFactory loginViewModelFactory;
@@ -46,7 +46,7 @@ public class FirstDialogFragment extends DialogFragment {
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private LoginRemoteDataSource loginRemoteDataSource = MoreModule.provideLoginRemoteDataSource(apiService);
-    private LoginRepository loginRepository =MoreModule.provideLoginSource(loginRemoteDataSource);
+    private LoginRepository loginRepository = MoreModule.provideLoginSource(loginRemoteDataSource);
     @SuppressLint("HardwareIds")
     private String androidId;
     private String deviceModel = AppConstants.getDeviceName();
@@ -54,7 +54,7 @@ public class FirstDialogFragment extends DialogFragment {
     private ProgressDialog dialog;
 
 
-    public FirstDialogFragment(VerificationCodeListener verificationCodeListener) {
+    public LoginDialogFragment(VerificationCodeListener verificationCodeListener) {
         this.verificationCodeListener = verificationCodeListener;
     }
 
@@ -101,8 +101,8 @@ public class FirstDialogFragment extends DialogFragment {
         loginViewModel.userLiveData.observe(this, new Observer<LoginResponseBody>() {
             @Override
             public void onChanged(LoginResponseBody loginBody) {
-                secondDialogFragment = new SecondDialogFragment(number.getText().toString(), verificationCodeListener);
-                secondDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
+                verificationDialogFragment = new VerificationDialogFragment(number.getText().toString(), verificationCodeListener);
+                verificationDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
                 Log.d(TAG, "onChanged: " + loginBody);
                 dismiss();
                 dialog.dismiss();

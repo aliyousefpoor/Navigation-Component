@@ -1,10 +1,11 @@
-package com.example.bottomnavigation.moretab;
+package com.example.bottomnavigation.moretab.profilefragment;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.moretab.profilefragment.ProfileViewModel;
 
 public class ProfileViewModelFactory implements ViewModelProvider.Factory {
     LoginRepository loginRepository;
