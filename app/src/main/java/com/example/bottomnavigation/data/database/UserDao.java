@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.data.database;
 
 import androidx.room.Dao;
+
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -10,10 +11,11 @@ import com.example.bottomnavigation.data.model.User;
 
 import java.util.List;
 
+
 @Dao
 public interface UserDao {
 
-    @Query("SELECT * FROM user ORDER BY token")
+    @Query("SELECT * FROM user ORDER BY userId")
     List<User> getAll();
 
     @Insert

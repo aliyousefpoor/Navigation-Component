@@ -22,9 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.database.UserDataBase;
 import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
-import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
@@ -116,25 +114,37 @@ public class SecondDialogFragment extends DialogFragment {
 
             @Override
             public void onChanged(final VerificationResponseBody verificationResponseBody) {
-                Log.d(TAG, "onChanged: " + verificationResponseBody);
+
 
                 if (verificationResponseBody != null) {
+                    Log.d(TAG, "onChanged: " + verificationResponseBody.getUserId());
+
                     verificationCodeListener.onResponse(verificationResponseBody);
+
                     dismiss();
                     dialog.dismiss();
+                    LoginAsyncTask loginAsyncTask = new LoginAsyncTask(verificationResponseBody,getContext());
+                    loginAsyncTask.execute();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            UserDataBase dataBase = UserDataBase.getInstance(getContext());
+//                            User user = new User();
+//                            user.setUser_id(verificationResponseBody.getUser_id());
+//                            user.setToken(verificationResponseBody.getToken());
+//                            dataBase.userDao().insertUser(user);
 
-//                    MyAsyncTask myAsyncTask = new MyAsyncTask(verificationCodeListener,getContext());
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            UserDataBase dataBase = UserDataBase.getInstance(getContext());
-                            User user = new User();
-                            user.setUser_id(verificationResponseBody.getUser_id());
-                            user.setToken(verificationResponseBody.getToken());
-                            dataBase.userDao().insertUser(user);
-
-                        }
-                    }).start();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            UserDataBase dataBase = UserDataBase.getInstance(getContext());
+//                            User user = new User();
+//                            user.setUserId(verificationResponseBody.getUserId());
+//                            user.setToken(verificationResponseBody.getToken());
+//                            dataBase.userDao().insertUser(user);
+//
+//                        }
+//                    }).start();
 
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();

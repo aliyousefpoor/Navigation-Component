@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
 public class User {
-    @PrimaryKey(autoGenerate = true)
-    private int user_id;
+    @PrimaryKey()
+    private int userId;
 
     @ColumnInfo(name = "token")
     private String token;
@@ -39,12 +39,13 @@ public class User {
 //        this.gender = gender;
 //    }
 
-    public int getUser_id() {
-        return user_id;
+
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getToken() {

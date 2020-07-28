@@ -4,14 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class VerificationResponseBody implements Parcelable {
-    private int user_id;
+    private int userId;
     private String token;
     private String message;
     private String nickname;
     private String fino_token;
 
-    public VerificationResponseBody(int user_id, String token, String message, String nickname, String fino_token) {
-        this.user_id = user_id;
+    public VerificationResponseBody(int userId, String token, String message, String nickname, String fino_token) {
+        this.userId = userId;
         this.token = token;
         this.message = message;
         this.nickname = nickname;
@@ -19,7 +19,7 @@ public class VerificationResponseBody implements Parcelable {
     }
 
     protected VerificationResponseBody(Parcel in) {
-        user_id = in.readInt();
+        userId = in.readInt();
         token = in.readString();
         message = in.readString();
         nickname = in.readString();
@@ -38,8 +38,8 @@ public class VerificationResponseBody implements Parcelable {
         }
     };
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
     public String getToken() {
@@ -65,7 +65,7 @@ public class VerificationResponseBody implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(user_id);
+        dest.writeInt(userId);
         dest.writeString(token);
         dest.writeString(message);
         dest.writeString(nickname);

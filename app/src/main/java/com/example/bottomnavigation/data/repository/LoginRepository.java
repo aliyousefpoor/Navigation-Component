@@ -6,6 +6,8 @@ import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
+import java.util.TreeMap;
+
 public class LoginRepository {
     private static final String TAG = "LoginRepository";
 
@@ -13,25 +15,23 @@ public class LoginRepository {
     private VerificationRemoteDataSource verificationRemoteDataSource;
 
 
-    public LoginRepository(LoginRemoteDataSource loginRemoteDataSource){
+    public LoginRepository(LoginRemoteDataSource loginRemoteDataSource) {
         this.loginRemoteDataSource = loginRemoteDataSource;
     }
 
-    public LoginRepository(VerificationRemoteDataSource verificationRemoteDataSource){
+    public LoginRepository(VerificationRemoteDataSource verificationRemoteDataSource) {
         this.verificationRemoteDataSource = verificationRemoteDataSource;
     }
 
 
-
-    public void repoPostNumber(String number, String androidId, String device_model , String device_os, DataSourceListener<LoginResponseBody> dataSourceListener){
-        loginRemoteDataSource.postNumber(number,androidId,device_model,device_os,dataSourceListener);
+    public void repoPostNumber(String number, String androidId, String device_model, String device_os, DataSourceListener<LoginResponseBody> dataSourceListener) {
+        loginRemoteDataSource.postNumber(number, androidId, device_model, device_os, dataSourceListener);
 
     }
 
     public void repoPostCode(String number, String androidId, String code, DataSourceListener<VerificationResponseBody> dataSourceListener){
         verificationRemoteDataSource.postCode(number,androidId,code,dataSourceListener);
     }
-
 
 
 }

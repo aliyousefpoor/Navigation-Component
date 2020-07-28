@@ -125,7 +125,7 @@ public class MoreFragment extends Fragment {
                 ProfileFragment profileFragment = new ProfileFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("user_id", verificationResponseBody);
+                bundle.putParcelable("body", verificationResponseBody);
 
 
                 navController.navigate(R.id.action_moreFragment_to_profileFragment,bundle);
