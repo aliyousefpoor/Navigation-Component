@@ -28,7 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.HomeSource;
+import com.example.bottomnavigation.data.datasource.HomeRemoteDataSource;
 import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.hometab.di.HomeTabModule;
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private HomeSource homeSource = HomeTabModule.provideHomeSource(apiService);
+    private HomeRemoteDataSource homeRemoteDataSource = HomeTabModule.provideHomeSource(apiService);
 
 
     @Nullable
@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeViewModelFactory = new HomeViewModelFactory(homeSource);
+        homeViewModelFactory = new HomeViewModelFactory(homeRemoteDataSource);
         homeViewModel = new ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel.class);
         //remove
 

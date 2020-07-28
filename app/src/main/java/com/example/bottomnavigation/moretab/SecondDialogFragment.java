@@ -42,7 +42,7 @@ public class SecondDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private VerificationRemoteDataSource verificationRemoteDataSource = MoreModule.provideUserVerificationSource(apiService);
+    private VerificationRemoteDataSource verificationRemoteDataSource = MoreModule.provideVerificationRemoteDataSource(apiService);
     private LoginRepository loginRepository = MoreModule.provideVerificationSource(verificationRemoteDataSource);
     private String androidId;
     private VerificationCodeListener verificationCodeListener;
@@ -123,28 +123,10 @@ public class SecondDialogFragment extends DialogFragment {
 
                     dismiss();
                     dialog.dismiss();
+
                     LoginAsyncTask loginAsyncTask = new LoginAsyncTask(verificationResponseBody,getContext());
                     loginAsyncTask.execute();
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            UserDataBase dataBase = UserDataBase.getInstance(getContext());
-//                            User user = new User();
-//                            user.setUser_id(verificationResponseBody.getUser_id());
-//                            user.setToken(verificationResponseBody.getToken());
-//                            dataBase.userDao().insertUser(user);
 
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            UserDataBase dataBase = UserDataBase.getInstance(getContext());
-//                            User user = new User();
-//                            user.setUserId(verificationResponseBody.getUserId());
-//                            user.setToken(verificationResponseBody.getToken());
-//                            dataBase.userDao().insertUser(user);
-//
-//                        }
-//                    }).start();
 
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
@@ -154,33 +136,3 @@ public class SecondDialogFragment extends DialogFragment {
 
     }
 }
-
-//class MyAsyncTask extends AsyncTask<Void, Void, Void> {
-//
-//    VerificationCodeListener verificationCodeListener;
-//    Context context;
-//
-//    public MyAsyncTask(VerificationCodeListener verificationCodeListener, Context context ) {
-//        this.verificationCodeListener = verificationCodeListener;
-//        this.context=context;
-//    }
-//
-//    @Override
-//    protected Void doInBackground(Void... voids) {
-//        verificationCodeListener = new VerificationCodeListener() {
-//            @Override
-//            public void onResponse(VerificationResponseBody verificationResponseBody) {
-//                UserDataBase dataBase = UserDataBase.getInstance(context);
-//                User user = new User();
-//                user.setUser_id(verificationResponseBody.getUser_id());
-//                user.setToken(verificationResponseBody.getToken());
-//                dataBase.userDao().insertUser(user);
-//            }
-//        };
-//
-//        return null;
-//    }
-//}
-
-
-

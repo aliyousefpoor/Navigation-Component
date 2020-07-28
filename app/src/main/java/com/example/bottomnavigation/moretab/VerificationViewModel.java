@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 
@@ -42,5 +43,6 @@ public class VerificationViewModel extends ViewModel {
         });
 
     }
+
 
 }

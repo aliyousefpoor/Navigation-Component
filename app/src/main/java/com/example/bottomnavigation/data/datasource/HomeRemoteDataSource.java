@@ -1,33 +1,29 @@
 package com.example.bottomnavigation.data.datasource;
 
-import android.util.Log;
-
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.data.model.Store;
+
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategorySource implements CategoryDataSource {
-    private static final String TAG = "RemoteDataSource";
+public class HomeRemoteDataSource implements HomeDataSource {
+    private static final String TAG = "StoreSource";
     private ApiService apiService;
 
-
-    public CategorySource(ApiService apiService) {
+    public HomeRemoteDataSource(ApiService apiService) {
         this.apiService = apiService;
-
     }
 
     @Override
-    public void getCategory(final DataSourceListener<List<Category>> dataSourceListener) {
-        apiService.getCategory().enqueue(new Callback<List<Category>>() {
+    public void getStore(final DataSourceListener<Store> dataSourceListener) {
+        apiService.getStore().enqueue(new Callback<Store>() {
             @Override
-            public void onResponse(@NotNull Call<List<Category>> call, @NotNull Response<List<Category>> response) {
+            public void onResponse(@NotNull Call<Store> call, @NotNull Response<Store> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         dataSourceListener.onResponse(response.body());
@@ -36,11 +32,10 @@ public class CategorySource implements CategoryDataSource {
             }
 
             @Override
-            public void onFailure(@NotNull Call<List<Category>> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<Store> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
-
             }
         });
-    }
 
+    }
 }

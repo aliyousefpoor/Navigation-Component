@@ -45,7 +45,7 @@ public class FirstDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginRemoteDataSource loginRemoteDataSource = MoreModule.provideUserSource(apiService);
+    private LoginRemoteDataSource loginRemoteDataSource = MoreModule.provideLoginRemoteDataSource(apiService);
     private LoginRepository loginRepository =MoreModule.provideLoginSource(loginRemoteDataSource);
     @SuppressLint("HardwareIds")
     private String androidId;

@@ -1,10 +1,10 @@
 package com.example.bottomnavigation.categorytab.di;
 
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.datasource.CategorySource;
+import com.example.bottomnavigation.data.datasource.CategoryRemoteDataSource;
 
 public class CategoryTabModule {
-    public static CategorySource provideCategorySource(ApiService apiService){
-        return new CategorySource(apiService);
+    public static CategoryRemoteDataSource provideCategorySource(ApiService apiService){
+        return new CategoryRemoteDataSource(apiService);
     }
 }

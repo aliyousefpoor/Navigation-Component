@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.data.datasource.CategorySource;
+import com.example.bottomnavigation.data.datasource.CategoryRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Category;
 
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class CategoryViewModel extends ViewModel {
     private static final String TAG = "CategoryViewModel";
-    private CategorySource categorySource;
+    private CategoryRemoteDataSource categoryRemoteDataSource;
 
-    public CategoryViewModel(CategorySource categorySource) {
-        this.categorySource = categorySource;
+    public CategoryViewModel(CategoryRemoteDataSource categoryRemoteDataSource) {
+        this.categoryRemoteDataSource = categoryRemoteDataSource;
         getCategoryData();
     }
 
@@ -35,7 +35,7 @@ public class CategoryViewModel extends ViewModel {
         Log.d(TAG, "getCategoryData: ");
         _loadingLiveData.setValue(true);
 
-        categorySource.getCategory(new DataSourceListener<List<Category>>() {
+        categoryRemoteDataSource.getCategory(new DataSourceListener<List<Category>>() {
             @Override
             public void onResponse(List<Category> response) {
                 _loadingLiveData.setValue(false);

@@ -22,23 +22,8 @@ public class User {
     @ColumnInfo(name = "gender")
     private String gender;
 
-
-//    int user_id, String token, String name, Double date, String gender
     public User() {
-//        this.user_id = user_id;
-//        this.token = token;
-//        this.name = name;
-//        this.date = date;
-//        this.gender = gender;
     }
-
-//    @Ignore
-//    public User(String name, double date, Gender gender) {
-//        this.name = name;
-//        this.date = date;
-//        this.gender = gender;
-//    }
-
 
     public int getUserId() {
         return userId;

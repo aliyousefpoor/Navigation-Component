@@ -11,8 +11,8 @@ import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
 public class UpdateAsyncTask extends AsyncTask<User, Void, User> {
     private static final String TAG = "UpdateAsyncTask";
-
-    private VerificationResponseBody verificationResponseBody;
+    int id;
+    String token;
     String name;
     String date;
     String gender;
@@ -20,27 +20,25 @@ public class UpdateAsyncTask extends AsyncTask<User, Void, User> {
     private Context context;
 
 
-    public UpdateAsyncTask(VerificationResponseBody verificationResponseBody, Context context,
-                           String name, String date, String gender) {
-        this.verificationResponseBody = verificationResponseBody;
-        this.context = context;
+    public UpdateAsyncTask( int id ,String token,String name, String date, String gender , Context context) {
+        this.id =id;
+        this.token =token;
         this.name = name;
         this.date = date;
         this.gender = gender;
+        this.context = context;
     }
 
     @Override
     protected User doInBackground(User... users) {
         User user = new User();
         UserDataBase dataBase = UserDataBase.getInstance(context);
-        user.setUserId(verificationResponseBody.getUserId());
-        user.setToken(verificationResponseBody.getToken());
+        user.setUserId(id);
+        user.setToken(token);
         user.setName(name);
         user.setDate(date);
         user.setGender(gender);
         dataBase.userDao().updateUser(user);
-        Log.d(TAG, "run: " + user.getUserId() + "   " + user.getToken()
-                + "   " + user.getName() + "   " + user.getDate() + "   " + user.getGender());
 
         return null;
     }

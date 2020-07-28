@@ -6,18 +6,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.data.datasource.HomeSource;
+import com.example.bottomnavigation.data.datasource.HomeRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Store;
 
 public class HomeViewModel extends ViewModel {
 
     private static final String TAG = "AppViewModel";
-    private HomeSource homeSource;
+    private HomeRemoteDataSource homeRemoteDataSource;
 
 
-    public HomeViewModel(HomeSource homeSource) {
-        this.homeSource = homeSource;
+    public HomeViewModel(HomeRemoteDataSource homeRemoteDataSource) {
+        this.homeRemoteDataSource = homeRemoteDataSource;
         getStoreData();
     }
 
@@ -35,7 +35,7 @@ public class HomeViewModel extends ViewModel {
         Log.d(TAG, "getStoreData: ");
         _loadingLiveData.setValue(true);
 
-        homeSource.getStore(new DataSourceListener<Store>() {
+        homeRemoteDataSource.getStore(new DataSourceListener<Store>() {
             @Override
             public void onResponse(Store response) {
                 _loadingLiveData.setValue(false);

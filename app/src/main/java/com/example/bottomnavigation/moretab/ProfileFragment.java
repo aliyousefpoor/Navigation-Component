@@ -16,15 +16,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.database.UserDataBase;
-import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
-
-import java.util.List;
+import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.moretab.di.MoreModule;
 
 
 public class ProfileFragment extends Fragment {
@@ -33,6 +32,10 @@ public class ProfileFragment extends Fragment {
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     private EditText name, date;
+    private ProfileViewModel profileViewModel;
+    private ProfileViewModelFactory profileViewModelFactory;
+    private UserLocaleDataSource userLocaleDataSource = MoreModule.provideUserLocaleDataSource();
+    private LoginRepository loginRepository =MoreModule.provideUserLocaleDataSource(userLocaleDataSource);
 
     @Nullable
     @Override
@@ -47,6 +50,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        profileViewModelFactory = new ProfileViewModelFactory(loginRepository);
+        profileViewModel = new ViewModelProvider( this,profileViewModelFactory).get(ProfileViewModel.class);
 
         assert getArguments() != null;
         final VerificationResponseBody verificationResponseBody = getArguments().getParcelable("body");
@@ -57,32 +62,15 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
+        assert verificationResponseBody != null;
+        final int id = verificationResponseBody.getUserId();
+        final String token = verificationResponseBody.getToken();
         addListenerOnButton(view);
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateAsyncTask updateAsyncTask = new UpdateAsyncTask(verificationResponseBody, getContext(),
-                        name.getText().toString(), date.getText().toString(),
-                        radioSexButton.getText().toString());
-                updateAsyncTask.execute();
-
-                //                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        UserDataBase dataBase = UserDataBase.getInstance(getContext());
-//                        User user = new User();
-//                        assert verificationResponseBody != null;
-//                        user.setUser_id(verificationResponseBody.getUser_id());
-//                        user.setToken(verificationResponseBody.getToken());
-//                        user.setName(name.getText().toString());
-//                        user.setDate(date.getText().toString());
-//                        user.setGender(radioSexButton.getText().toString());
-//                        dataBase.userDao().updateUser(user);
-//                        Log.d(TAG, "run: ");
-//
-//                    }
-//                }).start();
+                profileViewModel.userInformation(id,token,name.getText().toString(),date.getText().toString(),radioSexButton.getText().toString(),getContext());
 
             }
         });
@@ -93,27 +81,6 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 GetDataAsyncTask getDataAsyncTask = new GetDataAsyncTask(getContext());
                 getDataAsyncTask.execute();
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        String info = " ";
-//                        UserDataBase dataBase = UserDataBase.getInstance(getContext());
-//                        List<User> user = dataBase.userDao().getAll();
-//                        for (User usr : user) {
-//                            int id = usr.getUserId();
-//                            String token = usr.getToken();
-//                            String name = usr.getName();
-//                            String date = usr.getDate();
-//                            String gender = usr.getGender();
-
-//                            info = info + "\n\n" + "Id :" + id + "\n" + "Token : " + token + "\n" + "Name :" + name + "\n"
-//                                    + "Date :" + date + "\n" + "Gender :" + gender;
-//                            Log.d(TAG, "run: " + info);
-//
-//                        }
-//                    }
-//                }).start();
-
             }
         });
 

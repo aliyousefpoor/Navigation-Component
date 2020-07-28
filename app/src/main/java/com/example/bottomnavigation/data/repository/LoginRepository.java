@@ -1,18 +1,21 @@
 package com.example.bottomnavigation.data.repository;
 
+import android.content.Context;
+
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.LoginRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
 import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
-import java.util.TreeMap;
 
 public class LoginRepository {
     private static final String TAG = "LoginRepository";
 
     private LoginRemoteDataSource loginRemoteDataSource;
     private VerificationRemoteDataSource verificationRemoteDataSource;
+    private UserLocaleDataSource userLocaleDataSource;
 
 
     public LoginRepository(LoginRemoteDataSource loginRemoteDataSource) {
@@ -21,6 +24,9 @@ public class LoginRepository {
 
     public LoginRepository(VerificationRemoteDataSource verificationRemoteDataSource) {
         this.verificationRemoteDataSource = verificationRemoteDataSource;
+    }
+    public LoginRepository(UserLocaleDataSource userLocaleDataSource){
+        this.userLocaleDataSource=userLocaleDataSource;
     }
 
 
@@ -33,5 +39,8 @@ public class LoginRepository {
         verificationRemoteDataSource.postCode(number,androidId,code,dataSourceListener);
     }
 
+    public void saveUser(int id, String token , String name, String date , String gender , Context context){
+        userLocaleDataSource.saveInformation(id,token,name ,date,gender,context);
+    }
 
 }

@@ -4,20 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.datasource.CategorySource;
+import com.example.bottomnavigation.data.datasource.CategoryRemoteDataSource;
 
 public class CategoryViewModelFactory implements ViewModelProvider.Factory {
-    private CategorySource categorySource;
+    private CategoryRemoteDataSource categoryRemoteDataSource;
 
-    public CategoryViewModelFactory(CategorySource categorySource) {
-        this.categorySource = categorySource;
+    public CategoryViewModelFactory(CategoryRemoteDataSource categoryRemoteDataSource) {
+        this.categoryRemoteDataSource = categoryRemoteDataSource;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(CategoryViewModel.class)) {
-            return (T) new CategoryViewModel(categorySource);
+            return (T) new CategoryViewModel(categoryRemoteDataSource);
         }
         throw new IllegalArgumentException("Unknown Class");
     }
