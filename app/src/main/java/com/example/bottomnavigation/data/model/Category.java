@@ -3,7 +3,7 @@ package com.example.bottomnavigation.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ParentCategory {
+public class Category {
     @SerializedName("id")
     @Expose
     private Integer id;

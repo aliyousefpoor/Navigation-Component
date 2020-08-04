@@ -42,19 +42,10 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        final ProductViewHolder product_holder = (ProductViewHolder) holder;
+        final ProductViewHolder productHolder = (ProductViewHolder) holder;
 
-        product_holder.textView.setText(productList.get(position).getName());
+        productHolder.onBind(productList.get(position),context);
 
-        Uri uri = Uri.parse(AppConstants.baseUrl+productList.get(position).getFeatureAvatar().getXxxdpi());
-        Glide.with(context).load(uri).into(product_holder.imageView);
-
-        product_holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,productList.get(position).getName(),Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
     }
@@ -76,6 +67,20 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             textView= itemView.findViewById(R.id.discription);
             imageView =itemView.findViewById(R.id.cv_image);
             cardView = itemView.findViewById(R.id.product_cv);
+
+        }
+
+        public void onBind(final Product product, final Context context) {
+            textView.setText(product.getName());
+            Uri uri = Uri.parse(AppConstants.baseUrl+product.getFeatureAvatar().getXxxdpi());
+            Glide.with(context).load(uri).into(imageView);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,product.getName(),Toast.LENGTH_SHORT).show();
+                }
+            });
+
 
         }
     }

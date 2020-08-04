@@ -8,27 +8,37 @@
 
     <fragment
         android:id="@+id/moreFragment"
-        android:name="com.example.bottomnavigation.MoreFragment"
+        android:name="com.example.bottomnavigation.moretab.MoreFragment"
         android:label="MoreFragment"
         tools:layout="@layout/more_fragment">
+
         <action
-            android:id="@+id/action_moreFragment_to_secondFragment"
-            app:destination="@id/secondFragment"
-            />
+            android:id="@+id/action_moreFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
     </fragment>
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.example.bottomnavigation.SecondFragment"
-        android:label="SecondFragment"
-        tools:layout="@layout/second_fragment" >
-        <action
-            android:id="@+id/action_secondFragment_to_thirdFragment"
-            app:destination="@id/thirdFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/thirdFragment"
-        android:name="com.example.bottomnavigation.ThirdFragment"
-        android:label="ThirdFragment"
-        tools:layout="@layout/third_fragment"
+        android:id="@+id/aboutUsFragment"
+        android:name="com.example.bottomnavigation.moretab.AboutUsFragment"
+        android:label="AboutUsFragment"
+        tools:layout="@layout/about_fragment"
         />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.bottomnavigation.moretab.profilefragment.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/profile_fragment"
+        />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.bottomnavigation.moretab.ContactFragment"
+        android:label="ContactFragment"
+        tools:layout="@layout/contact_fragment"
+        />
+
 </navigation>

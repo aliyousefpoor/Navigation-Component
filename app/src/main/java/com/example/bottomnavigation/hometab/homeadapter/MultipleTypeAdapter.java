@@ -75,9 +75,10 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (getItemViewType(position)) {
 
             case ViewPagerType:
-                Log.d(TAG, "ViewPager_Type: " + position);
                 final ViewPagerViewHolder pager_holder = (ViewPagerViewHolder) holder;
-                pager_holder.viewPager.setAdapter(new ViewPagerAdapter(headerList, context));
+                Log.d(TAG, "ViewPager_Type: " + position);
+
+                pager_holder.onBind(headerList, context);
 
                 break;
 
@@ -85,11 +86,8 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 final ListViewHolder list_holder = (ListViewHolder) holder;
                 Log.d(TAG, "HorizontalList_Type: " + position);
+                list_holder.onBind(homeList.get(position - 1), context);
 
-                list_holder.title.setText(homeList.get(position - 1).getTitle());
-                list_holder.product_recyclerView.setAdapter(new ProductAdapter(homeList.get(position - 1).getProducts(), context));
-                list_holder.product_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                list_holder.product_recyclerView.setHasFixedSize(true);
 
                 break;
         }
@@ -114,6 +112,9 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
+        public void onBind(List<Product> headerList, Context context) {
+            viewPager.setAdapter(new ViewPagerAdapter(headerList, context));
+        }
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
@@ -126,9 +127,13 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             title = itemView.findViewById(R.id.title);
             product_recyclerView = itemView.findViewById(R.id.product_rv);
 
-
         }
 
-
+        public void onBind(Homeitem homeitem, Context context) {
+            title.setText(homeitem.getTitle());
+            product_recyclerView.setAdapter(new ProductAdapter(homeitem.getProducts(), context));
+            product_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+            product_recyclerView.setHasFixedSize(true);
+        }
     }
 }
