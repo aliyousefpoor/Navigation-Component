@@ -19,7 +19,7 @@ public interface UserDao {
     List<User> getAll();
 
     @Query("SELECT * FROM user WHERE EXISTS (SELECT userId FROM user)")
-    List<User> getUser();
+    User getUser();
 
     @Insert
     void insertUser(User user);
