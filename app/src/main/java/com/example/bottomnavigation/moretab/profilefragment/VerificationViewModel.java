@@ -44,5 +44,9 @@ public class VerificationViewModel extends ViewModel {
 
     }
 
+//    public void loginInformation(VerificationResponseBody verificationResponseBody , Context context){
+//        loginRepository.saveLoginInformation(verificationResponseBody,context);
+//    }
+
 
 }

@@ -18,6 +18,9 @@ public interface UserDao {
     @Query("SELECT * FROM user ORDER BY userId")
     List<User> getAll();
 
+    @Query("SELECT * FROM user WHERE EXISTS (SELECT userId FROM user)")
+    List<User> getUser();
+
     @Insert
     void insertUser(User user);
 

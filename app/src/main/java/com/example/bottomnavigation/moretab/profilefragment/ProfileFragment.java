@@ -2,6 +2,7 @@ package com.example.bottomnavigation.moretab.profilefragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
-import com.example.bottomnavigation.moretab.UserInformationListener;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 
 
@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
         assert getArguments() != null;
-        final VerificationResponseBody verificationResponseBody = getArguments().getParcelable("body");
+        final User user = getArguments().getParcelable("body");
 
         radioSexGroup = view.findViewById(R.id.radio_group);
 
@@ -64,15 +64,17 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
-        assert verificationResponseBody != null;
-        final int id = verificationResponseBody.getUserId();
-        final String token = verificationResponseBody.getToken();
+        assert user != null;
+        final int id = user.getUserId();
+        final String token = user.getToken();
         addListenerOnButton(view);
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 profileViewModel.userInformation(id,token,name.getText().toString(),date.getText().toString(),radioSexButton.getText().toString(),getContext());
+
+                Log.d(TAG, "onClick: ");
 
             }
         });
@@ -81,8 +83,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                GetDataAsyncTask getDataAsyncTask = new GetDataAsyncTask(getContext());
-                getDataAsyncTask.execute();
+                CancelAsyncTask cancelAsyncTask = new CancelAsyncTask(getContext());
+                cancelAsyncTask.execute();
             }
         });
 

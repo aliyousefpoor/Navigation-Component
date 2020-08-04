@@ -14,6 +14,10 @@ public abstract class UserDataBase extends RoomDatabase {
     private static final String DB_Name = "user_db";
     private static UserDataBase instance;
 
+    public static String getDB_Name() {
+        return DB_Name;
+    }
+
     public static synchronized UserDataBase getInstance(Context context){
         if (instance==null){
             instance= Room.databaseBuilder(context.getApplicationContext(),UserDataBase.class,DB_Name)

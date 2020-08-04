@@ -25,7 +25,7 @@ public class VerificationRemoteDataSource implements LoginVerificationDataSource
     @Override
     public void postCode(String number, String androidId, String code, final DataSourceListener<VerificationResponseBody> dataSourceListener) {
         VerificationBody verification = new VerificationBody(number, androidId, code);
-        apiService.postCode(verification).enqueue(new Callback<VerificationResponseBody>() {
+        apiService.verification(verification).enqueue(new Callback<VerificationResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<VerificationResponseBody> call, @NotNull Response<VerificationResponseBody> response) {
                 dataSourceListener.onResponse(response.body());

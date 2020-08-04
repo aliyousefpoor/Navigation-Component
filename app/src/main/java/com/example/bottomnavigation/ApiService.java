@@ -19,7 +19,7 @@ public interface ApiService {
 
     @GET("store/16")Call<Store> getStore();
     @GET("category/16/463")Call<List<Category>> getCategory();
-    @POST("mobile_login_step1/16")Call<LoginResponseBody> createUser(@Body LoginBody loginBody);
-    @POST("mobile_login_step2/16")Call<VerificationResponseBody> postCode(@Body VerificationBody verification);
+    @POST("mobile_login_step1/16")Call<LoginResponseBody> login(@Body LoginBody loginBody);
+    @POST("mobile_login_step2/16")Call<VerificationResponseBody> verification(@Body VerificationBody verification);
 
 }

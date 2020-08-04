@@ -24,7 +24,7 @@ public class LoginRemoteDataSource implements UserLoginDataSource {
     public void postNumber(String number, String androidId, String deviceModel, String deviceOs, final DataSourceListener<LoginResponseBody> dataSourceListener) {
 
         LoginBody loginBody = new LoginBody(number, androidId, deviceModel, deviceOs);
-        apiService.createUser(loginBody).enqueue(new Callback<LoginResponseBody>() {
+        apiService.login(loginBody).enqueue(new Callback<LoginResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<LoginResponseBody> call, @NotNull Response<LoginResponseBody> response) {
                 if (response.isSuccessful()) {

@@ -23,6 +23,7 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
@@ -118,9 +119,12 @@ public class VerificationDialogFragment extends DialogFragment {
 
 
                 if (verificationResponseBody != null) {
-                    Log.d(TAG, "onChanged: " + verificationResponseBody.getUserId());
 
-                    verificationCodeListener.onResponse(verificationResponseBody);
+                    User user = new User();
+                    user.getUserId();
+                    user.getToken();
+                    Log.d(TAG, "onChanged: "+ user.getToken() );
+                    verificationCodeListener.onResponse(user);
 
                     dismiss();
                     dialog.dismiss();

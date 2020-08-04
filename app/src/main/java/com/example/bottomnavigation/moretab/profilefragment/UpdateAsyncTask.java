@@ -3,11 +3,10 @@ package com.example.bottomnavigation.moretab.profilefragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.bottomnavigation.data.database.UserDataBase;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.model.VerificationResponseBody;
+
 
 public class UpdateAsyncTask extends AsyncTask<User, Void, User> {
     private static final String TAG = "UpdateAsyncTask";
