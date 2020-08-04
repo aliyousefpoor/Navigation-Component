@@ -26,16 +26,16 @@ public class GetDataAsyncTask extends AsyncTask<User, Void, User> {
     @Override
     protected User doInBackground(User... users) {
         UserDataBase dataBase = UserDataBase.getInstance(context);
-        List<User> userList = dataBase.userDao().getUser();
+        User userList = dataBase.userDao().getUser();
         StringBuilder info = new StringBuilder(" ");
-        if (userList.size() > 0) {
-            for (User user : userList) {
-                int id = user.getUserId();
-                String token = user.getToken();
-                String name = user.getName();
-                String date = user.getDate();
-                String gender = user.getGender();
-                userInformationListener.onUserInformation(user);
+        if (userList !=null) {
+//            for (User user : userList) {
+                int id = userList.getUserId();
+                String token = userList.getToken();
+                String name = userList.getName();
+                String date = userList.getDate();
+                String gender = userList.getGender();
+                userInformationListener.onUserInformation(userList);
 
 
                 info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
@@ -43,7 +43,7 @@ public class GetDataAsyncTask extends AsyncTask<User, Void, User> {
                         .append("Date :").append(date).append("\n").append("Gender :").append(gender);
                 Log.d(TAG, "doInBackground: " + info);
             }
-        }
+
         else {
             userInformationListener.onUserInformation(null);
         }
