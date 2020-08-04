@@ -25,7 +25,7 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
-import com.example.bottomnavigation.data.datasource.CategoryRemoteDataSource;
+import com.example.bottomnavigation.data.remote.CategoryRemoteDataSource;
 import com.example.bottomnavigation.data.model.Category;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -60,7 +60,7 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        //todo inject
         categoryViewModelFactory = new CategoryViewModelFactory(categoryRemoteDataSource);
         categoryViewModel = new ViewModelProvider(this, categoryViewModelFactory).get(CategoryViewModel.class);
 

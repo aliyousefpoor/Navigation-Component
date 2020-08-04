@@ -1,6 +1,5 @@
 package com.example.bottomnavigation.moretab.profilefragment;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -9,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 
-import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 
@@ -24,8 +22,8 @@ public class VerificationViewModel extends ViewModel {
     private MutableLiveData<VerificationResponseBody> _verificationLiveData = new MutableLiveData<>();
     public LiveData<VerificationResponseBody> verificationLiveData = _verificationLiveData;
 
-    public void postVerificationCode(String number, String androidId, String code) {
-        loginRepository.repoPostCode(number, androidId, code, new DataSourceListener<VerificationResponseBody>() {
+    public void loginStepTwo(String number, String androidId, String code) {
+        loginRepository.loginStep2(number, androidId, code, new DataSourceListener<VerificationResponseBody>() {
 
             @Override
             public void onResponse(VerificationResponseBody response) {

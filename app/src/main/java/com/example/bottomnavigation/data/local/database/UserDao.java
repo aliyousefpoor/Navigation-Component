@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.data.database;
+package com.example.bottomnavigation.data.local.database;
 
 import androidx.room.Dao;
 
@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
 import java.util.List;
@@ -16,18 +17,18 @@ import java.util.List;
 public interface UserDao {
 
     @Query("SELECT * FROM user ORDER BY userId")
-    List<User> getAll();
+    UserEntity getAll();
 
     @Query("SELECT * FROM user WHERE EXISTS (SELECT userId FROM user)")
-    User getUser();
+    UserEntity getUser();
 
     @Insert
-    void insertUser(User user);
+    void insertUser(UserEntity user);
 
     @Update
-    void updateUser(User user);
+    void updateUser(UserEntity user);
 
     @Delete
-    void deleteUser(User user);
+    void deleteUser(UserEntity user);
 
 }

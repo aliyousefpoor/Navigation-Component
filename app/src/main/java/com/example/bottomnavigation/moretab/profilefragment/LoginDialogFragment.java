@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.LoginRemoteDataSource;
+import com.example.bottomnavigation.data.remote.LoginRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
@@ -85,7 +85,7 @@ public class LoginDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                loginViewModel.postUserNumber(number.getText().toString(), androidId, deviceModel, deviceOs);
+                loginViewModel.loginStepOne(number.getText().toString(), androidId, deviceModel, deviceOs);
 
                 dialog = new ProgressDialog(getContext());
                 dialog.setTitle(R.string.progressDialogTitle);

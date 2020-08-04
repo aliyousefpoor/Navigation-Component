@@ -22,8 +22,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
-import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.local.model.UserEntity;
+import com.example.bottomnavigation.data.remote.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
@@ -81,7 +81,7 @@ public class VerificationDialogFragment extends DialogFragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verificationViewModel.postVerificationCode(number, androidId, code.getText().toString());
+                verificationViewModel.loginStepTwo(number, androidId, code.getText().toString());
                 Log.d(TAG, "onClick: " + number);
 
                 dialog = new ProgressDialog(getContext());
@@ -120,10 +120,10 @@ public class VerificationDialogFragment extends DialogFragment {
 
                 if (verificationResponseBody != null) {
 
-                    User user = new User();
-                    user.getUserId();
-                    user.getToken();
-                    Log.d(TAG, "onChanged: "+ user.getToken() );
+                    UserEntity user = new UserEntity();
+                    user.setUserId(verificationResponseBody.getUserId());
+                    user.setToken(verificationResponseBody.getToken());
+                    Log.d(TAG, "onChanged: " + user.getUserId());
                     verificationCodeListener.onResponse(user);
 
                     dismiss();

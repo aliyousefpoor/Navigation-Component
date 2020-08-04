@@ -5,13 +5,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bottomnavigation.data.database.UserDataBase;
+import com.example.bottomnavigation.data.local.database.UserDatabase;
+import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 
-import java.util.List;
-
-public class GetDataAsyncTask extends AsyncTask<User, Void, User> {
+public class GetDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "GetDataAsyncTask";
     private UserInformationListener userInformationListener;
 
@@ -24,18 +23,18 @@ public class GetDataAsyncTask extends AsyncTask<User, Void, User> {
     }
 
     @Override
-    protected User doInBackground(User... users) {
-        UserDataBase dataBase = UserDataBase.getInstance(context);
-        User userList = dataBase.userDao().getUser();
+    protected UserEntity doInBackground(UserEntity... users) {
+        UserDatabase dataBase = UserDatabase.getInstance(context);
+        UserEntity userEntity = dataBase.userDao().getUser();
         StringBuilder info = new StringBuilder(" ");
-        if (userList !=null) {
-//            for (User user : userList) {
-                int id = userList.getUserId();
-                String token = userList.getToken();
-                String name = userList.getName();
-                String date = userList.getDate();
-                String gender = userList.getGender();
-                userInformationListener.onUserInformation(userList);
+        if (userEntity !=null) {
+
+                int id = userEntity.getUserId();
+                String token = userEntity.getToken();
+                String name = userEntity.getName();
+                String date = userEntity.getDate();
+                String gender = userEntity.getGender();
+                userInformationListener.onUserInformation(userEntity);
 
 
                 info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")

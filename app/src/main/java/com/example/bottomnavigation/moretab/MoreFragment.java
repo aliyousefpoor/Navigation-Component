@@ -1,8 +1,6 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,11 +23,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.database.UserDataBase;
-import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
+import com.example.bottomnavigation.data.local.UserLocalDataSource;
+import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.moretab.profilefragment.LoginDialogFragment;
@@ -37,7 +34,6 @@ import com.example.bottomnavigation.moretab.profilefragment.ProfileFragment;
 import com.example.bottomnavigation.moretab.profilefragment.VerificationCodeListener;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,10 +122,10 @@ public class MoreFragment extends Fragment {
                 switch (item.type) {
 
                     case Profile:
-
+                        //todo viewmodel
                         moreViewModel.isUserLogin(getContext(), new UserInformationListener() {
                             @Override
-                            public void onUserInformation(User user) {
+                            public void onUserInformation(UserEntity user) {
                                 if (user == null) {
                                     LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
                                     loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
@@ -162,7 +158,7 @@ public class MoreFragment extends Fragment {
 
         verificationCodeListener = new VerificationCodeListener() {
             @Override
-            public void onResponse(User user) {
+            public void onResponse(UserEntity user) {
                 Log.d(TAG, "onResponse: listener");
 
                 bundle.putParcelable("body", user);
@@ -175,22 +171,22 @@ public class MoreFragment extends Fragment {
 
     }
 
-    public void isLogin() {
-        moreViewModel.isLoginUser.observe(MoreFragment.this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isLogin) {
-                if (isLogin) {
-
-                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
-                } else {
-
-                    navController.navigate(R.id.action_moreFragment_to_profileFragment);
-                }
-            }
-        });
-
-    }
+//    public void isLogin() {
+//        moreViewModel.isLoginUser.observe(MoreFragment.this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean isLogin) {
+//                if (isLogin) {
+//
+//                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
+//                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+//                } else {
+//
+//                    navController.navigate(R.id.action_moreFragment_to_profileFragment);
+//                }
+//            }
+//        });
+//
+//    }
 }
 
 

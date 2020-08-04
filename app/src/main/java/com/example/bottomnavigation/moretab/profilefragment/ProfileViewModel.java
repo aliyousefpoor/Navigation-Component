@@ -20,8 +20,8 @@ public class ProfileViewModel extends ViewModel {
 //    private MutableLiveData<User> _userLiveData = new MutableLiveData<>();
 //    public LiveData<User> userLiveData = _userLiveData;
 
-    public void userInformation(int id, String token , String name, String date , String gender , Context context){
-        loginRepository.saveUser(id,token,name ,date,gender , context);
+    public void userInformation(User user, Context context){
+        loginRepository.saveUser(user , context);
     }
 
 }

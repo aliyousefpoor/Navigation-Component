@@ -10,6 +10,7 @@ import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 
+//change package
 public class LoginViewModel extends ViewModel {
     private static final String TAG = "UserViewModel";
 
@@ -25,10 +26,10 @@ public class LoginViewModel extends ViewModel {
 
 
 
-    public void postUserNumber(String number, String androidId, String deviceModel, String deviceOs) {
+    public void loginStepOne(String number, String androidId, String deviceModel, String deviceOs) {
 
 
-        loginRepository.repoPostNumber(number, androidId, deviceModel, deviceOs, new DataSourceListener<LoginResponseBody>() {
+        loginRepository.loginStep1(number, androidId, deviceModel, deviceOs, new DataSourceListener<LoginResponseBody>() {
             @Override
             public void onResponse(LoginResponseBody response) {
                 _userLiveData.setValue(response);

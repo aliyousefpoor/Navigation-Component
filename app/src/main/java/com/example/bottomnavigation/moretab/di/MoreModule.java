@@ -2,9 +2,9 @@ package com.example.bottomnavigation.moretab.di;
 
 
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.datasource.LoginRemoteDataSource;
-import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
-import com.example.bottomnavigation.data.datasource.VerificationRemoteDataSource;
+import com.example.bottomnavigation.data.remote.LoginRemoteDataSource;
+import com.example.bottomnavigation.data.local.UserLocalDataSource;
+import com.example.bottomnavigation.data.remote.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 
 

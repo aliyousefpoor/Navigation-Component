@@ -4,46 +4,35 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.bottomnavigation.data.database.UserDataBase;
+import com.example.bottomnavigation.data.local.database.UserDatabase;
+import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
 
-public class UpdateAsyncTask extends AsyncTask<User, Void, User> {
+public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "UpdateAsyncTask";
-    int id;
-    String token;
-    String name;
-    String date;
-    String gender;
+    private User user;
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
 
-    public UpdateAsyncTask( int id ,String token,String name, String date, String gender , Context context) {
-        this.id =id;
-        this.token =token;
-        this.name = name;
-        this.date = date;
-        this.gender = gender;
+    public UpdateAsyncTask(User user , Context context) {
+        this.user=user;
         this.context = context;
     }
 
     @Override
-    protected User doInBackground(User... users) {
-        User user = new User();
-        UserDataBase dataBase = UserDataBase.getInstance(context);
-        user.setUserId(id);
-        user.setToken(token);
-        user.setName(name);
-        user.setDate(date);
-        user.setGender(gender);
-        dataBase.userDao().updateUser(user);
+    protected UserEntity doInBackground(UserEntity... users) {
+        UserEntity userEntity = new UserEntity();
+        UserDatabase dataBase = UserDatabase.getInstance(context);
+        userEntity.setUserId(user.getUserId());
+        userEntity.setToken(user.getToken());
+        userEntity.setName(user.getName());
+        userEntity.setDate(user.getDate());
+        userEntity.setGender(user.getGender());
+        dataBase.userDao().updateUser(userEntity);
 
         return null;
     }
 
-    @Override
-    protected void onPostExecute(User user) {
-        super.onPostExecute(user);
-    }
 }

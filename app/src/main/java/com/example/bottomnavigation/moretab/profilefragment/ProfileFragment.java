@@ -1,6 +1,5 @@
 package com.example.bottomnavigation.moretab.profilefragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +20,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
+import com.example.bottomnavigation.data.local.UserLocalDataSource;
+import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 
@@ -56,7 +55,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
         assert getArguments() != null;
-        final User user = getArguments().getParcelable("body");
+        final UserEntity userEntity = getArguments().getParcelable("body");
 
         radioSexGroup = view.findViewById(R.id.radio_group);
 
@@ -64,15 +63,21 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
-        assert user != null;
-        final int id = user.getUserId();
-        final String token = user.getToken();
+        assert userEntity != null;
+        final int id = userEntity.getUserId();
+        final String token = userEntity.getToken();
         addListenerOnButton(view);
+        final User user = new User();
+        user.setUserId(userEntity.getUserId());
+        user.setToken(userEntity.getToken());
+        user.setName(name.getText().toString());
+        user.setDate(date.getText().toString());
+        user.setGender(radioSexButton.getText().toString());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileViewModel.userInformation(id,token,name.getText().toString(),date.getText().toString(),radioSexButton.getText().toString(),getContext());
+                profileViewModel.userInformation(user, getContext());
 
                 Log.d(TAG, "onClick: ");
 

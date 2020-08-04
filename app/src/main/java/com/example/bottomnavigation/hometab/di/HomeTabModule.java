@@ -1,7 +1,7 @@
 package com.example.bottomnavigation.hometab.di;
 
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.datasource.HomeRemoteDataSource;
+import com.example.bottomnavigation.data.remote.HomeRemoteDataSource;
 
 
 public class HomeTabModule {

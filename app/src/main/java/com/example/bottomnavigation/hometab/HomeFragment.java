@@ -28,7 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.HomeRemoteDataSource;
+import com.example.bottomnavigation.data.remote.HomeRemoteDataSource;
 import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.hometab.di.HomeTabModule;

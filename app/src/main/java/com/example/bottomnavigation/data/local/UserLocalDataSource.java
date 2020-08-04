@@ -1,18 +1,20 @@
-package com.example.bottomnavigation.data.datasource;
+package com.example.bottomnavigation.data.local;
 
 import android.content.Context;
 
 
+import com.example.bottomnavigation.data.datasource.LocalUserDataSource;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 import com.example.bottomnavigation.moretab.profilefragment.GetDataAsyncTask;
 import com.example.bottomnavigation.moretab.profilefragment.UpdateAsyncTask;
 
 public class UserLocalDataSource implements LocalUserDataSource {
 
+    //rename
     @Override
-    public void saveInformation(int userId, String token, String name, String date, String
-            gender, Context context) {
-        UpdateAsyncTask updateAsyncTask = new UpdateAsyncTask(userId, token, name, date, gender, context);
+    public void saveInformation(User user, Context context) {
+        UpdateAsyncTask updateAsyncTask = new UpdateAsyncTask(user, context);
         updateAsyncTask.execute();
     }
 

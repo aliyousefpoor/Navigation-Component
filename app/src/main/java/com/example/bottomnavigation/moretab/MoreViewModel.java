@@ -1,18 +1,12 @@
 package com.example.bottomnavigation.moretab;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.data.database.UserDataBase;
-import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.LoginRepository;
-
-import java.util.List;
 
 public class MoreViewModel extends ViewModel {
     private static final String TAG = "MoreViewModel";
@@ -27,7 +21,7 @@ public class MoreViewModel extends ViewModel {
     public LiveData<Boolean> isLoginUser = _isLoginUser;
 
     public void isUserLogin(final Context context ,UserInformationListener userInformationListener ) {
-
+        //why loginrepository?
         loginRepository.getInformation(context,userInformationListener);
 //        loginRepository.getInformation(context, new UserInformationListener() {
 //            @Override
