@@ -6,7 +6,6 @@ import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 
 
-//rename
 public interface UserDataSource {
 
 

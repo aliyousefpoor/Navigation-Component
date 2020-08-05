@@ -30,7 +30,6 @@ import com.example.bottomnavigation.data.repository.IsLoginRepository;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginDialogFragment;
-import com.example.bottomnavigation.moretab.profilefragment.ProfileFragment;
 import com.example.bottomnavigation.login.VerificationCodeListener;
 
 
@@ -51,7 +50,6 @@ public class MoreFragment extends Fragment {
     private UserDataSource userDataSource = LoginModule.provideUserDataSource();
     private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userDataSource);
     private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(isLoginRepository);
-//    private ProfileFragment profileFragment = MoreModule.provideProfileFragment();
 
     private Bundle bundle = new Bundle();
 
@@ -60,7 +58,7 @@ public class MoreFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.more_fragment, container, false);
-        getItemId();
+        getItemType();
         setUpLogin();
         return view;
     }
@@ -93,8 +91,7 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//               LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-//                loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+
             }
         });
 
@@ -102,12 +99,11 @@ public class MoreFragment extends Fragment {
         moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<UserEntity>() {
             @Override
             public void onChanged(UserEntity userEntity) {
-                if (userEntity!=null){
-                    bundle.putParcelable("body",userEntity);
-                    navController.navigate(R.id.action_moreFragment_to_profileFragment,bundle);
+                if (userEntity != null) {
+                    bundle.putParcelable("body", userEntity);
+                    navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
                     Log.d(TAG, "onChanged: userEntity");
-                }
-                else {
+                } else {
                     LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
                     loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
                 }
@@ -127,10 +123,8 @@ public class MoreFragment extends Fragment {
         return moreLists;
     }
 
-    public void getItemId() {
+    public void getItemType() {
         moreItemListener = new MoreItemListener() {
-
-
             @SuppressLint("FragmentLiveDataObserve")
             @Override
             public void onClick(MoreModel item) {
@@ -138,59 +132,35 @@ public class MoreFragment extends Fragment {
                 switch (item.type) {
 
                     case Profile:
-                        //todo viewmodel
-
                         moreViewModel.isUserLogin(getContext());
-
                         break;
 
                     case About:
-                                    navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
+                        navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
                         break;
 
                     case Contact:
-                                    navController.navigate(R.id.action_moreFragment_to_contactFragment);
+                        navController.navigate(R.id.action_moreFragment_to_contactFragment);
                         break;
-
-                        }
                 }
             }
-
-            ;
-        }
-
-        public void setUpLogin () {
-
-            verificationCodeListener = new VerificationCodeListener() {
-                @Override
-                public void onResponse(UserEntity user) {
-                    Log.d(TAG, "onResponse: listener");
-
-                    bundle.putParcelable("body", user);
-
-                    navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
-                }
-            };
-
-        }
-
-//    public void isLogin() {
-//        moreViewModel.isLoginUser.observe(MoreFragment.this, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean isLogin) {
-//                if (isLogin) {
-//
-//                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-//                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
-//                } else {
-//
-//                    navController.navigate(R.id.action_moreFragment_to_profileFragment);
-//                }
-//            }
-//        });
-//
-//    }
+        };
     }
+
+    public void setUpLogin() {
+
+        verificationCodeListener = new VerificationCodeListener() {
+            @Override
+            public void onResponse(UserEntity user) {
+                Log.d(TAG, "onResponse: listener");
+
+                bundle.putParcelable("body", user);
+
+                navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
+            }
+        };
+    }
+}
 
 
 

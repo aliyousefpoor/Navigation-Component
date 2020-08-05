@@ -21,20 +21,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserDataSource;
+import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 
-import java.sql.ResultSet;
-
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
 
     private RadioGroup radioSexGroup;
-    private RadioButton radioSexButton,male,female;
+    private RadioButton radioSexButton, male, female;
     private EditText name, date;
     private ProfileViewModel profileViewModel;
     private UserDataSource userLocalDataSource = LoginModule.provideUserDataSource();
@@ -66,8 +65,8 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
-        male=view.findViewById(R.id.male);
-        female=view.findViewById(R.id.female);
+        male = view.findViewById(R.id.male);
+        female = view.findViewById(R.id.female);
 
         assert userEntity != null;
 
@@ -75,6 +74,17 @@ public class ProfileFragment extends Fragment {
         final User user = new User();
         user.setUserId(userEntity.getUserId());
         user.setToken(userEntity.getToken());
+
+        name.setText(userEntity.getName());
+        date.setText(userEntity.getDate());
+
+        String checkedGender= userEntity.getGender();
+        if (checkedGender.equals("مرد")){
+            male.setChecked(true);
+        }
+        else if (checkedGender.equals("زن")){
+            female.setChecked(true);
+        }
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -61,7 +61,6 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //todo inject
-
         categoryViewModel = new ViewModelProvider(this, categoryViewModelFactory).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");

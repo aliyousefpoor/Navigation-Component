@@ -1,10 +1,11 @@
-package com.example.bottomnavigation.moretab.profilefragment;
+package com.example.bottomnavigation.data.local.database;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.bottomnavigation.data.local.database.UserDatabase;
+import com.example.bottomnavigation.data.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
@@ -14,6 +15,7 @@ public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private User user;
     @SuppressLint("StaticFieldLeak")
     private Context context;
+    private UserEntity userEntity = DatabaseModule.provideUserEntity();
 
 
     public UpdateAsyncTask(User user , Context context) {
@@ -23,7 +25,6 @@ public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
 
     @Override
     protected UserEntity doInBackground(UserEntity... users) {
-        UserEntity userEntity = new UserEntity();
         UserDatabase dataBase = UserDatabase.getInstance(context);
         userEntity.setUserId(user.getUserId());
         userEntity.setToken(user.getToken());

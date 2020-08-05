@@ -3,7 +3,6 @@ package com.example.bottomnavigation.login;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.remote.VerificationRemoteDataSource;
@@ -29,8 +29,7 @@ import com.example.bottomnavigation.data.model.VerificationResponseBody;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
-import com.example.bottomnavigation.moretab.di.MoreModule;
-import com.example.bottomnavigation.moretab.profilefragment.LoginAsyncTask;
+import com.example.bottomnavigation.data.local.database.LoginAsyncTask;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 import retrofit2.Retrofit;
@@ -52,6 +51,7 @@ public class VerificationDialogFragment extends DialogFragment {
     private VerificationCodeListener verificationCodeListener;
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
+    private UserEntity userEntity= DatabaseModule.provideUserEntity();
 
 
     public VerificationDialogFragment(String number,String androidId, VerificationCodeListener verificationCodeListener,ResendCodeListener resendCodeListener) {
@@ -129,11 +129,10 @@ public class VerificationDialogFragment extends DialogFragment {
 
                 if (verificationResponseBody != null) {
 
-                    UserEntity user = new UserEntity();
-                    user.setUserId(verificationResponseBody.getUserId());
-                    user.setToken(verificationResponseBody.getToken());
-                    Log.d(TAG, "onChanged: " + user.getUserId());
-                    verificationCodeListener.onResponse(user);
+                    userEntity.setUserId(verificationResponseBody.getUserId());
+                    userEntity.setToken(verificationResponseBody.getToken());
+                    Log.d(TAG, "onChanged: " + userEntity.getUserId());
+                    verificationCodeListener.onResponse(userEntity);
 
                     dismiss();
                     dialog.dismiss();

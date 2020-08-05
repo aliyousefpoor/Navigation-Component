@@ -22,8 +22,6 @@ public class MoreViewModel extends ViewModel {
 
 
     public void isUserLogin(final Context context ) {
-        //why loginRepository?
-//        isLoginRepository.getUser(context,userInformationListener);
         isLoginRepository.getUser(context, new UserInformationListener() {
             @Override
             public void onCheckUser(UserEntity userEntity) {
