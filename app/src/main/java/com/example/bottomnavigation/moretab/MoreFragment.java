@@ -23,15 +23,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.UserLocalDataSource;
+import com.example.bottomnavigation.data.local.UserDataSource;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
-import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
-import com.example.bottomnavigation.moretab.profilefragment.LoginDialogFragment;
+import com.example.bottomnavigation.login.LoginDialogFragment;
 import com.example.bottomnavigation.moretab.profilefragment.ProfileFragment;
-import com.example.bottomnavigation.moretab.profilefragment.VerificationCodeListener;
+import com.example.bottomnavigation.login.VerificationCodeListener;
 
 
 import java.util.ArrayList;
@@ -48,10 +48,11 @@ public class MoreFragment extends Fragment {
     private MoreItemListener moreItemListener;
     private VerificationCodeListener verificationCodeListener;
     private MoreViewModel moreViewModel;
-    private MoreViewModelFactory moreViewModelFactory;
-    private UserLocalDataSource userLocalDataSource = MoreModule.provideUserLocaleDataSource();
-    private LoginRepository loginRepository = MoreModule.provideUserLocaleDataSource(userLocalDataSource);
-    private ProfileFragment profileFragment = new ProfileFragment();
+    private UserDataSource userDataSource = LoginModule.provideUserDataSource();
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userDataSource);
+    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(isLoginRepository);
+//    private ProfileFragment profileFragment = MoreModule.provideProfileFragment();
+
     private Bundle bundle = new Bundle();
 
 
@@ -68,7 +69,7 @@ public class MoreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        moreViewModelFactory = new MoreViewModelFactory(loginRepository);
+
         moreViewModel = new ViewModelProvider(this, moreViewModelFactory).get(MoreViewModel.class);
 
 
@@ -98,6 +99,21 @@ public class MoreFragment extends Fragment {
         });
 
 
+        moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<UserEntity>() {
+            @Override
+            public void onChanged(UserEntity userEntity) {
+                if (userEntity!=null){
+                    bundle.putParcelable("body",userEntity);
+                    navController.navigate(R.id.action_moreFragment_to_profileFragment,bundle);
+                    Log.d(TAG, "onChanged: userEntity");
+                }
+                else {
+                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
+                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+                }
+            }
+        });
+
     }
 
 
@@ -123,53 +139,40 @@ public class MoreFragment extends Fragment {
 
                     case Profile:
                         //todo viewmodel
-                        moreViewModel.isUserLogin(getContext(), new UserInformationListener() {
-                            @Override
-                            public void onUserInformation(UserEntity user) {
-                                if (user == null) {
-                                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-                                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
-                                } else {
 
-                                    bundle.putParcelable("body",user);
-                                    navController.navigate(R.id.action_moreFragment_to_profileFragment,bundle);
-                                    profileFragment.setArguments(bundle);
-
-                                }
-                            }
-                        });
+                        moreViewModel.isUserLogin(getContext());
 
                         break;
 
                     case About:
-                        navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
+                                    navController.navigate(R.id.action_moreFragment_to_aboutUsFragment);
                         break;
 
                     case Contact:
-                        navController.navigate(R.id.action_moreFragment_to_contactFragment);
+                                    navController.navigate(R.id.action_moreFragment_to_contactFragment);
                         break;
 
+                        }
                 }
             }
-        };
-    }
 
-    public void setUpLogin() {
+            ;
+        }
 
-        verificationCodeListener = new VerificationCodeListener() {
-            @Override
-            public void onResponse(UserEntity user) {
-                Log.d(TAG, "onResponse: listener");
+        public void setUpLogin () {
 
-                bundle.putParcelable("body", user);
+            verificationCodeListener = new VerificationCodeListener() {
+                @Override
+                public void onResponse(UserEntity user) {
+                    Log.d(TAG, "onResponse: listener");
 
+                    bundle.putParcelable("body", user);
 
-                navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
-                profileFragment.setArguments(bundle);
-            }
-        };
+                    navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
+                }
+            };
 
-    }
+        }
 
 //    public void isLogin() {
 //        moreViewModel.isLoginUser.observe(MoreFragment.this, new Observer<Boolean>() {
@@ -187,7 +190,7 @@ public class MoreFragment extends Fragment {
 //        });
 //
 //    }
-}
+    }
 
 
 

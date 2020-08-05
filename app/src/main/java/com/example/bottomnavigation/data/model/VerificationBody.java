@@ -16,11 +16,23 @@ public class VerificationBody {
         return mobile;
     }
 
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public String getDevice_id() {
         return device_id;
     }
 
+    public void setDevice_id(String device_id) {
+        this.device_id = device_id;
+    }
+
     public String getVerification_code() {
         return verification_code;
+    }
+
+    public void setVerification_code(String verification_code) {
+        this.verification_code = verification_code;
     }
 }

@@ -51,12 +51,13 @@ public class HomeFragment extends Fragment {
     private TextView pullDown;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeViewModel homeViewModel;
-    private HomeViewModelFactory homeViewModelFactory;
+
     private RecyclerView recyclerView;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private HomeRemoteDataSource homeRemoteDataSource = HomeTabModule.provideHomeSource(apiService);
+    private HomeViewModelFactory homeViewModelFactory = HomeTabModule.provideHomeViewModelFactory(homeRemoteDataSource);
 
 
     @Nullable
@@ -71,9 +72,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeViewModelFactory = new HomeViewModelFactory(homeRemoteDataSource);
         homeViewModel = new ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel.class);
-        //remove
+
 
         arrow = view.findViewById(R.id.arrow);
         pullDown = view.findViewById(R.id.pull_down);
@@ -106,9 +106,7 @@ public class HomeFragment extends Fragment {
             public void onChanged(Boolean loadingState) {
                 if (loadingState) {
                     pullDown.setVisibility(View.GONE);
-                    //barresi
                     arrow.setVisibility(View.GONE);
-                    //barresi
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
                 } else {

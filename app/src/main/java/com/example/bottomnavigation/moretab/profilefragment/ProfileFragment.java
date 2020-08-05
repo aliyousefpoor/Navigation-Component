@@ -20,23 +20,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.UserLocalDataSource;
+import com.example.bottomnavigation.data.local.UserDataSource;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
+
+import java.sql.ResultSet;
 
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
 
     private RadioGroup radioSexGroup;
-    private RadioButton radioSexButton;
+    private RadioButton radioSexButton,male,female;
     private EditText name, date;
     private ProfileViewModel profileViewModel;
-    private ProfileViewModelFactory profileViewModelFactory;
-    private UserLocalDataSource userLocalDataSource = MoreModule.provideUserLocaleDataSource();
-    private LoginRepository loginRepository = MoreModule.provideUserLocaleDataSource(userLocalDataSource);
+    private UserDataSource userLocalDataSource = LoginModule.provideUserDataSource();
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocalDataSource);
+    private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
 
     @Nullable
     @Override
@@ -51,7 +54,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        profileViewModelFactory = new ProfileViewModelFactory(loginRepository);
+
         profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
         assert getArguments() != null;
@@ -63,21 +66,24 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
+        male=view.findViewById(R.id.male);
+        female=view.findViewById(R.id.female);
+
         assert userEntity != null;
-        final int id = userEntity.getUserId();
-        final String token = userEntity.getToken();
+
         addListenerOnButton(view);
         final User user = new User();
         user.setUserId(userEntity.getUserId());
         user.setToken(userEntity.getToken());
-        user.setName(name.getText().toString());
-        user.setDate(date.getText().toString());
-        user.setGender(radioSexButton.getText().toString());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileViewModel.userInformation(user, getContext());
+                user.setName(name.getText().toString());
+                user.setDate(date.getText().toString());
+                user.setGender(radioSexButton.getText().toString());
+
+                profileViewModel.saveUser(user, getContext());
 
                 Log.d(TAG, "onClick: ");
 

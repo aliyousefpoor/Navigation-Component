@@ -7,6 +7,7 @@ import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.UserLoginDataSource;
 import com.example.bottomnavigation.data.model.LoginBody;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOne;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,9 +24,11 @@ public class LoginRemoteDataSource implements UserLoginDataSource {
     }
 
     @Override
-    public void postNumber(String number, String androidId, String deviceModel, String deviceOs, final DataSourceListener<LoginResponseBody> dataSourceListener) {
+    public void loginStepOne(LoginStepOne loginStepOne, final DataSourceListener<LoginResponseBody> dataSourceListener) {
 
-        LoginBody loginBody = new LoginBody(number, androidId, deviceModel, deviceOs);
+        LoginBody loginBody = new LoginBody(loginStepOne.getNumber(),loginStepOne.getAndroidId(),
+                loginStepOne.getDeviceModel(),loginStepOne.getDeviceOs());
+
         apiService.login(loginBody).enqueue(new Callback<LoginResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<LoginResponseBody> call, @NotNull Response<LoginResponseBody> response) {

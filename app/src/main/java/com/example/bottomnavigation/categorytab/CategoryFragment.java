@@ -41,11 +41,11 @@ public class CategoryFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
-    private CategoryViewModelFactory categoryViewModelFactory;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private CategoryRemoteDataSource categoryRemoteDataSource = CategoryTabModule.provideCategorySource(apiService);
+    private CategoryViewModelFactory categoryViewModelFactory=CategoryTabModule.provideCategoryViewModelFactory(categoryRemoteDataSource);
 
 
     @Nullable
@@ -61,7 +61,7 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //todo inject
-        categoryViewModelFactory = new CategoryViewModelFactory(categoryRemoteDataSource);
+
         categoryViewModel = new ViewModelProvider(this, categoryViewModelFactory).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");

@@ -7,9 +7,9 @@ import com.example.bottomnavigation.moretab.UserInformationListener;
 
 
 //rename
-public interface LocalUserDataSource {
+public interface UserDataSource {
 
-    //use model
-    void saveInformation(User user , Context context);
-    void getUserInformation(Context context , UserInformationListener userInformationListener);
+
+    void saveUser(User user , Context context);
+    void getUser(Context context , UserInformationListener userInformationListener);
 }

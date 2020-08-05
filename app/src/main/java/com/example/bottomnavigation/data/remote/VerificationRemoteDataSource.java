@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.LoginVerificationDataSource;
+import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.VerificationBody;
 import com.example.bottomnavigation.data.model.VerificationResponseBody;
 
@@ -25,8 +26,9 @@ public class VerificationRemoteDataSource implements LoginVerificationDataSource
 
 
     @Override
-    public void postCode(String number, String androidId, String code, final DataSourceListener<VerificationResponseBody> dataSourceListener) {
-        VerificationBody verification = new VerificationBody(number, androidId, code);
+    public void loginStepTwo(LoginStepTwo loginStepTwo, final DataSourceListener<VerificationResponseBody> dataSourceListener) {
+        VerificationBody verification = new VerificationBody(loginStepTwo.getNumber(),loginStepTwo.getAndroidId(),loginStepTwo.getCode());
+
         apiService.verification(verification).enqueue(new Callback<VerificationResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<VerificationResponseBody> call, @NotNull Response<VerificationResponseBody> response) {

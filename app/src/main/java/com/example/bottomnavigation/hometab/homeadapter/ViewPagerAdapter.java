@@ -53,8 +53,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_layout, container, false);
         ImageView imageView = view.findViewById(R.id.view_pager);
 
-        Uri uri = Uri.parse(AppConstants.baseUrl + list.get(position).getFeatureAvatar().getXxxdpi());
-        Glide.with(context).load(uri).into(imageView);
+//        Uri uri = Uri.parse(AppConstants.baseUrl + list.get(position).getFeatureAvatar().getXxxdpi());
+        Glide.with(context).load(list.get(position).getFeatureAvatar().getXxxdpi()).into(imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

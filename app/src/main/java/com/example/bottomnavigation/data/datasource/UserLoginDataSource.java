@@ -1,9 +1,9 @@
 package com.example.bottomnavigation.data.datasource;
 
 import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOne;
 
 public interface UserLoginDataSource {
-    //model
-    //method name
-    void postNumber(String number ,String androidId,String deviceModel,String deviceOs,DataSourceListener<LoginResponseBody> dataSourceListener);
+
+    void loginStepOne(LoginStepOne loginStepOne, DataSourceListener<LoginResponseBody> dataSourceListener);
 }

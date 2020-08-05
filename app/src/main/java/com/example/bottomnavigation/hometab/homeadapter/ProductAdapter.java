@@ -72,8 +72,8 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public void onBind(final Product product, final Context context) {
             textView.setText(product.getName());
-            Uri uri = Uri.parse(AppConstants.baseUrl+product.getFeatureAvatar().getXxxdpi());
-            Glide.with(context).load(uri).into(imageView);
+//            Uri uri = Uri.parse(AppConstants.baseUrl+product.getFeatureAvatar().getXxxdpi());
+            Glide.with(context).load(product.getFeatureAvatar().getXxxdpi()).into(imageView);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

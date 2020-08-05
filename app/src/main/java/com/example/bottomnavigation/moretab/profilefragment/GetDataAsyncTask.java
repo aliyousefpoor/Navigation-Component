@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.example.bottomnavigation.data.local.database.UserDatabase;
 import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 
 public class GetDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
@@ -34,7 +33,7 @@ public class GetDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
                 String name = userEntity.getName();
                 String date = userEntity.getDate();
                 String gender = userEntity.getGender();
-                userInformationListener.onUserInformation(userEntity);
+                userInformationListener.onCheckUser(userEntity);
 
 
                 info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
@@ -44,7 +43,7 @@ public class GetDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
             }
 
         else {
-            userInformationListener.onUserInformation(null);
+            userInformationListener.onCheckUser(null);
         }
 
         return null;

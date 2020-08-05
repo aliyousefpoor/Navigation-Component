@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.moretab.profilefragment;
+package com.example.bottomnavigation.login;
 
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;

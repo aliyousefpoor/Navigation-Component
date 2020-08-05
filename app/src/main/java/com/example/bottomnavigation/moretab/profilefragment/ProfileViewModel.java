@@ -6,22 +6,21 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.data.repository.IsLoginRepository;
+
 
 public class ProfileViewModel extends ViewModel {
     private static final String TAG = "ProfileViewModel";
 
-    private LoginRepository loginRepository;
+    private IsLoginRepository isLoginRepository;
 
-    public ProfileViewModel(LoginRepository loginRepository){
-        this.loginRepository=loginRepository;
+    public ProfileViewModel(IsLoginRepository isLoginRepository){
+        this.isLoginRepository=isLoginRepository;
     }
 
-//    private MutableLiveData<User> _userLiveData = new MutableLiveData<>();
-//    public LiveData<User> userLiveData = _userLiveData;
 
-    public void userInformation(User user, Context context){
-        loginRepository.saveUser(user , context);
+    public void saveUser(User user, Context context){
+        isLoginRepository.saveUser(user , context);
     }
 
 }
