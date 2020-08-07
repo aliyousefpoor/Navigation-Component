@@ -3,13 +3,13 @@ package com.example.bottomnavigation.data.local;
 import android.content.Context;
 
 
-import com.example.bottomnavigation.data.datasource.UserDataSource;
+import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 import com.example.bottomnavigation.data.local.database.GetDataAsyncTask;
 import com.example.bottomnavigation.data.local.database.UpdateAsyncTask;
 
-public class UserLocaleDataSourceImpl implements UserDataSource {
+public class UserLocaleDataSourceImpl implements UserLocaleDataSource {
 
 
     @Override

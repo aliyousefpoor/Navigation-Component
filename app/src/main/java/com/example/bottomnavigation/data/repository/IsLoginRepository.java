@@ -8,21 +8,17 @@ import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.remote.UserRemoteDataSource;
+import com.example.bottomnavigation.data.remote.UserRemoteDataDataSource;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 
 public class IsLoginRepository {
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
-    private UserRemoteDataSource userRemoteDataSource;
+    private UserRemoteDataDataSource userRemoteDataSource;
 
-    public IsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl,UserRemoteDataSource userRemoteDataSource) {
+    public IsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataDataSource userRemoteDataSource) {
         this.userLocaleDataSourceImpl = userLocaleDataSourceImpl;
         this.userRemoteDataSource = userRemoteDataSource;
     }
-
-//    public IsLoginRepository(UserRemoteDataSource userRemoteDataSource) {
-//        this.userRemoteDataSource = userRemoteDataSource;
-//    }
 
     public void saveUser(User user, Context context) {
         userLocaleDataSourceImpl.saveUser(user, context);
@@ -32,7 +28,7 @@ public class IsLoginRepository {
         userLocaleDataSourceImpl.getUser(context, userInformationListener);
     }
 
-    public void updateProfile(final ProfileUpdate profileUpdate, final Context context, final DataSourceListener<UpdateResponseBody> dataSourceListener){
+    public void updateProfile(final ProfileUpdate profileUpdate, final Context context, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
         userRemoteDataSource.updateProfile(profileUpdate, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
@@ -41,7 +37,7 @@ public class IsLoginRepository {
                 user.setDate(response.getData().getBirthdayDate());
                 user.setName(response.getData().getNickName());
                 user.setToken(profileUpdate.getToken());
-                saveUser(user,context);
+                saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }
 
@@ -50,15 +46,26 @@ public class IsLoginRepository {
                 dataSourceListener.onFailure(throwable);
             }
         });
-
-    }
-    public void getProfile(String token, DataSourceListener<RemoteUser> dataSourceListener){
-        userRemoteDataSource.getProfile(token,dataSourceListener);
-
     }
 
-//    public void saveUserProfile(DataSourceListener< RemoteUser> dataSourceListener){
-//        userLocaleDataSourceImpl.
-//    }
+    public void getProfile(final String token, final Context context, final DataSourceListener<RemoteUser> dataSourceListener) {
+        userRemoteDataSource.getProfile(token, new DataSourceListener<RemoteUser>() {
+            @Override
+            public void onResponse(RemoteUser response) {
+                User user = new User();
+                user.setName(response.getNickName());
+                user.setToken(token);
+                user.setDate(response.getBirthdayDate());
+                user.setGender(response.getGender());
+                user.setUserId(response.getId());
+                saveUser(user, context);
+                dataSourceListener.onResponse(response);
+            }
 
+            @Override
+            public void onFailure(Throwable throwable) {
+                dataSourceListener.onFailure(throwable);
+            }
+        });
+    }
 }

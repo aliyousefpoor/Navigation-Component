@@ -50,8 +50,8 @@ public class ProfileViewModel extends ViewModel {
     }
 
 
-    public void getProfile(String token){
-        isLoginRepository.getProfile(token, new DataSourceListener<RemoteUser>() {
+    public void getProfile(String token,Context context){
+        isLoginRepository.getProfile(token,context, new DataSourceListener<RemoteUser>() {
             @Override
             public void onResponse(RemoteUser response) {
                 _getProfile.postValue(response);
@@ -60,6 +60,7 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onFailure(Throwable throwable) {
                 Log.d(TAG, "onFailure: ");
+
             }
         });
     }

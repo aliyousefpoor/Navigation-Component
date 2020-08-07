@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.moretab.profilefragment;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,12 +34,9 @@ import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
-import com.example.bottomnavigation.data.model.UpdateResponseBody;
-import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.remote.UserRemoteDataSource;
+import com.example.bottomnavigation.data.remote.UserRemoteDataDataSource;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
-import com.example.bottomnavigation.di.AppModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -60,7 +58,7 @@ public class ProfileFragment extends Fragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
-    private UserRemoteDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
+    private UserRemoteDataDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl =LoginModule.provideUserLocaleDataSource();
     private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl,userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
@@ -101,11 +99,17 @@ public class ProfileFragment extends Fragment {
 
         assert userEntity != null;
         profileUpdate.setToken(userEntity.getToken());
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setTitle(R.string.progressDialogTitle);
+        dialog.setMessage(getString(R.string.getData));
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.show();
         Log.d(TAG, "onViewCreated: "+userEntity.getGender()+userEntity.getName());
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
             @Override
             public void onChanged(RemoteUser remoteUser) {
+                dialog.dismiss();
                 name.setText(remoteUser.getNickName());
                 date.setText(remoteUser.getBirthdayDate());
                 String checkGender = remoteUser.getGender();
@@ -128,7 +132,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getProfile(profileUpdate.getToken());
+        profileViewModel.getProfile(profileUpdate.getToken(),getContext());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override

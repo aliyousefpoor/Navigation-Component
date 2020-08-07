@@ -7,7 +7,7 @@ import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 
 
-public interface UserDataSource {
+public interface UserLocaleDataSource {
     void saveUser(User user , Context context);
     void getUser(Context context , UserInformationListener userInformationListener);
 }

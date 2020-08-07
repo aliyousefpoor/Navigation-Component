@@ -13,15 +13,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserRemoteDataSource {
+public class UserRemoteDataDataSource implements com.example.bottomnavigation.data.datasource.UserRemoteDataSource {
     private static final String TAG = "UserRemoteDataSource";
     private ApiService apiService;
 
-    public UserRemoteDataSource(ApiService apiService) {
+    public UserRemoteDataDataSource(ApiService apiService) {
         this.apiService = apiService;
     }
 
-
+    @Override
     public void updateProfile(ProfileUpdate profileUpdate, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
         UpdateProfileBody updateProfileBody = new UpdateProfileBody(profileUpdate.getNickname(), profileUpdate.getDate_of_birth(), profileUpdate.getGender());
         apiService.update("Token "+profileUpdate.getToken(),updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
@@ -36,10 +36,10 @@ public class UserRemoteDataSource {
                 dataSourceListener.onFailure(t);
             }
         });
-
     }
 
-    public void getProfile(String token,final DataSourceListener<RemoteUser> dataSourceListener) {
+    @Override
+    public void getProfile(String token, final DataSourceListener<RemoteUser> dataSourceListener) {
         apiService.getUser("Token "+token).enqueue(new Callback<RemoteUser>() {
             @Override
             public void onResponse(@NotNull Call<RemoteUser> call, @NotNull Response<RemoteUser> response) {
@@ -52,4 +52,5 @@ public class UserRemoteDataSource {
             }
         });
     }
+
 }
