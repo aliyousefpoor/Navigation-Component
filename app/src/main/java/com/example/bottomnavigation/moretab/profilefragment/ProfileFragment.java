@@ -22,19 +22,30 @@ import androidx.annotation.Nullable;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.UserDataSource;
+import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.local.model.UserEntity;
+import com.example.bottomnavigation.data.model.ProfileUpdate;
+import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.remote.UserRemoteDataSource;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.di.AppModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
+import com.example.bottomnavigation.utils.ApiBuilder;
+
 import ir.hamsaa.persiandatepicker.Listener;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.util.PersianCalendar;
+import retrofit2.Retrofit;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -42,20 +53,24 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
 
     private RadioGroup radioSexGroup;
-    private RadioButton radioSexButton;
+    private RadioButton radioSexButton,male,female;
     private EditText name, date;
     private ProfileViewModel profileViewModel;
-    private UserDataSource userLocalDataSource = LoginModule.provideUserDataSource();
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocalDataSource);
+    private UserLocaleDataSourceImpl userLocalDataSource = LoginModule.provideUserLocaleDataSource();
+    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
+    private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
+    private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
+    private UserRemoteDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
     private PersianDatePickerDialog picker;
+
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
-
 
         return view;
     }
@@ -77,25 +92,28 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
-        RadioButton male = view.findViewById(R.id.male);
-        RadioButton female = view.findViewById(R.id.female);
-
-        assert userEntity != null;
+         male = view.findViewById(R.id.male);
+        female = view.findViewById(R.id.female);
+        final ProfileUpdate profileUpdate = new ProfileUpdate();
 
         addListenerOnButton(view);
-        final User user = new User();
-        user.setUserId(userEntity.getUserId());
-        user.setToken(userEntity.getToken());
 
-        name.setText(userEntity.getName());
-        date.setText(userEntity.getDate());
+        assert userEntity != null;
+        profileUpdate.setToken(userEntity.getToken());
 
-        String checkedGender = userEntity.getGender();
-        if (checkedGender.equals("مرد")) {
-            male.setChecked(true);
-        } else if (checkedGender.equals("زن")) {
-            female.setChecked(true);
-        }
+//        final User user = new User();
+//        user.setUserId(userEntity.getUserId());
+//        user.setToken(userEntity.getToken());
+//
+//        name.setText(user.getName());
+//        date.setText(user.getDate());
+//
+//        String checkedGender = user.getGender();
+//        if (checkedGender.equals("Male")) {
+//            male.setChecked(true);
+//        } else if (checkedGender.equals("Female")) {
+//            female.setChecked(true);
+//        }
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -109,11 +127,17 @@ public class ProfileFragment extends Fragment {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setName(name.getText().toString());
-                user.setDate(date.getText().toString());
-                user.setGender(radioSexButton.getText().toString());
 
-                profileViewModel.saveUser(user, getContext());
+                profileUpdate.setNickname(name.getText().toString());
+                profileUpdate.setDate_of_birth(date.getText().toString());
+                if (radioSexButton.getText().equals("مرد")) {
+                    profileUpdate.setGender("Male");
+                } else {
+                    profileUpdate.setGender("Female");
+                }
+
+                profileViewModel.updateProfile(profileUpdate);
+
 
                 Log.d(TAG, "onClick: ");
 
@@ -128,6 +152,7 @@ public class ProfileFragment extends Fragment {
                 cancelAsyncTask.execute();
             }
         });
+
     }
 
     public void addListenerOnButton(final View view) {
@@ -153,6 +178,7 @@ public class ProfileFragment extends Fragment {
                 .setTodayButton("امروز")
                 .setTodayButtonVisible(true)
                 .setMinYear(1300)
+                .setMaxYear(1420)
                 .setActionTextColor(R.color.white)
                 .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
                 .setActionTextColor(Color.GRAY)
@@ -169,8 +195,8 @@ public class ProfileFragment extends Fragment {
 //                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianLongDateAndTime()); //سه‌شنبه  13  اسفند  1398 ساعت 20:10:36
 //                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianMonthName()); //اسفند
                         Log.d(TAG, "onDateSelected: " + persianCalendar.isPersianLeapYear());//false
-
-                        date.setText(persianCalendar.getPersianShortDate());
+                       String persianDate= persianCalendar.getPersianShortDate().replaceAll("/","-");
+                        date.setText(persianDate);
                     }
 
                     @Override
@@ -182,4 +208,6 @@ public class ProfileFragment extends Fragment {
 
         picker.show();
     }
+
+
 }

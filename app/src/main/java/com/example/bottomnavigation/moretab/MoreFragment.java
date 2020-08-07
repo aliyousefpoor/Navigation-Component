@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.UserDataSource;
+import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
@@ -47,8 +47,8 @@ public class MoreFragment extends Fragment {
     private MoreItemListener moreItemListener;
     private VerificationCodeListener verificationCodeListener;
     private MoreViewModel moreViewModel;
-    private UserDataSource userDataSource = LoginModule.provideUserDataSource();
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userDataSource);
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl);
     private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(isLoginRepository);
 
     private Bundle bundle = new Bundle();

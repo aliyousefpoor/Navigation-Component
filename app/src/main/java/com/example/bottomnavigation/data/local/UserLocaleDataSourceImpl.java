@@ -3,12 +3,15 @@ package com.example.bottomnavigation.data.local;
 import android.content.Context;
 
 
+import com.example.bottomnavigation.data.datasource.DataSourceListener;
+import com.example.bottomnavigation.data.datasource.UserDataSource;
+import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.moretab.UserInformationListener;
 import com.example.bottomnavigation.data.local.database.GetDataAsyncTask;
 import com.example.bottomnavigation.data.local.database.UpdateAsyncTask;
 
-public class UserDataSource implements com.example.bottomnavigation.data.datasource.UserDataSource {
+public class UserLocaleDataSourceImpl implements UserDataSource {
 
 
     @Override
@@ -22,4 +25,5 @@ public class UserDataSource implements com.example.bottomnavigation.data.datasou
         GetDataAsyncTask getDataAsyncTask = new GetDataAsyncTask(context,userInformationListener);
         getDataAsyncTask.execute();
     }
+
 }
