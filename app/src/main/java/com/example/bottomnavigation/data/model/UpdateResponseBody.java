@@ -15,7 +15,7 @@ public class UpdateResponseBody {
     @SerializedName("data")
     @Expose
 
-    private List<Data> data;
+    private Data data;
 
     public String getError() {
         return error;
@@ -33,11 +33,11 @@ public class UpdateResponseBody {
         this.message = message;
     }
 
-    public List<Data> getData() {
+    public Data getData() {
         return data;
     }
 
-    public void setData(List<Data> data) {
+    public void setData(Data data) {
         this.data = data;
     }
 }

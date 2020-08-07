@@ -22,7 +22,7 @@ public class CancelAsyncTask extends AsyncTask<UserEntity,Void,UserEntity> {
         UserDatabase dataBase = UserDatabase.getInstance(context);
         UserEntity userList = dataBase.userDao().getUser();
         StringBuilder info = new StringBuilder(" ");
-//        for (User user:userList){
+
             int id = userList.getUserId();
             String token = userList.getToken();
             String name = userList.getName();

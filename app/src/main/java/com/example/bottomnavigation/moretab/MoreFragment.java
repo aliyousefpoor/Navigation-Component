@@ -22,19 +22,26 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
+import com.example.bottomnavigation.data.remote.UserRemoteDataSource;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginDialogFragment;
 import com.example.bottomnavigation.login.VerificationCodeListener;
+import com.example.bottomnavigation.utils.ApiBuilder;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 
 public class MoreFragment extends Fragment {
@@ -47,8 +54,12 @@ public class MoreFragment extends Fragment {
     private MoreItemListener moreItemListener;
     private VerificationCodeListener verificationCodeListener;
     private MoreViewModel moreViewModel;
+    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
+    private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
+    private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
+    private UserRemoteDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl);
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(isLoginRepository);
 
     private Bundle bundle = new Bundle();

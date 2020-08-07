@@ -3,15 +3,15 @@ package com.example.bottomnavigation.data.local.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
 public class UserEntity implements Parcelable {
-    @PrimaryKey()
+    @PrimaryKey
     private int userId;
-
     @ColumnInfo(name = "token")
     private String token;
 

@@ -8,28 +8,28 @@ import java.util.Date;
 public class Data {
     @SerializedName("nickname")
     @Expose
-private String nickName;
+    private String nickName;
     @SerializedName("email")
     @Expose
-private String email;
+    private String email;
     @SerializedName("mobile")
     @Expose
-private String mobile;
+    private String mobile;
     @SerializedName("avatar")
     @Expose
-private Object avatar;
+    private Object avatar;
     @SerializedName("gender")
     @Expose
-private String gender;
+    private String gender;
     @SerializedName("date_of_birth")
     @Expose
-private String birthdayDate;
+    private String birthdayDate;
     @SerializedName("is_official")
     @Expose
-private String isOfficial;
+    private String isOfficial;
     @SerializedName("limit_age")
     @Expose
-private Integer limitAge;
+    private Integer limitAge;
 
     public String getNickName() {
         return nickName;

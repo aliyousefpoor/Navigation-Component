@@ -28,6 +28,9 @@ public interface UserDao {
     @Update
     void updateUser(UserEntity user);
 
+    @Query("UPDATE user SET name=:nickName,date=:date,gender=:gender WHERE token=:token")
+    void updateProfile(String nickName,String token,String date,String gender);
+
     @Delete
     void deleteUser(UserEntity user);
 

@@ -10,10 +10,10 @@ import java.util.List;
 public class RemoteUser {
     @SerializedName("credit")
     @Expose
-    private List<Credit> credits = null;
+    private Credit credits = null;
     @SerializedName("magic_credit")
     @Expose
-    private List<Credit> magic_credits = null;
+    private Credit magic_credits = null;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -48,21 +48,21 @@ public class RemoteUser {
     private String hasSuperCollection;
     @SerializedName("isp_data")
     @Expose
-    private List<IspData> ispData;
+    private IspData ispData;
 
-    public List<Credit> getCredits() {
+    public Credit getCredits() {
         return credits;
     }
 
-    public void setCredits(List<Credit> credits) {
+    public void setCredits(Credit credits) {
         this.credits = credits;
     }
 
-    public List<Credit> getMagic_credits() {
+    public Credit getMagic_credits() {
         return magic_credits;
     }
 
-    public void setMagic_credits(List<Credit> magic_credits) {
+    public void setMagic_credits(Credit magic_credits) {
         this.magic_credits = magic_credits;
     }
 
@@ -146,11 +146,11 @@ public class RemoteUser {
         this.hasSuperCollection = hasSuperCollection;
     }
 
-    public List<IspData> getIspData() {
+    public IspData getIspData() {
         return ispData;
     }
 
-    public void setIspData(List<IspData> ispData) {
+    public void setIspData(IspData ispData) {
         this.ispData = ispData;
     }
 }

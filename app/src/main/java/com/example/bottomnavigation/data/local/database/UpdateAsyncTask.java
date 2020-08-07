@@ -17,7 +17,7 @@ public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private User user;
     @SuppressLint("StaticFieldLeak")
     private Context context;
-    private UserEntity userEntity = DatabaseModule.provideUserEntity();
+
 
 
     public UpdateAsyncTask(User user , Context context) {
@@ -28,12 +28,15 @@ public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     @Override
     protected UserEntity doInBackground(UserEntity... users) {
         UserDatabase dataBase = UserDatabase.getInstance(context);
-        userEntity.setUserId(user.getUserId());
-        userEntity.setToken(user.getToken());
-        userEntity.setName(user.getName());
-        userEntity.setDate(user.getDate());
-        userEntity.setGender(user.getGender());
-        dataBase.userDao().updateUser(userEntity);
+
+//        userEntity.setUserId(user.getUserId());
+//        userEntity.setToken(user.getToken());
+//        userEntity.setName(user.getName());
+//        userEntity.setDate(user.getDate());
+//        userEntity.setGender(user.getGender());
+//        dataBase.userDao().updateUser(userEntity);
+
+        dataBase.userDao().updateProfile(user.getName(),user.getToken(),user.getDate(),user.getGender());
 
         return null;
     }

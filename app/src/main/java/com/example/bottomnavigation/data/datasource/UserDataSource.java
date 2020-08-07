@@ -8,8 +8,6 @@ import com.example.bottomnavigation.moretab.UserInformationListener;
 
 
 public interface UserDataSource {
-
-
     void saveUser(User user , Context context);
     void getUser(Context context , UserInformationListener userInformationListener);
 }

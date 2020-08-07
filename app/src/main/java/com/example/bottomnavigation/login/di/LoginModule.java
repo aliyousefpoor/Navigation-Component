@@ -39,15 +39,15 @@ public class LoginModule {
     }
 
 
-    public static IsLoginRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl) {
-        return new IsLoginRepository(userLocaleDataSourceImpl);
+    public static IsLoginRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl,UserRemoteDataSource userRemoteDataSource) {
+        return new IsLoginRepository(userLocaleDataSourceImpl,userRemoteDataSource);
     }
 
     public static UserRemoteDataSource provideUserRemoteDataSource(ApiService apiService){
         return new UserRemoteDataSource(apiService);
     }
 
-    public static  IsLoginRepository provideIsLoginRepository(UserRemoteDataSource userRemoteDataSource){
-        return new IsLoginRepository(userRemoteDataSource);
-    }
+//    public static  IsLoginRepository provideIsLoginRepository(UserRemoteDataSource userRemoteDataSource){
+//        return new IsLoginRepository(userRemoteDataSource);
+//    }
 }

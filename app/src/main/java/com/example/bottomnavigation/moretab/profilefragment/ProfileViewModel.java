@@ -32,14 +32,11 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<RemoteUser> _getProfile = new MutableLiveData<>();
     public MutableLiveData<RemoteUser> getUserProfile = _getProfile;
 
-    public void saveUser(User user, Context context){
-        isLoginRepository.saveUser(user , context);
-    }
 
 
 
-    public void updateProfile(ProfileUpdate profileUpdate){
-        isLoginRepository.updateProfile(profileUpdate, new DataSourceListener<UpdateResponseBody>() {
+    public void updateProfile(ProfileUpdate profileUpdate,Context context){
+        isLoginRepository.updateProfile(profileUpdate,context, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
                 _updateUserProfile.postValue(response);
@@ -53,11 +50,11 @@ public class ProfileViewModel extends ViewModel {
     }
 
 
-    public void getProfile(String token,Context context){
-        isLoginRepository.getProfile(token ,context, new DataSourceListener<RemoteUser>() {
+    public void getProfile(String token){
+        isLoginRepository.getProfile(token, new DataSourceListener<RemoteUser>() {
             @Override
             public void onResponse(RemoteUser response) {
-                _getProfile.setValue(response);
+                _getProfile.postValue(response);
             }
 
             @Override

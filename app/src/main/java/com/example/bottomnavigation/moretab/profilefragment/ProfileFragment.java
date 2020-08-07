@@ -33,6 +33,7 @@ import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
+import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSource;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
@@ -56,12 +57,12 @@ public class ProfileFragment extends Fragment {
     private RadioButton radioSexButton,male,female;
     private EditText name, date;
     private ProfileViewModel profileViewModel;
-    private UserLocaleDataSourceImpl userLocalDataSource = LoginModule.provideUserLocaleDataSource();
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userRemoteDataSource);
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl =LoginModule.provideUserLocaleDataSource();
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl,userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
     private PersianDatePickerDialog picker;
 
@@ -100,20 +101,24 @@ public class ProfileFragment extends Fragment {
 
         assert userEntity != null;
         profileUpdate.setToken(userEntity.getToken());
+        Log.d(TAG, "onViewCreated: "+userEntity.getGender()+userEntity.getName());
 
-//        final User user = new User();
-//        user.setUserId(userEntity.getUserId());
-//        user.setToken(userEntity.getToken());
-//
-//        name.setText(user.getName());
-//        date.setText(user.getDate());
-//
-//        String checkedGender = user.getGender();
-//        if (checkedGender.equals("Male")) {
-//            male.setChecked(true);
-//        } else if (checkedGender.equals("Female")) {
-//            female.setChecked(true);
-//        }
+        profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
+            @Override
+            public void onChanged(RemoteUser remoteUser) {
+                name.setText(remoteUser.getNickName());
+                date.setText(remoteUser.getBirthdayDate());
+                String checkGender = remoteUser.getGender();
+                if (checkGender.equals("Male")){
+                    male.setChecked(true);
+                }
+                else {
+                    female.setChecked(true);
+                }
+            }
+        });
+
+
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +128,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profileViewModel.getProfile(profileUpdate.getToken());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +142,7 @@ public class ProfileFragment extends Fragment {
                     profileUpdate.setGender("Female");
                 }
 
-                profileViewModel.updateProfile(profileUpdate);
-
+                profileViewModel.updateProfile(profileUpdate,getContext());
 
                 Log.d(TAG, "onClick: ");
 
@@ -203,11 +208,9 @@ public class ProfileFragment extends Fragment {
                     public void onDismissed() {
 
                     }
-
                 });
 
         picker.show();
     }
-
 
 }
