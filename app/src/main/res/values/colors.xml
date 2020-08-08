@@ -11,4 +11,7 @@
     <color name="black">#111</color>
     <color name="gray">#686666</color>
     <color name="blue">#0676ED</color>
+    <color name="red">#E12828</color>
+    <color name="gray2">#C5C4C4</color>
+
 </resources>

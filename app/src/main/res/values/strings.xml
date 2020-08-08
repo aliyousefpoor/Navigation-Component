@@ -10,7 +10,7 @@
     <string name="name">نام و نام خانوادگی</string>
     <string name="date">تاریخ تولد</string>
     <string name="change">ثبت تغییرات</string>
-    <string name="cancle">انصراف</string>
+    <string name="cancel">انصراف</string>
     <string name="male">مرد</string>
     <string name="female">زن</string>
     <string name="appName">MyApp</string>
@@ -25,4 +25,7 @@
     <string name="progressDialogTitle">Loading</string>
     <string name="loadingProgress">webPage_being_loaded</string>
     <string name="getData">Get Data From Server</string>
+    <string name="chooseFromGallery">Choose From Gallery</string>
+    <string name="openCamera">Open Camera</string>
+    <string name="cancelChoosePhoto">Cancel</string>
 </resources>

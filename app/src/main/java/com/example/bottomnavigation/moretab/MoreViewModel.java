@@ -33,8 +33,5 @@ public class MoreViewModel extends ViewModel {
                }
             }
         });
-
     }
-
-
 }

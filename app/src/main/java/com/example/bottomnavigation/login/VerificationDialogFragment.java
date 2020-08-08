@@ -65,7 +65,7 @@ public class VerificationDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.second_dialog, container, false);
+        View view = inflater.inflate(R.layout.verification_dialog_fragment, container, false);
         return view;
 
     }

@@ -1,7 +1,14 @@
 package com.example.bottomnavigation.moretab.profilefragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -22,10 +30,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.alexzh.circleimageview.CircleImageView;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
@@ -46,24 +58,28 @@ import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.util.PersianCalendar;
 import retrofit2.Retrofit;
 
+import static android.app.Activity.RESULT_OK;
+
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
 
     private RadioGroup radioSexGroup;
-    private RadioButton radioSexButton,male,female;
+    private RadioButton radioSexButton, male, female;
     private EditText name, date;
+    private ImageView avatar;
     private ProfileViewModel profileViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
-    private UserLocaleDataSourceImpl userLocaleDataSourceImpl =LoginModule.provideUserLocaleDataSource();
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl,userRemoteDataSource);
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
+    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
     private PersianDatePickerDialog picker;
-
 
 
     @Nullable
@@ -91,8 +107,10 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
-         male = view.findViewById(R.id.male);
+        male = view.findViewById(R.id.male);
         female = view.findViewById(R.id.female);
+        avatar = view.findViewById(R.id.avatar);
+
         final ProfileUpdate profileUpdate = new ProfileUpdate();
 
         addListenerOnButton(view);
@@ -104,7 +122,7 @@ public class ProfileFragment extends Fragment {
         dialog.setMessage(getString(R.string.getData));
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.show();
-        Log.d(TAG, "onViewCreated: "+userEntity.getGender()+userEntity.getName());
+        Log.d(TAG, "onViewCreated: " + userEntity.getGender() + userEntity.getName());
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
             @Override
@@ -113,16 +131,23 @@ public class ProfileFragment extends Fragment {
                 name.setText(remoteUser.getNickName());
                 date.setText(remoteUser.getBirthdayDate());
                 String checkGender = remoteUser.getGender();
-                if (checkGender.equals("Male")){
+                if (checkGender.equals("Male")) {
                     male.setChecked(true);
-                }
-                else {
+                } else {
                     female.setChecked(true);
                 }
             }
         });
 
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                AvatarDialogFragment avatarDialogFragment = new AvatarDialogFragment();
+//                avatarDialogFragment.show(getParentFragmentManager(),"AvatarDialogFragment");
+                showDialog();
 
+            }
+        });
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +157,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getProfile(profileUpdate.getToken(),getContext());
+        profileViewModel.getProfile(profileUpdate.getToken(), getContext());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +171,7 @@ public class ProfileFragment extends Fragment {
                     profileUpdate.setGender("Female");
                 }
 
-                profileViewModel.updateProfile(profileUpdate,getContext());
+                profileViewModel.updateProfile(profileUpdate, getContext());
 
                 Log.d(TAG, "onClick: ");
 
@@ -159,8 +184,10 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 CancelAsyncTask cancelAsyncTask = new CancelAsyncTask(getContext());
                 cancelAsyncTask.execute();
+
             }
         });
+
 
     }
 
@@ -204,7 +231,7 @@ public class ProfileFragment extends Fragment {
 //                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianLongDateAndTime()); //سه‌شنبه  13  اسفند  1398 ساعت 20:10:36
 //                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianMonthName()); //اسفند
                         Log.d(TAG, "onDateSelected: " + persianCalendar.isPersianLeapYear());//false
-                       String persianDate= persianCalendar.getPersianShortDate().replaceAll("/","-");
+                        String persianDate = persianCalendar.getPersianShortDate().replaceAll("/", "-");
                         date.setText(persianDate);
                     }
 
@@ -217,4 +244,71 @@ public class ProfileFragment extends Fragment {
         picker.show();
     }
 
+    public void showDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Choose Photo");
+        builder.setMessage("Choose Photo");
+
+        builder.setPositiveButton(R.string.chooseFromGallery, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    } else {
+                        pickImageFromGallery();
+                    }
+                } else {
+
+                }
+            }
+        });
+
+        builder.setNegativeButton(R.string.openCamera, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setNeutralButton(R.string.cancelChoosePhoto, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void pickImageFromGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+        galleryIntent.setType("image/*");
+        if (galleryIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(galleryIntent, IMAGE_PICK_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    Toast.makeText(getContext(), "Permission Denied... !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            avatar.setImageURI(data.getData());
+        }
+
+    }
 }
