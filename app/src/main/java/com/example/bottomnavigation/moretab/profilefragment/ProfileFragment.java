@@ -2,13 +2,13 @@ package com.example.bottomnavigation.moretab.profilefragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import android.widget.EditText;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -65,7 +68,7 @@ public class ProfileFragment extends Fragment {
     private static final int IMAGE_PICK_CODE = 100;
     private static final int GALLEY_PERMISSION_CODE = 101;
     private static final int IMAGE_CAPTURE_CODE = 200;
-    private static final int CAMERA_PERMISSION_CODE =201;
+    private static final int CAMERA_PERMISSION_CODE = 201;
 
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton, male, female;
@@ -245,14 +248,23 @@ public class ProfileFragment extends Fragment {
     }
 
     public void showDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Choose Photo");
-        builder.setMessage("Choose Photo");
+        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.alert_dialog_fragment);
+        dialog.setCanceledOnTouchOutside(true);
 
-        builder.setPositiveButton(R.string.chooseFromGallery, new DialogInterface.OnClickListener() {
+        TextView gallery, camera, cancel;
+        gallery = dialog.findViewById(R.id.gallery);
+        camera = dialog.findViewById(R.id.camera);
+        cancel = dialog.findViewById(R.id.cancel);
+
+        gallery.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, GALLEY_PERMISSION_CODE);
@@ -262,12 +274,16 @@ public class ProfileFragment extends Fragment {
                 } else {
 
                 }
+                dialog.dismiss();
             }
+
+
         });
 
-        builder.setNegativeButton(R.string.openCamera, new DialogInterface.OnClickListener() {
+        camera.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
                             || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -280,18 +296,22 @@ public class ProfileFragment extends Fragment {
                 } else {
 
                 }
-            }
-        });
-
-        builder.setNeutralButton(R.string.cancelChoosePhoto, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        AlertDialog dialog = builder.create();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+
     }
 
 
@@ -305,13 +325,13 @@ public class ProfileFragment extends Fragment {
 
     private void openCamera() {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE,"New Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION,"From the Camera");
-        imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
+        imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-        startActivityForResult(cameraIntent,IMAGE_CAPTURE_CODE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
     }
 
     @Override
@@ -324,11 +344,10 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "Permission Denied... !", Toast.LENGTH_SHORT).show();
                 }
             }
-            case CAMERA_PERMISSION_CODE:{
-                if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            case CAMERA_PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "Permission Denied... !", Toast.LENGTH_SHORT).show();
 
                 }
@@ -340,8 +359,7 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             avatar.setImageURI(data.getData());
-        }
-        else if (resultCode == RESULT_OK && requestCode==IMAGE_CAPTURE_CODE){
+        } else if (resultCode == RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
             avatar.setImageURI(imageUri);
         }
     }
