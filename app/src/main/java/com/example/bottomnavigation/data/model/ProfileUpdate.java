@@ -42,4 +42,6 @@ public class ProfileUpdate {
     public void setToken(String token) {
         this.token = token;
     }
+
+
 }

@@ -6,10 +6,12 @@ public class UpdateProfileBody {
     private String date_of_birth;
     private String gender;
 
+
     public UpdateProfileBody(String nickname, String date_of_birth, String gender){
         this.nickname=nickname;
         this.date_of_birth=date_of_birth;
         this.gender=gender;
+
     }
 
     public String getNickname() {
@@ -35,4 +37,6 @@ public class UpdateProfileBody {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+
 }

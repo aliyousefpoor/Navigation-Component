@@ -23,7 +23,8 @@ public class UserRemoteDataDataSource implements com.example.bottomnavigation.da
 
     @Override
     public void updateProfile(ProfileUpdate profileUpdate, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
-        UpdateProfileBody updateProfileBody = new UpdateProfileBody(profileUpdate.getNickname(), profileUpdate.getDate_of_birth(), profileUpdate.getGender());
+        UpdateProfileBody updateProfileBody = new UpdateProfileBody(profileUpdate.getNickname(),
+                profileUpdate.getDate_of_birth(), profileUpdate.getGender());
         apiService.update("Token "+profileUpdate.getToken(),updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {

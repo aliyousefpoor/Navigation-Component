@@ -3,15 +3,16 @@ package com.example.bottomnavigation.moretab.profilefragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +32,10 @@ import androidx.annotation.Nullable;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.alexzh.circleimageview.CircleImageView;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
@@ -64,13 +62,16 @@ import static android.app.Activity.RESULT_OK;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
+    private static final int IMAGE_PICK_CODE = 100;
+    private static final int GALLEY_PERMISSION_CODE = 101;
+    private static final int IMAGE_CAPTURE_CODE = 200;
+    private static final int CAMERA_PERMISSION_CODE =201;
 
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton, male, female;
     private EditText name, date;
     private ImageView avatar;
+    private Uri imageUri;
     private ProfileViewModel profileViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -130,6 +131,7 @@ public class ProfileFragment extends Fragment {
                 dialog.dismiss();
                 name.setText(remoteUser.getNickName());
                 date.setText(remoteUser.getBirthdayDate());
+
                 String checkGender = remoteUser.getGender();
                 if (checkGender.equals("Male")) {
                     male.setChecked(true);
@@ -142,8 +144,6 @@ public class ProfileFragment extends Fragment {
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AvatarDialogFragment avatarDialogFragment = new AvatarDialogFragment();
-//                avatarDialogFragment.show(getParentFragmentManager(),"AvatarDialogFragment");
                 showDialog();
 
             }
@@ -255,7 +255,7 @@ public class ProfileFragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
+                        requestPermissions(permissions, GALLEY_PERMISSION_CODE);
                     } else {
                         pickImageFromGallery();
                     }
@@ -268,7 +268,18 @@ public class ProfileFragment extends Fragment {
         builder.setNegativeButton(R.string.openCamera, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
+                            || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_DENIED) {
+                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, CAMERA_PERMISSION_CODE);
+                    } else {
+                        openCamera();
+                    }
+                } else {
 
+                }
             }
         });
 
@@ -283,6 +294,7 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
+
     private void pickImageFromGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
@@ -291,14 +303,34 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void openCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE,"New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION,"From the Camera");
+        imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        startActivityForResult(cameraIntent,IMAGE_CAPTURE_CODE);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_CODE: {
+            case GALLEY_PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromGallery();
                 } else {
                     Toast.makeText(getContext(), "Permission Denied... !", Toast.LENGTH_SHORT).show();
+                }
+            }
+            case CAMERA_PERMISSION_CODE:{
+                if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    openCamera();
+                }
+                else {
+                    Toast.makeText(getContext(), "Permission Denied... !", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }
@@ -309,6 +341,8 @@ public class ProfileFragment extends Fragment {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             avatar.setImageURI(data.getData());
         }
-
+        else if (resultCode == RESULT_OK && requestCode==IMAGE_CAPTURE_CODE){
+            avatar.setImageURI(imageUri);
+        }
     }
 }
