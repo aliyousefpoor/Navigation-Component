@@ -28,7 +28,7 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
-import com.example.bottomnavigation.data.remote.UserRemoteDataDataSource;
+import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
@@ -50,14 +50,13 @@ public class MoreFragment extends Fragment {
     NavController navController;
     RecyclerView recyclerView;
     View view;
-    Button button;
     private MoreItemListener moreItemListener;
     private VerificationCodeListener verificationCodeListener;
     private MoreViewModel moreViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
-    private UserRemoteDataDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
+    private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
     private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(isLoginRepository);
@@ -83,7 +82,6 @@ public class MoreFragment extends Fragment {
 
 
         recyclerView = view.findViewById(R.id.recycler_view);
-        button = view.findViewById(R.id.btn);
         navController = Navigation.findNavController(view);
 
         List<MoreModel> moreList = fill_with_Data();
@@ -95,17 +93,6 @@ public class MoreFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("FragmentLiveDataObserve")
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-
 
         moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<UserEntity>() {
             @Override

@@ -5,6 +5,7 @@ public class UpdateProfileBody {
     private String nickname;
     private String date_of_birth;
     private String gender;
+    private Object avatar;
 
 
     public UpdateProfileBody(String nickname, String date_of_birth, String gender){
@@ -38,5 +39,11 @@ public class UpdateProfileBody {
         this.gender = gender;
     }
 
+    public Object getAvatar() {
+        return avatar;
+    }
 
+    public void setAvatar(Object avatar) {
+        this.avatar = avatar;
+    }
 }

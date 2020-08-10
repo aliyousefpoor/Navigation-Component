@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 public class AppConstants {
     public static String baseUrl="https://api.vasapi.click/";
-
+    public static String profileImageUrl="https://api.vasapi.click/16/";
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

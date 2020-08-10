@@ -12,11 +12,15 @@ import com.example.bottomnavigation.data.model.VerificationBody;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 
 public interface ApiService {
@@ -27,5 +31,6 @@ public interface ApiService {
     @POST("mobile_login_step2/16")Call<VerificationResponseBody> verification(@Body VerificationBody verification);
     @GET("profile")Call<RemoteUser> getUser(@Header("Authorization") String token);
     @POST("profile")Call<UpdateResponseBody> update(@Header("Authorization") String token, @Body UpdateProfileBody updateProfileBody);
-
+    @Multipart
+    @POST("profile")Call<UpdateResponseBody> updateImage(@Part MultipartBody.Part avatar);
 }

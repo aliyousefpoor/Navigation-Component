@@ -3,7 +3,7 @@ package com.example.bottomnavigation.login.di;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.remote.LoginRemoteDataSource;
-import com.example.bottomnavigation.data.remote.UserRemoteDataDataSource;
+import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.remote.VerificationRemoteDataSource;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
 import com.example.bottomnavigation.data.repository.LoginRepository;
@@ -39,12 +39,12 @@ public class LoginModule {
     }
 
 
-    public static IsLoginRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataDataSource userRemoteDataSource) {
+    public static IsLoginRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
         return new IsLoginRepository(userLocaleDataSourceImpl,userRemoteDataSource);
     }
 
-    public static UserRemoteDataDataSource provideUserRemoteDataSource(ApiService apiService){
-        return new UserRemoteDataDataSource(apiService);
+    public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService){
+        return new UserRemoteDataSourceImpl(apiService);
     }
 
 //    public static  IsLoginRepository provideIsLoginRepository(UserRemoteDataSource userRemoteDataSource){

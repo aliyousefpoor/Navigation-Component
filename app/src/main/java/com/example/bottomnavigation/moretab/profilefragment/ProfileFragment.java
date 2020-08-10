@@ -39,6 +39,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
@@ -47,16 +48,22 @@ import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
-import com.example.bottomnavigation.data.remote.UserRemoteDataDataSource;
+import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.repository.IsLoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
+import java.io.File;
+import java.util.Objects;
+
 import ir.hamsaa.persiandatepicker.Listener;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.util.PersianCalendar;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
@@ -74,12 +81,12 @@ public class ProfileFragment extends Fragment {
     private RadioButton radioSexButton, male, female;
     private EditText name, date;
     private ImageView avatar;
-    private Uri imageUri;
+    private Uri imageUri, image;
     private ProfileViewModel profileViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
-    private UserRemoteDataDataSource userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
+    private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
     private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
@@ -119,13 +126,15 @@ public class ProfileFragment extends Fragment {
 
         addListenerOnButton(view);
 
-        assert userEntity != null;
         profileUpdate.setToken(userEntity.getToken());
+
+
         final ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setTitle(R.string.progressDialogTitle);
         dialog.setMessage(getString(R.string.getData));
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.show();
+
         Log.d(TAG, "onViewCreated: " + userEntity.getGender() + userEntity.getName());
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
@@ -134,6 +143,7 @@ public class ProfileFragment extends Fragment {
                 dialog.dismiss();
                 name.setText(remoteUser.getNickName());
                 date.setText(remoteUser.getBirthdayDate());
+                Glide.with(getContext()).load(remoteUser.getAvatar()).into(avatar);
 
                 String checkGender = remoteUser.getGender();
                 if (checkGender.equals("Male")) {
@@ -162,6 +172,15 @@ public class ProfileFragment extends Fragment {
 
         profileViewModel.getProfile(profileUpdate.getToken(), getContext());
 
+//        File file = null;
+//        final MultipartBody.Part requestImage;
+//        if (file == null) {
+//            file = new File(String.valueOf(image));
+//        }
+//
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//        requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
+//
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +194,7 @@ public class ProfileFragment extends Fragment {
                 }
 
                 profileViewModel.updateProfile(profileUpdate, getContext());
-
+//                profileViewModel.updateImage(requestImage);
                 Log.d(TAG, "onClick: ");
 
             }
@@ -250,13 +269,13 @@ public class ProfileFragment extends Fragment {
     public void showDialog() {
         final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.alert_dialog_fragment);
+        dialog.setContentView(R.layout.avatar_dialog_fragment);
         dialog.setCanceledOnTouchOutside(true);
 
-        TextView gallery, camera, cancel;
+        ImageView gallery, camera, remove;
         gallery = dialog.findViewById(R.id.gallery);
         camera = dialog.findViewById(R.id.camera);
-        cancel = dialog.findViewById(R.id.cancel);
+        remove = dialog.findViewById(R.id.remove);
 
         gallery.setOnClickListener(new View.OnClickListener() {
 
@@ -270,6 +289,7 @@ public class ProfileFragment extends Fragment {
                         requestPermissions(permissions, GALLEY_PERMISSION_CODE);
                     } else {
                         pickImageFromGallery();
+
                     }
                 } else {
 
@@ -300,7 +320,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
+        remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -357,10 +377,25 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            updateProfileImage();
             avatar.setImageURI(data.getData());
+            image = data.getData();
         } else if (resultCode == RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
+            updateProfileImage();
             avatar.setImageURI(imageUri);
+            image = imageUri;
         }
+
+
+    }
+
+    public void updateProfileImage() {
+        File file = null;
+        if (file == null) {
+            file = new File(Objects.requireNonNull(image.getPath()));
+        }
+        profileViewModel.updateImage(file);
     }
 }

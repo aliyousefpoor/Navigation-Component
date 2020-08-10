@@ -8,14 +8,19 @@ import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.remote.UserRemoteDataDataSource;
+import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.moretab.UserInformationListener;
+
+import java.io.File;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class IsLoginRepository {
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
-    private UserRemoteDataDataSource userRemoteDataSource;
+    private UserRemoteDataSourceImpl userRemoteDataSource;
 
-    public IsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataDataSource userRemoteDataSource) {
+    public IsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
         this.userLocaleDataSourceImpl = userLocaleDataSourceImpl;
         this.userRemoteDataSource = userRemoteDataSource;
     }
@@ -67,5 +72,9 @@ public class IsLoginRepository {
                 dataSourceListener.onFailure(throwable);
             }
         });
+    }
+
+    public void updateImage(File file, DataSourceListener<UpdateResponseBody> dataSourceListener){
+        userRemoteDataSource.updateImage(file,dataSourceListener);
     }
 }
