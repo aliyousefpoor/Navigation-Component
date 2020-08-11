@@ -2,6 +2,8 @@ package com.example.bottomnavigation.di;
 
 import com.example.bottomnavigation.utils.AppConstants;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -21,7 +23,7 @@ public class AppModule {
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder().baseUrl(AppConstants.baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+                    .addConverterFactory(GsonConverterFactory.create()).client(httpClient.connectTimeout(90, TimeUnit.SECONDS).readTimeout(90, TimeUnit.SECONDS) .writeTimeout(90, TimeUnit.SECONDS).build()).build();
         }
         return retrofit;
     }

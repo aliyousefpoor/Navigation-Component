@@ -1,5 +1,7 @@
 package com.example.bottomnavigation.data.remote;
 
+import android.util.Log;
+
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.UserRemoteDataSource;
@@ -51,6 +53,7 @@ public class UserRemoteDataSourceImpl implements UserRemoteDataSource {
             @Override
             public void onResponse(@NotNull Call<RemoteUser> call, @NotNull Response<RemoteUser> response) {
                 dataSourceListener.onResponse(response.body());
+
             }
 
             @Override
@@ -61,20 +64,22 @@ public class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     @Override
-    public void updateImage(File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
+    public void updateImage(String token ,File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
 
-        apiService.updateImage(requestImage).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.updateImage("Token " + token,requestImage).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
+
             }
 
             @Override
             public void onFailure(@NotNull Call<UpdateResponseBody> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
+                Log.d(TAG, "onFailure: updateImage");
             }
         });
     }

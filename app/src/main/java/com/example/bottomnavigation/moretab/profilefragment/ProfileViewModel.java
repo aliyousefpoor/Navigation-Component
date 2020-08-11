@@ -16,6 +16,8 @@ import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
 import java.io.File;
 
+import okhttp3.RequestBody;
+
 public class ProfileViewModel extends ViewModel {
     private static final String TAG = "ProfileViewModel";
 
@@ -64,11 +66,11 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
-    public void updateImage(File file){
-        isLoginRepository.updateImage(file, new DataSourceListener<UpdateResponseBody>() {
+    public void updateImage(String token ,File file){
+        isLoginRepository.updateImage(token ,file, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
-                Log.d(TAG, "onResponse: "+response.getData().getNickName());
+                Log.d(TAG, "onResponse: "+response);
             }
 
             @Override

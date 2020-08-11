@@ -32,5 +32,5 @@ public interface ApiService {
     @GET("profile")Call<RemoteUser> getUser(@Header("Authorization") String token);
     @POST("profile")Call<UpdateResponseBody> update(@Header("Authorization") String token, @Body UpdateProfileBody updateProfileBody);
     @Multipart
-    @POST("profile")Call<UpdateResponseBody> updateImage(@Part MultipartBody.Part avatar);
+    @POST("profile")Call<UpdateResponseBody> updateImage(@Header("Authorization") String token,@Part MultipartBody.Part avatar);
 }

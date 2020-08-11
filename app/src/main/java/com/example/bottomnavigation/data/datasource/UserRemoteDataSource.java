@@ -12,5 +12,5 @@ import okhttp3.RequestBody;
 public interface UserRemoteDataSource {
     void updateProfile(ProfileUpdate profileUpdate, DataSourceListener<UpdateResponseBody> dataSourceListener);
     void getProfile(String token, DataSourceListener<RemoteUser> dataSourceListener);
-    void updateImage(File file, DataSourceListener<UpdateResponseBody> dataSourceListener);
+    void updateImage(String token ,File file, DataSourceListener<UpdateResponseBody> dataSourceListener);
 }

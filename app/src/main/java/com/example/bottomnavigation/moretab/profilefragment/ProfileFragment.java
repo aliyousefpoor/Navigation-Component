@@ -5,8 +5,11 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -23,6 +26,7 @@ import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -54,6 +58,7 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
+import com.example.bottomnavigation.utils.FileUtils;
 
 import java.io.File;
 import java.util.Objects;
@@ -81,7 +86,8 @@ public class ProfileFragment extends Fragment {
     private RadioButton radioSexButton, male, female;
     private EditText name, date;
     private ImageView avatar;
-    private Uri imageUri, image;
+    private Uri imageUri;
+
     private ProfileViewModel profileViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -91,6 +97,7 @@ public class ProfileFragment extends Fragment {
     private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
     private PersianDatePickerDialog picker;
+    private ProfileUpdate profileUpdate;
 
 
     @Nullable
@@ -118,29 +125,33 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
+        final ProgressBar progressBar = view.findViewById(R.id.progressBar);
         male = view.findViewById(R.id.male);
         female = view.findViewById(R.id.female);
         avatar = view.findViewById(R.id.avatar);
 
-        final ProfileUpdate profileUpdate = new ProfileUpdate();
+         profileUpdate = new ProfileUpdate();
 
         addListenerOnButton(view);
 
         profileUpdate.setToken(userEntity.getToken());
 
 
-        final ProgressDialog dialog = new ProgressDialog(getContext());
-        dialog.setTitle(R.string.progressDialogTitle);
-        dialog.setMessage(getString(R.string.getData));
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.show();
+//        final ProgressDialog dialog = new ProgressDialog(getContext());
+//        dialog.setTitle(R.string.progressDialogTitle);
+//        dialog.setMessage(getString(R.string.getData));
+//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        dialog.show();
+
+        progressBar.setVisibility(View.VISIBLE);
 
         Log.d(TAG, "onViewCreated: " + userEntity.getGender() + userEntity.getName());
+
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
             @Override
             public void onChanged(RemoteUser remoteUser) {
-                dialog.dismiss();
+                progressBar.setVisibility(View.GONE);
                 name.setText(remoteUser.getNickName());
                 date.setText(remoteUser.getBirthdayDate());
                 Glide.with(getContext()).load(remoteUser.getAvatar()).into(avatar);
@@ -172,15 +183,6 @@ public class ProfileFragment extends Fragment {
 
         profileViewModel.getProfile(profileUpdate.getToken(), getContext());
 
-//        File file = null;
-//        final MultipartBody.Part requestImage;
-//        if (file == null) {
-//            file = new File(String.valueOf(image));
-//        }
-//
-//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//        requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
-//
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +196,6 @@ public class ProfileFragment extends Fragment {
                 }
 
                 profileViewModel.updateProfile(profileUpdate, getContext());
-//                profileViewModel.updateImage(requestImage);
                 Log.d(TAG, "onClick: ");
 
             }
@@ -379,23 +380,21 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            updateProfileImage();
-            avatar.setImageURI(data.getData());
-            image = data.getData();
-        } else if (resultCode == RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
-            updateProfileImage();
+            imageUri = data.getData();
             avatar.setImageURI(imageUri);
-            image = imageUri;
+            updateProfileImage(imageUri);
+        } else if (resultCode == RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
+            avatar.setImageURI(imageUri);
+            updateProfileImage(imageUri);
         }
 
 
     }
 
-    public void updateProfileImage() {
-        File file = null;
-        if (file == null) {
-            file = new File(Objects.requireNonNull(image.getPath()));
-        }
-        profileViewModel.updateImage(file);
+    public void updateProfileImage(Uri imageUri) {
+       File file = FileUtils.getFile(getContext(),imageUri);
+        Log.d(TAG, "updateProfileImage: "+profileUpdate.getToken());
+        profileViewModel.updateImage(profileUpdate.getToken(),file);
+
     }
 }

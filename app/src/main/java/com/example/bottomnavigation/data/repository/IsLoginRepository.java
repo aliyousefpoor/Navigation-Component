@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
@@ -13,10 +14,10 @@ import com.example.bottomnavigation.moretab.UserInformationListener;
 
 import java.io.File;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class IsLoginRepository {
+    private static final String TAG = "IsLoginRepository";
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
     private UserRemoteDataSourceImpl userRemoteDataSource;
 
@@ -74,7 +75,9 @@ public class IsLoginRepository {
         });
     }
 
-    public void updateImage(File file, DataSourceListener<UpdateResponseBody> dataSourceListener){
-        userRemoteDataSource.updateImage(file,dataSourceListener);
+    public void updateImage(String token ,File file, DataSourceListener<UpdateResponseBody> dataSourceListener){
+        userRemoteDataSource.updateImage(token,file,dataSourceListener);
+        Log.d(TAG, "updateImage: "+dataSourceListener);
+
     }
 }

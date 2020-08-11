@@ -6,7 +6,7 @@ public class ProfileUpdate {
     private String gender;
     private String token;
 
-    public ProfileUpdate(){
+    public ProfileUpdate() {
 
 
     }
@@ -43,5 +43,8 @@ public class ProfileUpdate {
         this.token = token;
     }
 
+    public String getRequestToken() {
+        return "Token" + token;
+    }
 
 }
