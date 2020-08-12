@@ -5,10 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bottomnavigation.data.local.database.UserDatabase;
 import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.model.VerificationResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
 
 
 
@@ -16,10 +14,10 @@ public class LoginAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "MyAsyncTask";
     @SuppressLint("StaticFieldLeak")
     Context context;
-    VerificationResponseBody verificationResponseBody;
+    LoginStepTwoResponseBody loginStepTwoResponseBody;
 
-    public LoginAsyncTask(VerificationResponseBody verificationResponseBody, Context context) {
-        this.verificationResponseBody = verificationResponseBody;
+    public LoginAsyncTask(LoginStepTwoResponseBody loginStepTwoResponseBody, Context context) {
+        this.loginStepTwoResponseBody = loginStepTwoResponseBody;
         this.context = context;
     }
 
@@ -28,8 +26,8 @@ public class LoginAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
         final UserEntity user = new UserEntity();
         UserDatabase dataBase = UserDatabase.getInstance(context);
 
-        user.setUserId(verificationResponseBody.getUserId());
-        user.setToken(verificationResponseBody.getToken());
+        user.setUserId(loginStepTwoResponseBody.getUserId());
+        user.setToken(loginStepTwoResponseBody.getToken());
         dataBase.userDao().insertUser(user);
         Log.d(TAG, "onResponse: " + user.getUserId() + "\n" + user.getToken());
 

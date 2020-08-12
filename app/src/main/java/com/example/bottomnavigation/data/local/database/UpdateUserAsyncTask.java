@@ -12,7 +12,7 @@ import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.User;
 
 
-public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
+public class UpdateUserAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "UpdateAsyncTask";
     private User user;
     @SuppressLint("StaticFieldLeak")
@@ -20,7 +20,7 @@ public class UpdateAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
 
 
 
-    public UpdateAsyncTask(User user , Context context) {
+    public UpdateUserAsyncTask(User user , Context context) {
         this.user=user;
         this.context = context;
     }

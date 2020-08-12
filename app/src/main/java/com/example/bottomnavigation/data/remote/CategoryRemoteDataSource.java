@@ -1,9 +1,8 @@
 package com.example.bottomnavigation.data.remote;
 
-import android.util.Log;
+
 
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.datasource.CategoryDataSource;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Category;
 
@@ -15,7 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryRemoteDataSource implements CategoryDataSource {
+public class CategoryRemoteDataSource  {
     private static final String TAG = "RemoteDataSource";
     private ApiService apiService;
 
@@ -25,7 +24,6 @@ public class CategoryRemoteDataSource implements CategoryDataSource {
 
     }
 
-    @Override
     public void getCategory(final DataSourceListener<List<Category>> dataSourceListener) {
         apiService.getCategory().enqueue(new Callback<List<Category>>() {
             @Override

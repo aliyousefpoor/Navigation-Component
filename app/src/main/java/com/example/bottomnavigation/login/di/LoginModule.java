@@ -2,52 +2,42 @@ package com.example.bottomnavigation.login.di;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.remote.LoginRemoteDataSource;
+import com.example.bottomnavigation.data.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.remote.VerificationRemoteDataSource;
-import com.example.bottomnavigation.data.repository.IsLoginRepository;
-import com.example.bottomnavigation.data.repository.LoginRepository;
-import com.example.bottomnavigation.login.LoginViewModelFactory;
-import com.example.bottomnavigation.login.VerificationViewModelFactory;
+import com.example.bottomnavigation.data.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.repository.UserRepository;
+import com.example.bottomnavigation.login.LoginStepOneViewModelFactory;
+import com.example.bottomnavigation.login.LoginStepTwoViewModelFactory;
 
 public class LoginModule {
-    public  static LoginViewModelFactory provideLoginViewModelFactory(LoginRepository loginRepository){
-        return new LoginViewModelFactory(loginRepository);
-    }
-    public static LoginRepository provideLoginSource(LoginRemoteDataSource loginRemoteDataSource) {
-        return new LoginRepository(loginRemoteDataSource);
+
+    public static LoginStepOneRemoteDataSource provideLoginRemoteDataSource(ApiService apiService) {
+        return new LoginStepOneRemoteDataSource(apiService);
     }
 
-    public static LoginRemoteDataSource provideLoginRemoteDataSource(ApiService apiService) {
-        return new LoginRemoteDataSource(apiService);
+    public static LoginStepOneViewModelFactory provideLoginViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource) {
+        return new LoginStepOneViewModelFactory(loginStepOneRemoteDataSource);
     }
 
-    public static VerificationViewModelFactory provideVerificationViewModelFactory(LoginRepository loginRepository){
-        return new VerificationViewModelFactory(loginRepository);
+    public static LoginStepTwoViewModelFactory provideVerificationViewModelFactory(LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource) {
+        return new LoginStepTwoViewModelFactory(loginStepTwoRemoteDataSource);
     }
 
-    public static LoginRepository provideVerificationSource(VerificationRemoteDataSource verificationRemoteDataSource) {
-        return new LoginRepository(verificationRemoteDataSource);
+    public static LoginStepTwoRemoteDataSource provideVerificationRemoteDataSource(ApiService apiService) {
+        return new LoginStepTwoRemoteDataSource(apiService);
     }
 
-    public static VerificationRemoteDataSource provideVerificationRemoteDataSource(ApiService apiService) {
-        return new VerificationRemoteDataSource(apiService);
-    }
-
-    public static UserLocaleDataSourceImpl provideUserLocaleDataSource(){
+    public static UserLocaleDataSourceImpl provideUserLocaleDataSource() {
         return new UserLocaleDataSourceImpl();
     }
 
 
-    public static IsLoginRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
-        return new IsLoginRepository(userLocaleDataSourceImpl,userRemoteDataSource);
+    public static UserRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
+        return new UserRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     }
 
-    public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService){
+    public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService) {
         return new UserRemoteDataSourceImpl(apiService);
     }
 
-//    public static  IsLoginRepository provideIsLoginRepository(UserRemoteDataSource userRemoteDataSource){
-//        return new IsLoginRepository(userRemoteDataSource);
-//    }
 }

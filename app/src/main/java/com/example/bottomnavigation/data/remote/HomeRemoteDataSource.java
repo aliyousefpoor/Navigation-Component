@@ -2,7 +2,6 @@ package com.example.bottomnavigation.data.remote;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.datasource.HomeDataSource;
 import com.example.bottomnavigation.data.model.Store;
 
 
@@ -13,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeRemoteDataSource implements HomeDataSource {
+public class HomeRemoteDataSource {
     private static final String TAG = "StoreSource";
     private ApiService apiService;
 
@@ -21,7 +20,6 @@ public class HomeRemoteDataSource implements HomeDataSource {
         this.apiService = apiService;
     }
 
-    @Override
     public void getStore(final DataSourceListener<Store> dataSourceListener) {
         apiService.getStore().enqueue(new Callback<Store>() {
             @Override

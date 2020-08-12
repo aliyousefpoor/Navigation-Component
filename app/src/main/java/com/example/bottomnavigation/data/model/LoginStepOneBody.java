@@ -1,13 +1,13 @@
 package com.example.bottomnavigation.data.model;
 
-public class LoginBody {
+public class LoginStepOneBody {
 
     private String  mobile;
     private String device_id;
     private String device_model;
     private String device_os;
 
-    public LoginBody(String mobile, String device_id, String device_model, String device_os) {
+    public LoginStepOneBody(String mobile, String device_id, String device_model, String device_os) {
         this.mobile = mobile;
         this.device_id = device_id;
         this.device_model = device_model;

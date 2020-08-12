@@ -8,23 +8,23 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
-import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.repository.UserRepository;
 import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
 import java.io.File;
 
-import okhttp3.RequestBody;
+
 
 public class ProfileViewModel extends ViewModel {
     private static final String TAG = "ProfileViewModel";
 
-    private IsLoginRepository isLoginRepository;
+    private UserRepository userRepository;
 
-    public ProfileViewModel(IsLoginRepository isLoginRepository){
-        this.isLoginRepository=isLoginRepository;
+    public ProfileViewModel(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
     private SingleLiveEvent<UpdateResponseBody> _updateUserProfile = new SingleLiveEvent<>();
@@ -36,8 +36,8 @@ public class ProfileViewModel extends ViewModel {
 
 
 
-    public void updateProfile(ProfileUpdate profileUpdate,Context context){
-        isLoginRepository.updateProfile(profileUpdate,context, new DataSourceListener<UpdateResponseBody>() {
+    public void updateProfile(User user, Context context){
+        userRepository.updateProfile(user,context, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
                 _updateUserProfile.postValue(response);
@@ -52,7 +52,7 @@ public class ProfileViewModel extends ViewModel {
 
 
     public void getProfile(String token,Context context){
-        isLoginRepository.getProfile(token,context, new DataSourceListener<RemoteUser>() {
+        userRepository.getProfile(token,context, new DataSourceListener<RemoteUser>() {
             @Override
             public void onResponse(RemoteUser response) {
                 _getProfile.postValue(response);
@@ -67,7 +67,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void updateImage(String token ,File file){
-        isLoginRepository.updateImage(token ,file, new DataSourceListener<UpdateResponseBody>() {
+        userRepository.updateImage(token ,file, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
                 Log.d(TAG, "onResponse: "+response);

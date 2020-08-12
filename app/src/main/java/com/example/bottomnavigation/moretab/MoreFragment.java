@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 
 
 import androidx.annotation.NonNull;
@@ -28,13 +28,14 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.data.repository.UserRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
-import com.example.bottomnavigation.login.LoginDialogFragment;
-import com.example.bottomnavigation.login.VerificationCodeListener;
+import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
+import com.example.bottomnavigation.login.LoginStepTwoCodeListener;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 
@@ -51,15 +52,15 @@ public class MoreFragment extends Fragment {
     RecyclerView recyclerView;
     View view;
     private MoreItemListener moreItemListener;
-    private VerificationCodeListener verificationCodeListener;
+    private LoginStepTwoCodeListener loginStepTwoCodeListener;
     private MoreViewModel moreViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
-    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(isLoginRepository);
+    private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
+    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userRepository);
 
     private Bundle bundle = new Bundle();
 
@@ -102,8 +103,8 @@ public class MoreFragment extends Fragment {
                     navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
                     Log.d(TAG, "onChanged: userEntity");
                 } else {
-                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoCodeListener);
+                    loginStepOneDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
                 }
             }
         });
@@ -147,12 +148,12 @@ public class MoreFragment extends Fragment {
 
     public void setUpLogin() {
 
-        verificationCodeListener = new VerificationCodeListener() {
+        loginStepTwoCodeListener = new LoginStepTwoCodeListener() {
             @Override
-            public void onResponse(UserEntity user) {
+            public void onResponse(UserEntity userEntity) {
                 Log.d(TAG, "onResponse: listener");
 
-                bundle.putParcelable("body", user);
+                bundle.putParcelable("body", userEntity);
 
                 navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
             }

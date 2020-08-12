@@ -2,16 +2,14 @@ package com.example.bottomnavigation.moretab.profilefragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
+
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,8 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import android.widget.EditText;
@@ -30,7 +26,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -50,10 +45,10 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.data.repository.UserRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
@@ -61,14 +56,10 @@ import com.example.bottomnavigation.utils.ApiBuilder;
 import com.example.bottomnavigation.utils.FileUtils;
 
 import java.io.File;
-import java.util.Objects;
 
 import ir.hamsaa.persiandatepicker.Listener;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.util.PersianCalendar;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
@@ -94,10 +85,10 @@ public class ProfileFragment extends Fragment {
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private IsLoginRepository isLoginRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
-    private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(isLoginRepository);
+    private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
+    private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(userRepository);
     private PersianDatePickerDialog picker;
-    private ProfileUpdate profileUpdate;
+    private User user;
 
 
     @Nullable
@@ -130,18 +121,11 @@ public class ProfileFragment extends Fragment {
         female = view.findViewById(R.id.female);
         avatar = view.findViewById(R.id.avatar);
 
-         profileUpdate = new ProfileUpdate();
+        user = new User();
 
         addListenerOnButton(view);
 
-        profileUpdate.setToken(userEntity.getToken());
-
-
-//        final ProgressDialog dialog = new ProgressDialog(getContext());
-//        dialog.setTitle(R.string.progressDialogTitle);
-//        dialog.setMessage(getString(R.string.getData));
-//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        dialog.show();
+        user.setToken(userEntity.getToken());
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -181,21 +165,21 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getProfile(profileUpdate.getToken(), getContext());
+        profileViewModel.getProfile(user.getRequestToken(), getContext());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                profileUpdate.setNickname(name.getText().toString());
-                profileUpdate.setDate_of_birth(date.getText().toString());
+                user.setName(name.getText().toString());
+                user.setDate(date.getText().toString());
                 if (radioSexButton.getText().equals("مرد")) {
-                    profileUpdate.setGender("Male");
+                    user.setGender("Male");
                 } else {
-                    profileUpdate.setGender("Female");
+                    user.setGender("Female");
                 }
 
-                profileViewModel.updateProfile(profileUpdate, getContext());
+                profileViewModel.updateProfile(user, getContext());
                 Log.d(TAG, "onClick: ");
 
             }
@@ -268,21 +252,14 @@ public class ProfileFragment extends Fragment {
     }
 
     public void showDialog() {
-        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.avatar_dialog_fragment);
-        dialog.setCanceledOnTouchOutside(true);
 
-        ImageView gallery, camera, remove;
-        gallery = dialog.findViewById(R.id.gallery);
-        camera = dialog.findViewById(R.id.camera);
-        remove = dialog.findViewById(R.id.remove);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Choose Profile Image");
+        builder.setCancelable(true);
 
-        gallery.setOnClickListener(new View.OnClickListener() {
-
+        builder.setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(DialogInterface dialog, int which) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -297,14 +274,11 @@ public class ProfileFragment extends Fragment {
                 }
                 dialog.dismiss();
             }
-
-
         });
 
-        camera.setOnClickListener(new View.OnClickListener() {
+        builder.setNegativeButton("Camera", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(DialogInterface dialog, int which) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
                             || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -321,16 +295,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        remove.setOnClickListener(new View.OnClickListener() {
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        AlertDialog dialog = builder.create();
         dialog.show();
 
     }
@@ -353,18 +325,13 @@ public class ProfileFragment extends Fragment {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case GALLEY_PERMISSION_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    pickImageFromGallery();
-                } else {
-                    Toast.makeText(getContext(), "Permission Denied... !", Toast.LENGTH_SHORT).show();
-                }
-            }
+
             case CAMERA_PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
@@ -392,9 +359,9 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateProfileImage(Uri imageUri) {
-       File file = FileUtils.getFile(getContext(),imageUri);
-        Log.d(TAG, "updateProfileImage: "+profileUpdate.getToken());
-        profileViewModel.updateImage(profileUpdate.getToken(),file);
+        File file = FileUtils.getFile(getContext(), imageUri);
+        Log.d(TAG, "updateProfileImage: " + user.getToken());
+        profileViewModel.updateImage(user.getRequestToken(), file);
 
     }
 }

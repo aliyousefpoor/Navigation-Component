@@ -21,12 +21,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
-import com.example.bottomnavigation.data.remote.VerificationRemoteDataSource;
-import com.example.bottomnavigation.data.model.VerificationResponseBody;
-import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.data.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.data.local.database.LoginAsyncTask;
@@ -34,30 +32,29 @@ import com.example.bottomnavigation.utils.ApiBuilder;
 
 import retrofit2.Retrofit;
 
-public class VerificationDialogFragment extends DialogFragment {
+public class LoginStepTwoDialogFragment extends DialogFragment {
     private static final String TAG = "SecondDialogFragment";
     EditText code;
     Button submit, changeNumber;
     TextView resendCode;
     String number;
-    private VerificationViewModel verificationViewModel;
+    private LoginStepTwoViewModel loginStepTwoViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private VerificationRemoteDataSource verificationRemoteDataSource = LoginModule.provideVerificationRemoteDataSource(apiService);
-    private LoginRepository loginRepository = LoginModule.provideVerificationSource(verificationRemoteDataSource);
-    private VerificationViewModelFactory verificationViewModelFactory = LoginModule.provideVerificationViewModelFactory(loginRepository);
+    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideVerificationRemoteDataSource(apiService);
+    private LoginStepTwoViewModelFactory loginStepTwoViewModelFactory = LoginModule.provideVerificationViewModelFactory(loginStepTwoRemoteDataSource);
     private String androidId;
-    private VerificationCodeListener verificationCodeListener;
+    private LoginStepTwoCodeListener loginStepTwoCodeListener;
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
-    private UserEntity userEntity= DatabaseModule.provideUserEntity();
+    private UserEntity userEntity = new UserEntity();
 
 
-    public VerificationDialogFragment(String number,String androidId, VerificationCodeListener verificationCodeListener,ResendCodeListener resendCodeListener) {
+    public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoCodeListener loginStepTwoCodeListener, ResendCodeListener resendCodeListener) {
         this.number = number;
         this.androidId=androidId;
-        this.verificationCodeListener = verificationCodeListener;
+        this.loginStepTwoCodeListener = loginStepTwoCodeListener;
         this.resendCodeListener = resendCodeListener;
     }
 
@@ -65,7 +62,7 @@ public class VerificationDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.verification_dialog_fragment, container, false);
+        View view = inflater.inflate(R.layout.login_step_two_dialog_fragment, container, false);
         return view;
 
     }
@@ -74,7 +71,7 @@ public class VerificationDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        verificationViewModel = new ViewModelProvider(this, verificationViewModelFactory).get(VerificationViewModel.class);
+        loginStepTwoViewModel = new ViewModelProvider(this, loginStepTwoViewModelFactory).get(LoginStepTwoViewModel.class);
         code = view.findViewById(R.id.verificationCode);
         submit = view.findViewById(R.id.secondDialogSubmit);
         changeNumber = view.findViewById(R.id.changeNumber);
@@ -89,7 +86,7 @@ public class VerificationDialogFragment extends DialogFragment {
                 loginStepTwo.setNumber(number);
                 loginStepTwo.setAndroidId(androidId);
                 loginStepTwo.setCode(code.getText().toString());
-                verificationViewModel.loginStepTwo(loginStepTwo);
+                loginStepTwoViewModel.loginStepTwo(loginStepTwo);
                 Log.d(TAG, "onClick: " + number);
 
                 dialog = new ProgressDialog(getContext());
@@ -104,8 +101,8 @@ public class VerificationDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-                loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+                LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoCodeListener);
+                loginStepOneDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
 
             }
         });
@@ -121,24 +118,25 @@ public class VerificationDialogFragment extends DialogFragment {
 
 
     public void postVerificationCodeRequest() {
-        verificationViewModel.verificationLiveData.observe(this, new Observer<VerificationResponseBody>() {
+        loginStepTwoViewModel.verificationLiveData.observe(this, new Observer<LoginStepTwoResponseBody>() {
 
             @Override
-            public void onChanged(final VerificationResponseBody verificationResponseBody) {
+            public void onChanged(final LoginStepTwoResponseBody loginStepTwoResponseBody) {
 
 
-                if (verificationResponseBody != null) {
+                if (loginStepTwoResponseBody != null) {
 
-                    userEntity.setUserId(verificationResponseBody.getUserId());
-                    userEntity.setToken(verificationResponseBody.getToken());
+                    userEntity.setUserId(loginStepTwoResponseBody.getUserId());
+                    userEntity.setToken(loginStepTwoResponseBody.getToken());
                     Log.d(TAG, "onChanged: " + userEntity.getUserId());
-                    verificationCodeListener.onResponse(userEntity);
+                    loginStepTwoCodeListener.onResponse(userEntity);
 
                     dismiss();
                     dialog.dismiss();
 
-                    LoginAsyncTask loginAsyncTask = new LoginAsyncTask(verificationResponseBody, getContext());
-                    loginAsyncTask.execute();
+                    loginStepTwoViewModel.userLogin(loginStepTwoResponseBody,getContext());
+//                    LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, getContext());
+//                    loginAsyncTask.execute();
 
 
                 } else {

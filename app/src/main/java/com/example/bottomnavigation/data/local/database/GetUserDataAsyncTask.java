@@ -5,18 +5,16 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bottomnavigation.data.local.database.UserDatabase;
 import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.moretab.UserInformationListener;
 
-public class GetDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
+public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "GetDataAsyncTask";
     private UserInformationListener userInformationListener;
 
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
-    public GetDataAsyncTask(Context context, UserInformationListener userInformationListener) {
+    public GetUserDataAsyncTask(Context context, UserInformationListener userInformationListener) {
         this.userInformationListener = userInformationListener;
         this.context = context;
     }

@@ -5,7 +5,4 @@ import com.example.bottomnavigation.data.local.model.UserEntity;
 
 public class DatabaseModule {
 
-    public static UserEntity provideUserEntity() {
-        return new UserEntity();
-    }
 }

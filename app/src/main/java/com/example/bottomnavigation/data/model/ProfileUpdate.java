@@ -44,7 +44,7 @@ public class ProfileUpdate {
     }
 
     public String getRequestToken() {
-        return "Token" + token;
+        return "Token " + token;
     }
 
 }

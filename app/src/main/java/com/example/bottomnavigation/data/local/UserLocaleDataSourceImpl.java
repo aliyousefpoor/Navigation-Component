@@ -3,25 +3,23 @@ package com.example.bottomnavigation.data.local;
 import android.content.Context;
 
 
-import com.example.bottomnavigation.data.datasource.UserLocaleDataSource;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.moretab.UserInformationListener;
-import com.example.bottomnavigation.data.local.database.GetDataAsyncTask;
-import com.example.bottomnavigation.data.local.database.UpdateAsyncTask;
+import com.example.bottomnavigation.data.local.database.UserInformationListener;
+import com.example.bottomnavigation.data.local.database.GetUserDataAsyncTask;
+import com.example.bottomnavigation.data.local.database.UpdateUserAsyncTask;
 
-public class UserLocaleDataSourceImpl implements UserLocaleDataSource {
+public class UserLocaleDataSourceImpl {
 
 
-    @Override
+
     public void saveUser(User user, Context context) {
-        UpdateAsyncTask updateAsyncTask = new UpdateAsyncTask(user, context);
-        updateAsyncTask.execute();
+        UpdateUserAsyncTask updateUserAsyncTask = new UpdateUserAsyncTask(user, context);
+        updateUserAsyncTask.execute();
     }
 
-    @Override
     public void getUser(Context context,UserInformationListener userInformationListener) {
-        GetDataAsyncTask getDataAsyncTask = new GetDataAsyncTask(context,userInformationListener);
-        getDataAsyncTask.execute();
+        GetUserDataAsyncTask getUserDataAsyncTask = new GetUserDataAsyncTask(context,userInformationListener);
+        getUserDataAsyncTask.execute();
     }
 
 }

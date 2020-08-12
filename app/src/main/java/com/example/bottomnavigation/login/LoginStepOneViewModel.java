@@ -9,15 +9,15 @@ import androidx.lifecycle.ViewModel;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.LoginStepOne;
-import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.data.remote.LoginStepOneRemoteDataSource;
 
-public class LoginViewModel extends ViewModel {
+public class LoginStepOneViewModel extends ViewModel {
     private static final String TAG = "UserViewModel";
 
-    private LoginRepository loginRepository;
+    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource;
 
-    public LoginViewModel(LoginRepository loginRepository){
-        this.loginRepository = loginRepository;
+    public LoginStepOneViewModel(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource){
+        this.loginStepOneRemoteDataSource = loginStepOneRemoteDataSource;
     }
 
 
@@ -29,7 +29,7 @@ public class LoginViewModel extends ViewModel {
     public void loginStepOne(LoginStepOne loginStepOne) {
 
 
-        loginRepository.loginStep1(loginStepOne, new DataSourceListener<LoginResponseBody>() {
+        loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginResponseBody>() {
             @Override
             public void onResponse(LoginResponseBody response) {
                 _userLiveData.setValue(response);

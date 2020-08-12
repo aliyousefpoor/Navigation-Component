@@ -2,19 +2,19 @@ package com.example.bottomnavigation.moretab;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.bottomnavigation.data.local.database.UserInformationListener;
 import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.repository.IsLoginRepository;
+import com.example.bottomnavigation.data.repository.UserRepository;
 
 public class MoreViewModel extends ViewModel {
     private static final String TAG = "MoreViewModel";
-    private IsLoginRepository isLoginRepository;
+    private UserRepository userRepository;
 
 
-    public MoreViewModel(IsLoginRepository isLoginRepository) {
-        this.isLoginRepository = isLoginRepository;
+    public MoreViewModel(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     private SingleLiveEvent<UserEntity> _isLoginUser = new SingleLiveEvent<>();
@@ -22,7 +22,7 @@ public class MoreViewModel extends ViewModel {
 
 
     public void isUserLogin(final Context context ) {
-        isLoginRepository.getUser(context, new UserInformationListener() {
+        userRepository.getUser(context, new UserInformationListener() {
             @Override
             public void onCheckUser(UserEntity userEntity) {
                if (userEntity==null){

@@ -5,23 +5,20 @@ import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.model.ProfileUpdate;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.moretab.UserInformationListener;
+import com.example.bottomnavigation.data.local.database.UserInformationListener;
 
 import java.io.File;
 
-import okhttp3.RequestBody;
-
-public class IsLoginRepository {
+public class UserRepository {
     private static final String TAG = "IsLoginRepository";
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
     private UserRemoteDataSourceImpl userRemoteDataSource;
 
-    public IsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
+    public UserRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
         this.userLocaleDataSourceImpl = userLocaleDataSourceImpl;
         this.userRemoteDataSource = userRemoteDataSource;
     }
@@ -34,15 +31,15 @@ public class IsLoginRepository {
         userLocaleDataSourceImpl.getUser(context, userInformationListener);
     }
 
-    public void updateProfile(final ProfileUpdate profileUpdate, final Context context, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
-        userRemoteDataSource.updateProfile(profileUpdate, new DataSourceListener<UpdateResponseBody>() {
+    public void updateProfile(final User user, final Context context, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
+        userRemoteDataSource.updateProfile(user, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
                 User user = new User();
                 user.setGender(response.getData().getGender());
                 user.setDate(response.getData().getBirthdayDate());
                 user.setName(response.getData().getNickName());
-                user.setToken(profileUpdate.getToken());
+                user.setToken(user.getToken());
                 saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }
@@ -80,4 +77,5 @@ public class IsLoginRepository {
         Log.d(TAG, "updateImage: "+dataSourceListener);
 
     }
+
 }
