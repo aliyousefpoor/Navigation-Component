@@ -32,7 +32,7 @@ public class UserRemoteDataSourceImpl {
     public void updateProfile(User user, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
         UpdateProfileBody updateProfileBody = new UpdateProfileBody(user.getName(),
                 user.getDate(), user.getGender());
-        apiService.update(user.getRequestToken(), updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.update(user.getToken(), updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());

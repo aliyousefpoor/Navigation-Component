@@ -165,7 +165,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getProfile(user.getRequestToken(), getContext());
+        profileViewModel.getProfile(user.getToken(), getContext());
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -361,7 +361,7 @@ public class ProfileFragment extends Fragment {
     public void updateProfileImage(Uri imageUri) {
         File file = FileUtils.getFile(getContext(), imageUri);
         Log.d(TAG, "updateProfileImage: " + user.getToken());
-        profileViewModel.updateImage(user.getRequestToken(), file);
+        profileViewModel.updateImage(user.getToken(), file);
 
     }
 }

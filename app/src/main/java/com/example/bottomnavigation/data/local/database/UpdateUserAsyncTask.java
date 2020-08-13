@@ -19,24 +19,23 @@ public class UpdateUserAsyncTask extends AsyncTask<UserEntity, Void, UserEntity>
     private Context context;
 
 
-
-    public UpdateUserAsyncTask(User user , Context context) {
-        this.user=user;
+    public UpdateUserAsyncTask(User user, Context context) {
+        this.user = user;
         this.context = context;
     }
 
     @Override
     protected UserEntity doInBackground(UserEntity... users) {
         UserDatabase dataBase = UserDatabase.getInstance(context);
-
-//        userEntity.setUserId(user.getUserId());
-//        userEntity.setToken(user.getToken());
-//        userEntity.setName(user.getName());
-//        userEntity.setDate(user.getDate());
-//        userEntity.setGender(user.getGender());
-//        dataBase.userDao().updateUser(userEntity);
-
-        dataBase.userDao().updateProfile(user.getName(),user.getToken(),user.getDate(),user.getGender());
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserId(user.getUserId());
+        userEntity.setToken(user.getToken());
+        userEntity.setName(user.getName());
+        userEntity.setDate(user.getDate());
+        userEntity.setGender(user.getGender());
+        dataBase.userDao().updateUser(userEntity);
+        dataBase.userDao().updateUser(userEntity);
+//        dataBase.userDao().updateProfile(user.getName(),user.getToken(),user.getDate(),user.getGender());
 
         return null;
     }
