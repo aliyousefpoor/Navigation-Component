@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
     private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(userRepository);
     private PersianDatePickerDialog picker;
-    private User user;
+    private User user ;
 
 
     @Nullable
@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
         assert getArguments() != null;
-        final UserEntity userEntity = getArguments().getParcelable("body");
+         user = getArguments().getParcelable("body");
 
         radioSexGroup = view.findViewById(R.id.radio_group);
 
@@ -121,15 +121,13 @@ public class ProfileFragment extends Fragment {
         female = view.findViewById(R.id.female);
         avatar = view.findViewById(R.id.avatar);
 
-        user = new User();
 
         addListenerOnButton(view);
 
-        user.setToken(userEntity.getToken());
 
         progressBar.setVisibility(View.VISIBLE);
 
-        Log.d(TAG, "onViewCreated: " + userEntity.getGender() + userEntity.getName());
+        Log.d(TAG, "onViewCreated: " + user.getGender() + user.getName());
 
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {

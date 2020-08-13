@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.bottomnavigation.data.local.model.UserEntity;
+import com.example.bottomnavigation.data.model.User;
 
 public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "GetDataAsyncTask";
@@ -25,19 +26,20 @@ public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity
         UserEntity userEntity = dataBase.userDao().getUser();
         StringBuilder info = new StringBuilder(" ");
         if (userEntity != null) {
+            User user = new User();
 
-            int id = userEntity.getUserId();
-            String token = userEntity.getToken();
-            String name = userEntity.getName();
-            String date = userEntity.getDate();
-            String gender = userEntity.getGender();
-            userInformationListener.onCheckUser(userEntity);
+            user.setUserId(userEntity.getUserId());
+            user.setToken(userEntity.getToken());
+            user.setName(userEntity.getName());
+            user.setDate(userEntity.getDate());
+            user.setGender(userEntity.getGender());
+            userInformationListener.onCheckUser(user);
 
 
-            info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
-                    .append(token).append("\n").append("Name :").append(name).append("\n")
-                    .append("Date :").append(date).append("\n").append("Gender :").append(gender);
-            Log.d(TAG, "doInBackground: " + info);
+//            info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
+//                    .append(token).append("\n").append("Name :").append(name).append("\n")
+//                    .append("Date :").append(date).append("\n").append("Gender :").append(gender);
+//            Log.d(TAG, "doInBackground: " + info);
         } else {
             userInformationListener.onCheckUser(null);
         }

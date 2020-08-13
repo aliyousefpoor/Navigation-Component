@@ -21,13 +21,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
-import com.example.bottomnavigation.data.local.database.LoginAsyncTask;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 import retrofit2.Retrofit;
@@ -48,7 +47,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private LoginStepTwoCodeListener loginStepTwoCodeListener;
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
-    private UserEntity userEntity = new UserEntity();
+    private User user = new User();
 
 
     public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoCodeListener loginStepTwoCodeListener, ResendCodeListener resendCodeListener) {
@@ -126,17 +125,15 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
 
                 if (loginStepTwoResponseBody != null) {
 
-                    userEntity.setUserId(loginStepTwoResponseBody.getUserId());
-                    userEntity.setToken(loginStepTwoResponseBody.getToken());
-                    Log.d(TAG, "onChanged: " + userEntity.getUserId());
-                    loginStepTwoCodeListener.onResponse(userEntity);
+                    user.setUserId(loginStepTwoResponseBody.getUserId());
+                    user.setToken(loginStepTwoResponseBody.getToken());
+                    Log.d(TAG, "onChanged: " + user.getUserId());
+                    loginStepTwoCodeListener.onResponse(user);
 
                     dismiss();
                     dialog.dismiss();
 
                     loginStepTwoViewModel.userLogin(loginStepTwoResponseBody,getContext());
-//                    LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, getContext());
-//                    loginAsyncTask.execute();
 
 
                 } else {

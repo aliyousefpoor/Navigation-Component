@@ -95,11 +95,11 @@ public class MoreFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<UserEntity>() {
+        moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<User>() {
             @Override
-            public void onChanged(UserEntity userEntity) {
-                if (userEntity != null) {
-                    bundle.putParcelable("body", userEntity);
+            public void onChanged(User user) {
+                if (user != null) {
+                    bundle.putParcelable("body", user);
                     navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
                     Log.d(TAG, "onChanged: userEntity");
                 } else {
@@ -150,10 +150,10 @@ public class MoreFragment extends Fragment {
 
         loginStepTwoCodeListener = new LoginStepTwoCodeListener() {
             @Override
-            public void onResponse(UserEntity userEntity) {
+            public void onResponse(User user) {
                 Log.d(TAG, "onResponse: listener");
 
-                bundle.putParcelable("body", userEntity);
+                bundle.putParcelable("body", user);
 
                 navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
             }

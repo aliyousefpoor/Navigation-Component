@@ -35,11 +35,11 @@ public class UserRepository {
         userRemoteDataSource.updateProfile(user, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
-                User user = new User();
+
                 user.setGender(response.getData().getGender());
                 user.setDate(response.getData().getBirthdayDate());
                 user.setName(response.getData().getNickName());
-                user.setToken(user.getToken());
+
                 saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }
