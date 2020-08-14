@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
+import com.example.bottomnavigation.data.local.database.UserInformationListener;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
@@ -32,7 +33,8 @@ public class ProfileViewModel extends ViewModel {
 
     private MutableLiveData<RemoteUser> _getProfile = new MutableLiveData<>();
     public MutableLiveData<RemoteUser> getUserProfile = _getProfile;
-
+    private MutableLiveData<User> _getUser = new MutableLiveData<>();
+    public MutableLiveData<User> getUser = _getUser;
 
 
 
@@ -76,6 +78,15 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onFailure(Throwable throwable) {
                 Log.d(TAG, "onFailure: updateImage");
+            }
+        });
+    }
+
+    public void getUser(Context context){
+        userRepository.getUser(context, new UserInformationListener() {
+            @Override
+            public void onCheckUser(User user) {
+                _getUser.postValue(user);
             }
         });
     }

@@ -39,7 +39,7 @@ public class UserRepository {
                 user.setGender(response.getData().getGender());
                 user.setDate(response.getData().getBirthdayDate());
                 user.setName(response.getData().getNickName());
-
+                user.setAvatar(response.getData().getAvatar());
                 saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }
@@ -61,6 +61,7 @@ public class UserRepository {
                 user.setDate(response.getBirthdayDate());
                 user.setGender(response.getGender());
                 user.setUserId(response.getId());
+                user.setAvatar(response.getAvatar());
                 saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }

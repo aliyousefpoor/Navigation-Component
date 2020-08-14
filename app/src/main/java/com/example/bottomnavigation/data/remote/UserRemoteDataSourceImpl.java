@@ -32,7 +32,7 @@ public class UserRemoteDataSourceImpl {
     public void updateProfile(User user, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
         UpdateProfileBody updateProfileBody = new UpdateProfileBody(user.getName(),
                 user.getDate(), user.getGender());
-        apiService.update(user.getToken(), updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.update("Token "+user.getToken(), updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
@@ -48,7 +48,7 @@ public class UserRemoteDataSourceImpl {
 
 
     public void getProfile(String token, final DataSourceListener<RemoteUser> dataSourceListener) {
-        apiService.getUser(token).enqueue(new Callback<RemoteUser>() {
+        apiService.getUser("Token "+token).enqueue(new Callback<RemoteUser>() {
             @Override
             public void onResponse(@NotNull Call<RemoteUser> call, @NotNull Response<RemoteUser> response) {
                 dataSourceListener.onResponse(response.body());
@@ -68,7 +68,7 @@ public class UserRemoteDataSourceImpl {
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
 
-        apiService.updateImage(token, requestImage).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.updateImage("Token "+token, requestImage).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());

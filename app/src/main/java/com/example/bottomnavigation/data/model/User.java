@@ -14,6 +14,8 @@ public class User implements Parcelable {
 
     private String gender;
 
+    private String avatar;
+
     public User() {
     }
 
@@ -24,6 +26,7 @@ public class User implements Parcelable {
         name = in.readString();
         date = in.readString();
         gender = in.readString();
+        avatar = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -82,6 +85,14 @@ public class User implements Parcelable {
         this.gender = gender;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
 
     @Override
     public int describeContents() {
@@ -95,5 +106,6 @@ public class User implements Parcelable {
         dest.writeString(name);
         dest.writeString(date);
         dest.writeString(gender);
+        dest.writeString(avatar);
     }
 }

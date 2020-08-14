@@ -24,8 +24,12 @@ public class UserEntity implements Parcelable {
     @ColumnInfo(name = "gender")
     private String gender;
 
+    @ColumnInfo(name = "avatar")
+    private String avatar;
+
     public UserEntity() {
     }
+
 
     protected UserEntity(Parcel in) {
         userId = in.readInt();
@@ -33,6 +37,7 @@ public class UserEntity implements Parcelable {
         name = in.readString();
         date = in.readString();
         gender = in.readString();
+        avatar = in.readString();
     }
 
     public static final Creator<UserEntity> CREATOR = new Creator<UserEntity>() {
@@ -87,6 +92,15 @@ public class UserEntity implements Parcelable {
         this.gender = gender;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -99,5 +113,6 @@ public class UserEntity implements Parcelable {
         dest.writeString(name);
         dest.writeString(date);
         dest.writeString(gender);
+        dest.writeString(avatar);
     }
 }

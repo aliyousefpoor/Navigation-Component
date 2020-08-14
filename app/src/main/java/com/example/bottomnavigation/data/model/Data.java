@@ -17,7 +17,7 @@ public class Data {
     private String mobile;
     @SerializedName("avatar")
     @Expose
-    private Object avatar;
+    private String avatar;
     @SerializedName("gender")
     @Expose
     private String gender;
@@ -55,11 +55,11 @@ public class Data {
         this.mobile = mobile;
     }
 
-    public Object getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Object avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 

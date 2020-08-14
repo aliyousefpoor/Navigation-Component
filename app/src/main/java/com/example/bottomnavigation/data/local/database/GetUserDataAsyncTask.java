@@ -33,6 +33,7 @@ public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity
             user.setName(userEntity.getName());
             user.setDate(userEntity.getDate());
             user.setGender(userEntity.getGender());
+            user.setAvatar(userEntity.getAvatar());
             userInformationListener.onCheckUser(user);
 
 

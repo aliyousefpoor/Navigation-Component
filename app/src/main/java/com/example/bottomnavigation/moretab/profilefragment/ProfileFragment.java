@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment {
         date = view.findViewById(R.id.date);
         Button change = view.findViewById(R.id.change);
         Button cancel = view.findViewById(R.id.cancle);
-        final ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        final View progressBar = view.findViewById(R.id.progressBarLayout);
         male = view.findViewById(R.id.male);
         female = view.findViewById(R.id.female);
         avatar = view.findViewById(R.id.avatar);
@@ -129,6 +129,23 @@ public class ProfileFragment extends Fragment {
 
         Log.d(TAG, "onViewCreated: " + user.getGender() + user.getName());
 
+
+        profileViewModel.getUser.observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                progressBar.setVisibility(View.GONE);
+                name.setText(user.getName());
+                date.setText(user.getDate());
+                Glide.with(getContext()).load(user.getAvatar()).into(avatar);
+                String checkGender = user.getGender();
+                if (checkGender.equals("Male")){
+                    male.setChecked(true);
+                }
+                else{
+                    female.setChecked(true);
+                }
+            }
+        });
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
             @Override
@@ -147,6 +164,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,8 +181,9 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getProfile(user.getToken(), getContext());
 
+        profileViewModel.getProfile(user.getToken(), getContext());
+        profileViewModel.getUser(getContext());
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

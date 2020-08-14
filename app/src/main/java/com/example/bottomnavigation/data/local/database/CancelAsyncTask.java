@@ -28,12 +28,14 @@ public class CancelAsyncTask extends AsyncTask<UserEntity,Void,UserEntity> {
             String name = userList.getName();
             String date = userList.getDate();
             String gender = userList.getGender();
+            String avatar = userList.getAvatar();
 
 
 
             info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
                     .append(token).append("\n").append("Name :").append(name).append("\n")
-                    .append("Date :").append(date).append("\n").append("Gender :").append(gender);
+                    .append("Date :").append(date).append("\n").append("Gender :").append(gender).append("\n")
+                    .append("Avatar :").append(avatar);
             Log.d(TAG, "doInBackground: " + info);
 
         return null;

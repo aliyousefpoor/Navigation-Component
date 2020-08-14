@@ -33,6 +33,7 @@ public class UpdateUserAsyncTask extends AsyncTask<UserEntity, Void, UserEntity>
         userEntity.setName(user.getName());
         userEntity.setDate(user.getDate());
         userEntity.setGender(user.getGender());
+        userEntity.setAvatar(user.getAvatar());
         dataBase.userDao().updateUser(userEntity);
 //        dataBase.userDao().updateProfile(user.getName(),user.getToken(),user.getDate(),user.getGender());
 

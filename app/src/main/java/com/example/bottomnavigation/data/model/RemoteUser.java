@@ -37,7 +37,7 @@ public class RemoteUser {
 
     @SerializedName("avatar")
     @Expose
-    private Object avatar;
+    private String avatar;
     @SerializedName("mobile")
     @Expose
     private String mobile;
@@ -115,11 +115,11 @@ public class RemoteUser {
         this.gender = gender;
     }
 
-    public Object getAvatar() {
+    public String getAvatar() {
         return AppConstants.baseUrl+avatar;
     }
 
-    public void setAvatar(Object avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
