@@ -154,12 +154,12 @@ public class ProfileFragment extends Fragment {
 
         });
 
-        profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
+        profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
-            public void onChanged(RemoteUser remoteUser) {
+            public void onChanged(User remoteUser) {
                 progressBar.setVisibility(View.GONE);
-                name.setText(remoteUser.getNickName());
-                date.setText(remoteUser.getBirthdayDate());
+                name.setText(remoteUser.getName());
+                date.setText(remoteUser.getDate());
                 Glide.with(getContext()).load(remoteUser.getAvatar()).into(avatar);
 
                 String checkGender = remoteUser.getGender();

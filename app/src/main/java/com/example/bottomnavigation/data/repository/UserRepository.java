@@ -15,7 +15,7 @@ import com.example.bottomnavigation.data.local.database.UserInformationListener;
 import java.io.File;
 
 public class UserRepository {
-    private static final String TAG = "IsLoginRepository";
+    private static final String TAG = "UserRepository";
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
     private UserRemoteDataSourceImpl userRemoteDataSource;
 
@@ -28,12 +28,18 @@ public class UserRepository {
         userLocaleDataSourceImpl.saveUser(user, context);
     }
 
-    public void getUser(Context context, final UserInformationListener userInformationListener, final DataSourceListener<RemoteUser> dataSourceListener) {
-        userLocaleDataSourceImpl.getUser(context, new UserInformationListener() {
+    public void getUser(Context context, final DataSourceListener<User> dataSourceListener) {
+        userLocaleDataSourceImpl.getUser(context, new DataSourceListener<User>() {
             @Override
-            public void onCheckUser(User user) {
-                userInformationListener.onCheckUser(user);
-                userRemoteDataSource.getProfile(user.getToken(),dataSourceListener);
+            public void onResponse(User response) {
+                Log.d(TAG, "onResponse: "+response.getToken());
+//                userRemoteDataSource.getProfile(response.getToken(),dataSourceListener);
+                dataSourceListener.onResponse(response);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.d(TAG, "onFailure: ");
             }
         });
 
@@ -60,16 +66,16 @@ public class UserRepository {
         });
     }
 
-    public void getProfile(final String token, final Context context, final DataSourceListener<RemoteUser> dataSourceListener) {
-        userRemoteDataSource.getProfile(token, new DataSourceListener<RemoteUser>() {
+    public void getProfile(final String token, final Context context, final DataSourceListener<User> dataSourceListener) {
+        userRemoteDataSource.getProfile(token, new DataSourceListener<User>() {
             @Override
-            public void onResponse(RemoteUser response) {
+            public void onResponse(User response) {
                 User user = new User();
-                user.setName(response.getNickName());
+                user.setName(response.getName());
                 user.setToken(token);
-                user.setDate(response.getBirthdayDate());
+                user.setDate(response.getDate());
                 user.setGender(response.getGender());
-                user.setUserId(response.getId());
+                user.setUserId(response.getUserId());
                 user.setAvatar(response.getAvatar());
                 saveUser(user, context);
                 dataSourceListener.onResponse(response);
@@ -89,15 +95,16 @@ public class UserRepository {
     }
 
     public void isLogin(Context context, final IsLoginListener isLoginListener){
-        userLocaleDataSourceImpl.getUser(context, new UserInformationListener() {
+        userLocaleDataSourceImpl.getUser(context, new DataSourceListener<User>() {
             @Override
-            public void onCheckUser(User user) {
-                if (user != null){
-                    isLoginListener.isLogin(true);
-                }
-                else {
-                    isLoginListener.isLogin(false);
-                }
+            public void onResponse(User response) {
+
+                isLoginListener.isLogin(true);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                isLoginListener.isLogin(false);
             }
         });
     }

@@ -5,18 +5,19 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
 public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "GetDataAsyncTask";
-    private UserInformationListener userInformationListener;
+    private DataSourceListener<User> dataSourceListener;
 
     @SuppressLint("StaticFieldLeak")
     private Context context;
 
-    public GetUserDataAsyncTask(Context context, UserInformationListener userInformationListener) {
-        this.userInformationListener = userInformationListener;
+    public GetUserDataAsyncTask(Context context, DataSourceListener<User> dataSourceListener) {
+        this.dataSourceListener = dataSourceListener;
         this.context = context;
     }
 
@@ -34,14 +35,14 @@ public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity
             user.setDate(userEntity.getDate());
             user.setGender(userEntity.getGender());
             user.setAvatar(userEntity.getAvatar());
-            userInformationListener.onCheckUser(user);
+            dataSourceListener.onResponse(user);
 
 //            info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
 //                    .append(token).append("\n").append("Name :").append(name).append("\n")
 //                    .append("Date :").append(date).append("\n").append("Gender :").append(gender);
 //            Log.d(TAG, "doInBackground: " + info);
         } else {
-            userInformationListener.onCheckUser(null);
+            dataSourceListener.onFailure(null);
         }
 
         return null;

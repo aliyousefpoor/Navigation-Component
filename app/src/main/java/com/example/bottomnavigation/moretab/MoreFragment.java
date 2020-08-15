@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +61,6 @@ public class MoreFragment extends Fragment {
     private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userRepository);
 
-    private Bundle bundle = new Bundle();
 
 
     @Nullable
@@ -93,20 +93,6 @@ public class MoreFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-//        moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<User>() {
-//            @Override
-//            public void onChanged(User user) {
-//                if (user != null) {
-//                    bundle.putParcelable("body", user);
-//                    navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
-//                    Log.d(TAG, "onChanged: userEntity");
-//                } else {
-//                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoCodeListener);
-//                    loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
-//
-//                }
-//            }
-//        });
         moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLogin) {
@@ -120,7 +106,6 @@ public class MoreFragment extends Fragment {
                 }
             }
         });
-
 
     }
 

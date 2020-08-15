@@ -2,6 +2,7 @@ package com.example.bottomnavigation.data.local;
 
 import android.content.Context;
 
+import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.local.database.UserInformationListener;
 import com.example.bottomnavigation.data.local.database.GetUserDataAsyncTask;
@@ -14,8 +15,8 @@ public class UserLocaleDataSourceImpl {
         updateUserAsyncTask.execute();
     }
 
-    public void getUser(Context context, UserInformationListener userInformationListener) {
-        GetUserDataAsyncTask getUserDataAsyncTask = new GetUserDataAsyncTask(context, userInformationListener);
+    public void getUser(Context context, DataSourceListener<User> dataSourceListener ) {
+        GetUserDataAsyncTask getUserDataAsyncTask = new GetUserDataAsyncTask(context, dataSourceListener);
         getUserDataAsyncTask.execute();
     }
 
