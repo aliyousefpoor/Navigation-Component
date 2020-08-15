@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.local.database.IsLoginListener;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
@@ -27,8 +28,16 @@ public class UserRepository {
         userLocaleDataSourceImpl.saveUser(user, context);
     }
 
-    public void getUser(Context context, UserInformationListener userInformationListener) {
-        userLocaleDataSourceImpl.getUser(context, userInformationListener);
+    public void getUser(Context context, final UserInformationListener userInformationListener, final DataSourceListener<RemoteUser> dataSourceListener) {
+        userLocaleDataSourceImpl.getUser(context, new UserInformationListener() {
+            @Override
+            public void onCheckUser(User user) {
+                userInformationListener.onCheckUser(user);
+                userRemoteDataSource.getProfile(user.getToken(),dataSourceListener);
+            }
+        });
+
+
     }
 
     public void updateProfile(final User user, final Context context, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
@@ -77,6 +86,20 @@ public class UserRepository {
         userRemoteDataSource.updateImage(token,file,dataSourceListener);
         Log.d(TAG, "updateImage: "+dataSourceListener);
 
+    }
+
+    public void isLogin(Context context, final IsLoginListener isLoginListener){
+        userLocaleDataSourceImpl.getUser(context, new UserInformationListener() {
+            @Override
+            public void onCheckUser(User user) {
+                if (user != null){
+                    isLoginListener.isLogin(true);
+                }
+                else {
+                    isLoginListener.isLogin(false);
+                }
+            }
+        });
     }
 
 }

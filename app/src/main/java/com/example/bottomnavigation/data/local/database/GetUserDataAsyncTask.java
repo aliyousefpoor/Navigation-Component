@@ -36,7 +36,6 @@ public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity
             user.setAvatar(userEntity.getAvatar());
             userInformationListener.onCheckUser(user);
 
-
 //            info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
 //                    .append(token).append("\n").append("Name :").append(name).append("\n")
 //                    .append("Date :").append(date).append("\n").append("Gender :").append(gender);

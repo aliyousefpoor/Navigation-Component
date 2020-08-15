@@ -44,16 +44,16 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideVerificationRemoteDataSource(apiService);
     private LoginStepTwoViewModelFactory loginStepTwoViewModelFactory = LoginModule.provideVerificationViewModelFactory(loginStepTwoRemoteDataSource);
     private String androidId;
-    private LoginStepTwoCodeListener loginStepTwoCodeListener;
+    private LoginStepTwoListener loginStepTwoListener;
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
     private User user = new User();
 
 
-    public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoCodeListener loginStepTwoCodeListener, ResendCodeListener resendCodeListener) {
+    public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoListener loginStepTwoListener, ResendCodeListener resendCodeListener) {
         this.number = number;
         this.androidId=androidId;
-        this.loginStepTwoCodeListener = loginStepTwoCodeListener;
+        this.loginStepTwoListener = loginStepTwoListener;
         this.resendCodeListener = resendCodeListener;
     }
 
@@ -100,7 +100,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoCodeListener);
+                LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
                 loginStepOneDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
 
             }
@@ -117,7 +117,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
 
 
     public void postVerificationCodeRequest() {
-        loginStepTwoViewModel.verificationLiveData.observe(this, new Observer<LoginStepTwoResponseBody>() {
+        loginStepTwoViewModel.loginStepTwoLiveData.observe(this, new Observer<LoginStepTwoResponseBody>() {
 
             @Override
             public void onChanged(final LoginStepTwoResponseBody loginStepTwoResponseBody) {
@@ -128,7 +128,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
                     user.setUserId(loginStepTwoResponseBody.getUserId());
                     user.setToken(loginStepTwoResponseBody.getToken());
                     Log.d(TAG, "onChanged: " + user.getUserId());
-                    loginStepTwoCodeListener.onResponse(user);
+                    loginStepTwoListener.onResponse(user);
 
                     dismiss();
                     dialog.dismiss();

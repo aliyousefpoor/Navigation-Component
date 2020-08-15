@@ -22,7 +22,6 @@ import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -44,7 +43,6 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
-import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
@@ -88,7 +86,7 @@ public class ProfileFragment extends Fragment {
     private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(userRepository);
     private PersianDatePickerDialog picker;
-    private User user ;
+    private User user;
 
 
     @Nullable
@@ -107,8 +105,9 @@ public class ProfileFragment extends Fragment {
 
         profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
-        assert getArguments() != null;
-         user = getArguments().getParcelable("body");
+//        assert getArguments() != null;
+
+//         users = getArguments().getParcelable("body");
 
         radioSexGroup = view.findViewById(R.id.radio_group);
 
@@ -127,24 +126,32 @@ public class ProfileFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        Log.d(TAG, "onViewCreated: " + user.getGender() + user.getName());
+//        Log.d(TAG, "onViewCreated: " + user.getGender() + user.getName());
 
 
         profileViewModel.getUser.observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
+                ProfileFragment.this.user =user;
                 progressBar.setVisibility(View.GONE);
                 name.setText(user.getName());
                 date.setText(user.getDate());
                 Glide.with(getContext()).load(user.getAvatar()).into(avatar);
                 String checkGender = user.getGender();
-                if (checkGender.equals("Male")){
-                    male.setChecked(true);
+                if (checkGender !=null) {
+                    if (checkGender.equals("Male")) {
+                        male.setChecked(true);
+                    } else {
+                        female.setChecked(true);
+                    }
                 }
-                else{
-                    female.setChecked(true);
+                else {
+                    male.setChecked(false);
+                    female.setChecked(false);
                 }
+                profileViewModel.getProfile(ProfileFragment.this.user.getToken(), getContext());
             }
+
         });
 
         profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<RemoteUser>() {
@@ -165,11 +172,11 @@ public class ProfileFragment extends Fragment {
         });
 
 
+
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
-
             }
         });
 
@@ -181,8 +188,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-        profileViewModel.getProfile(user.getToken(), getContext());
         profileViewModel.getUser(getContext());
         change.setOnClickListener(new View.OnClickListener() {
             @Override

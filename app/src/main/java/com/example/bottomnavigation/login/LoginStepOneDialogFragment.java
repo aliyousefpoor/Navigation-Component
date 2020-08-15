@@ -39,7 +39,7 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     EditText number;
     Button submit;
     private LoginStepTwoDialogFragment loginStepTwoDialogFragment;
-    private LoginStepTwoCodeListener loginStepTwoCodeListener;
+    private LoginStepTwoListener loginStepTwoListener;
     private LoginStepOneViewModel loginStepOneViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -54,8 +54,8 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     private ResendCodeListener resendCodeListener;
 
 
-    public LoginStepOneDialogFragment(LoginStepTwoCodeListener loginStepTwoCodeListener) {
-        this.loginStepTwoCodeListener = loginStepTwoCodeListener;
+    public LoginStepOneDialogFragment(LoginStepTwoListener loginStepTwoListener) {
+        this.loginStepTwoListener = loginStepTwoListener;
     }
 
     @SuppressLint("HardwareIds")
@@ -91,7 +91,6 @@ public class LoginStepOneDialogFragment extends DialogFragment {
                 loginStepOne.setDeviceModel(deviceModel);
                 loginStepOne.setDeviceOs(deviceOs);
 
-
                 loginStepOneViewModel.loginStepOne(loginStepOne);
 
                 dialog = new ProgressDialog(getContext());
@@ -105,10 +104,10 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     }
 
     public void postRequest() {
-        loginStepOneViewModel.userLiveData.observe(this, new Observer<LoginResponseBody>() {
+        loginStepOneViewModel.loginStepOneLiveData.observe(this, new Observer<LoginResponseBody>() {
             @Override
             public void onChanged(LoginResponseBody loginBody) {
-                loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(number.getText().toString(),androidId, loginStepTwoCodeListener,resendCodeListener);
+                loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(number.getText().toString(),androidId, loginStepTwoListener,resendCodeListener);
                 loginStepTwoDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
                 Log.d(TAG, "onChanged: " + loginBody);
                 dismiss();

@@ -31,8 +31,8 @@ public class ProfileViewModel extends ViewModel {
     private SingleLiveEvent<UpdateResponseBody> _updateUserProfile = new SingleLiveEvent<>();
     public SingleLiveEvent<UpdateResponseBody> updateUserProfile = _updateUserProfile;
 
-    private MutableLiveData<RemoteUser> _getProfile = new MutableLiveData<>();
-    public MutableLiveData<RemoteUser> getUserProfile = _getProfile;
+    private MutableLiveData<RemoteUser> _getUserProfile = new MutableLiveData<>();
+    public MutableLiveData<RemoteUser> getUserProfile = _getUserProfile;
     private MutableLiveData<User> _getUser = new MutableLiveData<>();
     public MutableLiveData<User> getUser = _getUser;
 
@@ -57,12 +57,12 @@ public class ProfileViewModel extends ViewModel {
         userRepository.getProfile(token,context, new DataSourceListener<RemoteUser>() {
             @Override
             public void onResponse(RemoteUser response) {
-                _getProfile.postValue(response);
+//                _getUserProfile.postValue(response);
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-                Log.d(TAG, "onFailure: ");
+//                Log.d(TAG, "onFailure: ");
 
             }
         });
@@ -87,6 +87,16 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onCheckUser(User user) {
                 _getUser.postValue(user);
+            }
+        }, new DataSourceListener<RemoteUser>() {
+            @Override
+            public void onResponse(RemoteUser response) {
+                _getUserProfile.postValue(response);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.d(TAG, "onFailure: ");
             }
         });
     }

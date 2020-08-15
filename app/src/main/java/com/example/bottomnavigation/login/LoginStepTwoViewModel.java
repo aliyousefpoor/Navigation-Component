@@ -22,15 +22,16 @@ public class LoginStepTwoViewModel extends ViewModel {
         this.loginStepTwoRemoteDataSource = loginStepTwoRemoteDataSource;
     }
 
-    private MutableLiveData<LoginStepTwoResponseBody> _verificationLiveData = new MutableLiveData<>();
-    public LiveData<LoginStepTwoResponseBody> verificationLiveData = _verificationLiveData;
+    private MutableLiveData<LoginStepTwoResponseBody> _LoginStepTwoLiveData = new MutableLiveData<>();
+    public LiveData<LoginStepTwoResponseBody> loginStepTwoLiveData = _LoginStepTwoLiveData;
 
     public void loginStepTwo(LoginStepTwo loginStepTwo) {
         loginStepTwoRemoteDataSource.loginStepTwo(loginStepTwo, new DataSourceListener<LoginStepTwoResponseBody>() {
 
             @Override
+
             public void onResponse(LoginStepTwoResponseBody response) {
-                _verificationLiveData.setValue(response);
+                _LoginStepTwoLiveData.setValue(response);
 
                 Log.d(TAG, "onResponse:Verification ");
 

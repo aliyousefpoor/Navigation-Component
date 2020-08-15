@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.ViewModel;
 
+import com.example.bottomnavigation.data.local.database.IsLoginListener;
 import com.example.bottomnavigation.data.local.database.UserInformationListener;
 import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
@@ -18,21 +19,21 @@ public class MoreViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    private SingleLiveEvent<User> _isLoginUser = new SingleLiveEvent<>();
-    public SingleLiveEvent<User> isLoginUser = _isLoginUser;
+    private SingleLiveEvent<Boolean> _isLogin = new SingleLiveEvent<>();
+    public SingleLiveEvent<Boolean> isLogin = _isLogin;
 
-
-    public void isUserLogin(final Context context ) {
-        userRepository.getUser(context, new UserInformationListener() {
+    public void isLogin(Context context){
+        userRepository.isLogin(context,new IsLoginListener() {
             @Override
-            public void onCheckUser(User user) {
-               if (user==null){
-                   _isLoginUser.postValue(null);
-               }
-               else{
-                   _isLoginUser.postValue(user);
-               }
+            public void isLogin(Boolean isLogin) {
+                if (isLogin){
+                    _isLogin.postValue(true);
+                }
+                else {
+                    _isLogin.postValue(false);
+                }
             }
+
         });
     }
 }

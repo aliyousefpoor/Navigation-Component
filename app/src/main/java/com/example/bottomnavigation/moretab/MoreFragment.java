@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -26,7 +25,6 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
@@ -35,7 +33,7 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
-import com.example.bottomnavigation.login.LoginStepTwoCodeListener;
+import com.example.bottomnavigation.login.LoginStepTwoListener;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 
@@ -52,7 +50,7 @@ public class MoreFragment extends Fragment {
     RecyclerView recyclerView;
     View view;
     private MoreItemListener moreItemListener;
-    private LoginStepTwoCodeListener loginStepTwoCodeListener;
+    private LoginStepTwoListener loginStepTwoListener;
     private MoreViewModel moreViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -95,19 +93,34 @@ public class MoreFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<User>() {
+//        moreViewModel.isLoginUser.observeSingleEvent(getViewLifecycleOwner(), new Observer<User>() {
+//            @Override
+//            public void onChanged(User user) {
+//                if (user != null) {
+//                    bundle.putParcelable("body", user);
+//                    navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
+//                    Log.d(TAG, "onChanged: userEntity");
+//                } else {
+//                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoCodeListener);
+//                    loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
+//
+//                }
+//            }
+//        });
+        moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(User user) {
-                if (user != null) {
-                    bundle.putParcelable("body", user);
-                    navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
-                    Log.d(TAG, "onChanged: userEntity");
-                } else {
-                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoCodeListener);
-                    loginStepOneDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+            public void onChanged(Boolean isLogin) {
+                if (isLogin){
+//                    bundle.putParcelable("body",user);
+                    navController.navigate(R.id.action_moreFragment_to_profileFragment);
+                }
+                else {
+                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
+                    loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
                 }
             }
         });
+
 
     }
 
@@ -131,7 +144,8 @@ public class MoreFragment extends Fragment {
                 switch (item.type) {
 
                     case Profile:
-                        moreViewModel.isUserLogin(getContext());
+
+                        moreViewModel.isLogin(getContext());
                         break;
 
                     case About:
@@ -148,14 +162,14 @@ public class MoreFragment extends Fragment {
 
     public void setUpLogin() {
 
-        loginStepTwoCodeListener = new LoginStepTwoCodeListener() {
+        loginStepTwoListener = new LoginStepTwoListener() {
             @Override
             public void onResponse(User user) {
                 Log.d(TAG, "onResponse: listener");
 
-                bundle.putParcelable("body", user);
+//                bundle.putParcelable("body", user);
 
-                navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
+                navController.navigate(R.id.action_moreFragment_to_profileFragment);
             }
         };
     }

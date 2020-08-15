@@ -21,8 +21,9 @@ public class LoginStepOneViewModel extends ViewModel {
     }
 
 
-    MutableLiveData<LoginResponseBody> _userLiveData = new MutableLiveData<>();
-    LiveData<LoginResponseBody> userLiveData = _userLiveData;
+
+    MutableLiveData<LoginResponseBody> _loginStepOneLiveData = new MutableLiveData<>();
+    LiveData<LoginResponseBody> loginStepOneLiveData = _loginStepOneLiveData;
 
 
 
@@ -32,7 +33,7 @@ public class LoginStepOneViewModel extends ViewModel {
         loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginResponseBody>() {
             @Override
             public void onResponse(LoginResponseBody response) {
-                _userLiveData.setValue(response);
+                _loginStepOneLiveData.setValue(response);
             }
 
             @Override
