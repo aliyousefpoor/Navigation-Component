@@ -47,18 +47,18 @@ public class UserRemoteDataSourceImpl {
     }
 
 
-    public void getProfile(String token, final DataSourceListener<User> dataSourceListener) {
+    public void getProfile(final String token, final DataSourceListener<User> dataSourceListener) {
         Log.d(TAG, "getProfile: "+token);
         apiService.getUser("Token "+token).enqueue(new Callback<RemoteUser>() {
             @Override
             public void onResponse(@NotNull Call<RemoteUser> call, @NotNull Response<RemoteUser> response) {
                 User user = new User();
-                assert response.body() != null;
                 user.setUserId(response.body().getId());
                 user.setName(response.body().getNickName());
                 user.setDate(response.body().getBirthdayDate());
                 user.setGender(response.body().getGender());
                 user.setAvatar(response.body().getAvatar());
+                user.setToken(token);
                 dataSourceListener.onResponse(user);
 
             }

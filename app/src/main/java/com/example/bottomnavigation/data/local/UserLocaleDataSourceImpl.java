@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.local.database.UserInformationListener;
 import com.example.bottomnavigation.data.local.database.GetUserDataAsyncTask;
 import com.example.bottomnavigation.data.local.database.UpdateUserAsyncTask;
 

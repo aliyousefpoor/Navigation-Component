@@ -92,6 +92,7 @@ public class MoreFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+//        recyclerView.addItemDecoration(dividerItemDecoration,R.drawable.divideri);
 
         moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override

@@ -51,6 +51,8 @@ public class RemoteUser {
     @Expose
     private IspData ispData;
 
+    private String token;
+
     public Credit getCredits() {
         return credits;
     }
@@ -153,5 +155,13 @@ public class RemoteUser {
 
     public void setIspData(IspData ispData) {
         this.ispData = ispData;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

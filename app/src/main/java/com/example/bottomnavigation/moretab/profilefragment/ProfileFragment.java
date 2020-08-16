@@ -43,7 +43,6 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
-import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.repository.UserRepository;
@@ -105,9 +104,6 @@ public class ProfileFragment extends Fragment {
 
         profileViewModel = new ViewModelProvider(this, profileViewModelFactory).get(ProfileViewModel.class);
 
-//        assert getArguments() != null;
-
-//         users = getArguments().getParcelable("body");
 
         radioSexGroup = view.findViewById(R.id.radio_group);
 
@@ -126,7 +122,6 @@ public class ProfileFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-//        Log.d(TAG, "onViewCreated: " + user.getGender() + user.getName());
 
 
         profileViewModel.getUser.observe(getViewLifecycleOwner(), new Observer<User>() {
@@ -136,6 +131,7 @@ public class ProfileFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 name.setText(user.getName());
                 date.setText(user.getDate());
+                ProfileFragment.this.user.setToken(user.getToken());
                 Glide.with(getContext()).load(user.getAvatar()).into(avatar);
                 String checkGender = user.getGender();
                 if (checkGender !=null) {
@@ -149,27 +145,27 @@ public class ProfileFragment extends Fragment {
                     male.setChecked(false);
                     female.setChecked(false);
                 }
-                profileViewModel.getProfile(ProfileFragment.this.user.getToken(), getContext());
+//                profileViewModel.getProfile(ProfileFragment.this.user.getToken(), getContext());
             }
 
         });
 
-        profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User remoteUser) {
-                progressBar.setVisibility(View.GONE);
-                name.setText(remoteUser.getName());
-                date.setText(remoteUser.getDate());
-                Glide.with(getContext()).load(remoteUser.getAvatar()).into(avatar);
-
-                String checkGender = remoteUser.getGender();
-                if (checkGender.equals("Male")) {
-                    male.setChecked(true);
-                } else {
-                    female.setChecked(true);
-                }
-            }
-        });
+//        profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<User>() {
+//            @Override
+//            public void onChanged(User remoteUser) {
+//                progressBar.setVisibility(View.GONE);
+//                name.setText(remoteUser.getName());
+//                date.setText(remoteUser.getDate());
+//                Glide.with(getContext()).load(remoteUser.getAvatar()).into(avatar);
+//
+//                String checkGender = remoteUser.getGender();
+//                if (checkGender.equals("Male")) {
+//                    male.setChecked(true);
+//                } else {
+//                    female.setChecked(true);
+//                }
+//            }
+//        });
 
 
 

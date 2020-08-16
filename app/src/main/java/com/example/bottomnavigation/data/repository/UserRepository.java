@@ -6,11 +6,10 @@ import android.util.Log;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.local.database.IsLoginListener;
-import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.local.database.UserInformationListener;
+
 
 import java.io.File;
 
@@ -33,7 +32,7 @@ public class UserRepository {
             @Override
             public void onResponse(User response) {
                 Log.d(TAG, "onResponse: "+response.getToken());
-//                userRemoteDataSource.getProfile(response.getToken(),dataSourceListener);
+                userRemoteDataSource.getProfile(response.getToken(),dataSourceListener);
                 dataSourceListener.onResponse(response);
             }
 

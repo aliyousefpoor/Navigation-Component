@@ -8,8 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.local.database.UserInformationListener;
-import com.example.bottomnavigation.data.model.RemoteUser;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.UserRepository;
@@ -58,7 +56,7 @@ public class ProfileViewModel extends ViewModel {
 
             @Override
             public void onResponse(User response) {
-//                _getUserProfile.postValue(response);
+
             }
 
             @Override
