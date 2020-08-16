@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.remote.CategoryRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.CategoryRemoteDataSource;
 
 public class CategoryViewModelFactory implements ViewModelProvider.Factory {
     private CategoryRemoteDataSource categoryRemoteDataSource;

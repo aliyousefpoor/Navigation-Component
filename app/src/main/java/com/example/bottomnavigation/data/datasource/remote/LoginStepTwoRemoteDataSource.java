@@ -1,14 +1,13 @@
-package com.example.bottomnavigation.data.remote;
+package com.example.bottomnavigation.data.datasource.remote;
 
 import android.content.Context;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.local.database.LoginAsyncTask;
+import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoBody;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
-import com.example.bottomnavigation.di.AppModule;
 
 import org.jetbrains.annotations.NotNull;
 

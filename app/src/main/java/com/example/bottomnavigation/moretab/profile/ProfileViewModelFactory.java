@@ -1,21 +1,21 @@
-package com.example.bottomnavigation.moretab.profilefragment;
+package com.example.bottomnavigation.moretab.profile;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.repository.UserRepository;
+import com.example.bottomnavigation.data.repository.ProfileRepository;
 
 public class ProfileViewModelFactory implements ViewModelProvider.Factory {
-    private UserRepository userRepository;
-    public ProfileViewModelFactory(UserRepository userRepository){
-        this.userRepository = userRepository;
+    private ProfileRepository profileRepository;
+    public ProfileViewModelFactory(ProfileRepository profileRepository){
+        this.profileRepository = profileRepository;
     }
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ProfileViewModel.class)){
-            return (T) new ProfileViewModel(userRepository);
+            return (T) new ProfileViewModel(profileRepository);
         }
         throw new IllegalArgumentException("UnKnown Class");
     }

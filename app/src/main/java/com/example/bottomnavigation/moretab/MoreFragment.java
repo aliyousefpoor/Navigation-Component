@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,26 +21,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.repository.UserRepository;
-import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
 import com.example.bottomnavigation.login.LoginStepTwoListener;
-import com.example.bottomnavigation.utils.ApiBuilder;
+
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Retrofit;
 
 
 public class MoreFragment extends Fragment {
@@ -53,13 +46,8 @@ public class MoreFragment extends Fragment {
     private MoreItemListener moreItemListener;
     private LoginStepTwoListener loginStepTwoListener;
     private MoreViewModel moreViewModel;
-    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
-    private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
-    private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
-    private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
-    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userRepository);
+    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userLocaleDataSourceImpl);
 
 
 
@@ -92,13 +80,11 @@ public class MoreFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-//        recyclerView.addItemDecoration(dividerItemDecoration,R.drawable.divideri);
 
         moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLogin) {
                 if (isLogin){
-//                    bundle.putParcelable("body",user);
                     navController.navigate(R.id.action_moreFragment_to_profileFragment);
                 }
                 else {
@@ -130,7 +116,6 @@ public class MoreFragment extends Fragment {
                 switch (item.type) {
 
                     case Profile:
-
                         moreViewModel.isLogin(getContext());
                         break;
 
@@ -152,9 +137,6 @@ public class MoreFragment extends Fragment {
             @Override
             public void onResponse(User user) {
                 Log.d(TAG, "onResponse: listener");
-
-//                bundle.putParcelable("body", user);
-
                 navController.navigate(R.id.action_moreFragment_to_profileFragment);
             }
         };

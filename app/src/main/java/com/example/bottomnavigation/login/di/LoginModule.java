@@ -1,11 +1,11 @@
 package com.example.bottomnavigation.login.di;
 
 import com.example.bottomnavigation.ApiService;
-import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.remote.LoginStepOneRemoteDataSource;
-import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.remote.LoginStepTwoRemoteDataSource;
-import com.example.bottomnavigation.data.repository.UserRepository;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.repository.ProfileRepository;
 import com.example.bottomnavigation.login.LoginStepOneViewModelFactory;
 import com.example.bottomnavigation.login.LoginStepTwoViewModelFactory;
 
@@ -32,8 +32,8 @@ public class LoginModule {
     }
 
 
-    public static UserRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
-        return new UserRepository(userLocaleDataSourceImpl, userRemoteDataSource);
+    public static ProfileRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
+        return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     }
 
     public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService) {

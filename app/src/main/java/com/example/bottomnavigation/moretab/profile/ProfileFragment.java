@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.moretab.profilefragment;
+package com.example.bottomnavigation.moretab.profile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 
 import android.net.Uri;
 import android.os.Build;
@@ -41,22 +40,21 @@ import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.local.database.CancelAsyncTask;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.database.CancelAsyncTask;
+import com.example.bottomnavigation.data.datasource.local.database.DateListener;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.data.repository.UserRepository;
+import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
+import com.example.bottomnavigation.data.repository.ProfileRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
+import com.example.bottomnavigation.utils.CalendarUtils;
 import com.example.bottomnavigation.utils.FileUtils;
 
 import java.io.File;
 
-import ir.hamsaa.persiandatepicker.Listener;
-import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
-import ir.hamsaa.persiandatepicker.util.PersianCalendar;
 import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
@@ -82,10 +80,10 @@ public class ProfileFragment extends Fragment {
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private UserRepository userRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
-    private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(userRepository);
-    private PersianDatePickerDialog picker;
+    private ProfileRepository profileRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
+    private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(profileRepository);
     private User user;
+    private CalendarUtils calendarUtils;
 
 
     @Nullable
@@ -145,27 +143,10 @@ public class ProfileFragment extends Fragment {
                     male.setChecked(false);
                     female.setChecked(false);
                 }
-//                profileViewModel.getProfile(ProfileFragment.this.user.getToken(), getContext());
             }
 
         });
 
-//        profileViewModel.getUserProfile.observe(getViewLifecycleOwner(), new Observer<User>() {
-//            @Override
-//            public void onChanged(User remoteUser) {
-//                progressBar.setVisibility(View.GONE);
-//                name.setText(remoteUser.getName());
-//                date.setText(remoteUser.getDate());
-//                Glide.with(getContext()).load(remoteUser.getAvatar()).into(avatar);
-//
-//                String checkGender = remoteUser.getGender();
-//                if (checkGender.equals("Male")) {
-//                    male.setChecked(true);
-//                } else {
-//                    female.setChecked(true);
-//                }
-//            }
-//        });
 
 
 
@@ -230,43 +211,14 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     public void showCalendar() {
+         calendarUtils = new CalendarUtils(getContext(), new DateListener() {
+            @Override
+            public void onDateChange(String persianDate) {
+                date.setText(persianDate);
+            }
+        });
+         calendarUtils.showCalendar();
 
-        PersianCalendar initDate = new PersianCalendar();
-        initDate.setPersianDate(1370, 3, 13);
-        picker = new PersianDatePickerDialog(getContext())
-                .setPositiveButtonString("باشه")
-                .setNegativeButton("بیخیال")
-                .setTodayButton("امروز")
-                .setTodayButtonVisible(true)
-                .setMinYear(1300)
-                .setMaxYear(1420)
-                .setActionTextColor(R.color.white)
-                .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-                .setActionTextColor(Color.GRAY)
-                .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
-                .setShowInBottomSheet(true)
-                .setListener(new Listener() {
-                    @Override
-                    public void onDateSelected(PersianCalendar persianCalendar) {
-                        Log.d(TAG, "onDateSelected: " + persianCalendar.getGregorianChange());//Fri Oct 15 03:25:44 GMT+04:30 1582
-                        Log.d(TAG, "onDateSelected: " + persianCalendar.getTimeInMillis());//1583253636577
-                        Log.d(TAG, "onDateSelected: " + persianCalendar.getTime());//Tue Mar 03 20:10:36 GMT+03:30 2020
-                        Log.d(TAG, "onDateSelected: " + persianCalendar.getDelimiter());//  /
-                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianLongDate());// سه‌شنبه  13  اسفند  1398
-//                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianLongDateAndTime()); //سه‌شنبه  13  اسفند  1398 ساعت 20:10:36
-//                        Log.d(TAG, "onDateSelected: " + persianCalendar.getPersianMonthName()); //اسفند
-                        Log.d(TAG, "onDateSelected: " + persianCalendar.isPersianLeapYear());//false
-                        String persianDate = persianCalendar.getPersianShortDate().replaceAll("/", "-");
-                        date.setText(persianDate);
-                    }
-
-                    @Override
-                    public void onDismissed() {
-
-                    }
-                });
-
-        picker.show();
     }
 
     public void showDialog() {
@@ -279,17 +231,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, GALLEY_PERMISSION_CODE);
-                    } else {
-                        pickImageFromGallery();
-
-                    }
-                } else {
-
-                }
+                    pickImageFromGallery();
+                } 
                 dialog.dismiss();
             }
         });

@@ -4,45 +4,40 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.local.database.IsLoginListener;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.remote.UserRemoteDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 
 
 import java.io.File;
 
-public class UserRepository {
+public class ProfileRepository {
     private static final String TAG = "UserRepository";
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
     private UserRemoteDataSourceImpl userRemoteDataSource;
 
-    public UserRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
+    public ProfileRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
         this.userLocaleDataSourceImpl = userLocaleDataSourceImpl;
         this.userRemoteDataSource = userRemoteDataSource;
     }
 
-    public void saveUser(User user, Context context) {
-        userLocaleDataSourceImpl.saveUser(user, context);
-    }
 
-    public void getUser(Context context, final DataSourceListener<User> dataSourceListener) {
+    public void getProfile(final Context context, final DataSourceListener<User> dataSourceListener) {
         userLocaleDataSourceImpl.getUser(context, new DataSourceListener<User>() {
             @Override
             public void onResponse(User response) {
-                Log.d(TAG, "onResponse: "+response.getToken());
-                userRemoteDataSource.getProfile(response.getToken(),dataSourceListener);
+                Log.d(TAG, "onResponse: " + response.getToken());
                 dataSourceListener.onResponse(response);
+                getProfile(response.getToken(), context, dataSourceListener);
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.d(TAG, "onFailure: ");
+                dataSourceListener.onFailure(throwable);
             }
         });
-
-
     }
 
     public void updateProfile(final User user, final Context context, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
@@ -54,7 +49,7 @@ public class UserRepository {
                 user.setDate(response.getData().getBirthdayDate());
                 user.setName(response.getData().getNickName());
                 user.setAvatar(response.getData().getAvatar());
-                saveUser(user, context);
+                userLocaleDataSourceImpl.saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }
 
@@ -65,7 +60,7 @@ public class UserRepository {
         });
     }
 
-    public void getProfile(final String token, final Context context, final DataSourceListener<User> dataSourceListener) {
+    private void getProfile(final String token, final Context context, final DataSourceListener<User> dataSourceListener) {
         userRemoteDataSource.getProfile(token, new DataSourceListener<User>() {
             @Override
             public void onResponse(User response) {
@@ -76,7 +71,7 @@ public class UserRepository {
                 user.setGender(response.getGender());
                 user.setUserId(response.getUserId());
                 user.setAvatar(response.getAvatar());
-                saveUser(user, context);
+                userLocaleDataSourceImpl.saveUser(user, context);
                 dataSourceListener.onResponse(response);
             }
 
@@ -87,25 +82,8 @@ public class UserRepository {
         });
     }
 
-    public void updateImage(String token ,File file, DataSourceListener<UpdateResponseBody> dataSourceListener){
-        userRemoteDataSource.updateImage(token,file,dataSourceListener);
-        Log.d(TAG, "updateImage: "+dataSourceListener);
-
+    public void updateImage(String token, File file, DataSourceListener<UpdateResponseBody> dataSourceListener) {
+        userRemoteDataSource.updateImage(token, file, dataSourceListener);
+        Log.d(TAG, "updateImage: " + dataSourceListener);
     }
-
-    public void isLogin(Context context, final IsLoginListener isLoginListener){
-        userLocaleDataSourceImpl.getUser(context, new DataSourceListener<User>() {
-            @Override
-            public void onResponse(User response) {
-
-                isLoginListener.isLogin(true);
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                isLoginListener.isLogin(false);
-            }
-        });
-    }
-
 }

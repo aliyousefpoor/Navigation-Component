@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 
 public class LoginStepTwoViewModelFactory implements ViewModelProvider.Factory {
     private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource;

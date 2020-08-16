@@ -1,14 +1,14 @@
-package com.example.bottomnavigation.data.local.database;
+package com.example.bottomnavigation.data.datasource.local.database;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.local.model.UserEntity;
+import com.example.bottomnavigation.data.datasource.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
+//Todo correct
 public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
     private static final String TAG = "GetDataAsyncTask";
     private DataSourceListener<User> dataSourceListener;
@@ -37,10 +37,6 @@ public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity
             user.setAvatar(userEntity.getAvatar());
             dataSourceListener.onResponse(user);
 
-//            info.append("\n\n").append("Id :").append(id).append("\n").append("Token : ")
-//                    .append(token).append("\n").append("Name :").append(name).append("\n")
-//                    .append("Date :").append(date).append("\n").append("Gender :").append(gender);
-//            Log.d(TAG, "doInBackground: " + info);
         } else {
             dataSourceListener.onFailure(null);
         }

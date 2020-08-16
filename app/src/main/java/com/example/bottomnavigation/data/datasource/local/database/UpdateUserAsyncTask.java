@@ -1,14 +1,10 @@
-package com.example.bottomnavigation.data.local.database;
+package com.example.bottomnavigation.data.datasource.local.database;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.local.database.UserDatabase;
-import com.example.bottomnavigation.data.local.database.di.DatabaseModule;
-import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.model.RemoteUser;
+import com.example.bottomnavigation.data.datasource.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
 
@@ -26,6 +22,7 @@ public class UpdateUserAsyncTask extends AsyncTask<UserEntity, Void, UserEntity>
 
     @Override
     protected UserEntity doInBackground(UserEntity... users) {
+        //Todo injectiob
         UserDatabase dataBase = UserDatabase.getInstance(context);
         UserEntity userEntity = new UserEntity();
         userEntity.setUserId(user.getUserId());

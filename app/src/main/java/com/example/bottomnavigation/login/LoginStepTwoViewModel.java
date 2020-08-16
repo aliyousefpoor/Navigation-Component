@@ -11,7 +11,7 @@ import com.example.bottomnavigation.data.datasource.DataSourceListener;
 
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
-import com.example.bottomnavigation.data.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 
 public class LoginStepTwoViewModel extends ViewModel {
     private static final String TAG = "UserVerificationViewMod";

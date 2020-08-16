@@ -1,13 +1,11 @@
-package com.example.bottomnavigation.data.local.database;
+package com.example.bottomnavigation.data.datasource.local.database;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.bottomnavigation.data.local.database.UserDatabase;
-import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.datasource.local.model.UserEntity;
 
 public class CancelAsyncTask extends AsyncTask<UserEntity,Void,UserEntity> {
     private static final String TAG = "CancelAsyncTask";

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.LoginStepOne;
-import com.example.bottomnavigation.data.remote.LoginStepOneRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 
 public class LoginStepOneViewModel extends ViewModel {
     private static final String TAG = "UserViewModel";

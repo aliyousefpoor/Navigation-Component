@@ -1,12 +1,11 @@
-package com.example.bottomnavigation.data.local.database;
+package com.example.bottomnavigation.data.datasource.local.database;
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.bottomnavigation.data.local.model.UserEntity;
-import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.datasource.local.model.UserEntity;
 
 
 @Database(entities = UserEntity.class,exportSchema = false,version = 1)

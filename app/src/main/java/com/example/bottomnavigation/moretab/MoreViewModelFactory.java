@@ -4,18 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.repository.UserRepository;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 
 public class MoreViewModelFactory implements ViewModelProvider.Factory {
-    private UserRepository userRepository;
-    public MoreViewModelFactory(UserRepository userRepository){
-        this.userRepository = userRepository;
+    private UserLocaleDataSourceImpl userLocaleDataSource;
+
+    public MoreViewModelFactory(UserLocaleDataSourceImpl userLocaleDataSource) {
+        this.userLocaleDataSource = userLocaleDataSource;
     }
+
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(MoreViewModel.class)){
-            return (T) new MoreViewModel(userRepository);
+        if (modelClass.isAssignableFrom(MoreViewModel.class)) {
+            return (T) new MoreViewModel(userLocaleDataSource);
         }
         throw new IllegalArgumentException("UnKnown Class");
     }

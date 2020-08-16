@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.data.remote;
+package com.example.bottomnavigation.data.datasource.remote;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;

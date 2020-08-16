@@ -68,7 +68,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void onBind(final Category category, final Context context) {
             textView.setText(category.getTitle());
-            //todo
             Glide.with(context).load(category.getAvatar()).into(imageView);
 
             cardView.setOnClickListener(new View.OnClickListener() {
