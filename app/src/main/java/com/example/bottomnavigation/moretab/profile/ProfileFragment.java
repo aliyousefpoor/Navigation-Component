@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +44,6 @@ import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceIm
 import com.example.bottomnavigation.data.datasource.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.datasource.local.database.DateListener;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.repository.ProfileRepository;
@@ -78,11 +76,11 @@ public class ProfileFragment extends Fragment {
     private Uri imageUri;
 
     private ProfileViewModel profileViewModel;
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
-    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
     private UserDatabase database = LoginModule.provideUserDatabase();
     private ProfileRepository profileRepository = LoginModule.provideProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource,database);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(profileRepository);
@@ -229,9 +227,7 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     pickImageFromGallery();
-                }
                 dialog.dismiss();
             }
         });

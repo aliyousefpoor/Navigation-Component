@@ -1,9 +1,7 @@
 package com.example.bottomnavigation.data.repository;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
@@ -11,7 +9,7 @@ import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
-import com.example.bottomnavigation.login.di.LoginModule;
+
 
 
 import java.io.File;

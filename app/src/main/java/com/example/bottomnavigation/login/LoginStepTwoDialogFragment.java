@@ -51,8 +51,8 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
     private User user = new User();
-    private Context context = CustomApp.getContext();
-    private UserDatabase database = DatabaseModule.provideUserDatabase(context);
+//    private Context context = CustomApp.getContext();
+    private UserDatabase database = LoginModule.provideUserDatabase();
 
 
     public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoListener loginStepTwoListener, ResendCodeListener resendCodeListener) {
