@@ -3,30 +3,22 @@ package com.example.bottomnavigation.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "user")
 public class User implements Parcelable {
-    @PrimaryKey()
     private int userId;
 
-    @ColumnInfo(name = "token")
     private String token;
 
-    @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "date")
     private String date;
 
-    @ColumnInfo(name = "gender")
     private String gender;
+
+    private String avatar;
 
     public User() {
     }
+
 
     protected User(Parcel in) {
         userId = in.readInt();
@@ -34,6 +26,7 @@ public class User implements Parcelable {
         name = in.readString();
         date = in.readString();
         gender = in.readString();
+        avatar = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -64,6 +57,10 @@ public class User implements Parcelable {
         this.token = token;
     }
 
+    public String getRequestToken(){
+        return "Token " + token;
+    }
+
     public String getName() {
         return name;
     }
@@ -88,6 +85,15 @@ public class User implements Parcelable {
         this.gender = gender;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -100,5 +106,6 @@ public class User implements Parcelable {
         dest.writeString(name);
         dest.writeString(date);
         dest.writeString(gender);
+        dest.writeString(avatar);
     }
 }

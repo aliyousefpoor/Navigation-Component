@@ -1,5 +1,6 @@
 package com.example.bottomnavigation.data.model;
 
+import com.example.bottomnavigation.utils.AppConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -54,7 +55,7 @@ public class Category {
     }
 
     public Object getAvatar() {
-        return avatar;
+        return AppConstants.baseUrl+avatar;
     }
 
     public void setAvatar(Object avatar) {

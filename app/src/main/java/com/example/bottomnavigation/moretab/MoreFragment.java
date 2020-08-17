@@ -1,15 +1,13 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 
 import androidx.annotation.NonNull;
@@ -24,20 +22,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.database.UserDataBase;
-import com.example.bottomnavigation.data.datasource.UserLocalDataSource;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
+import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.model.VerificationResponseBody;
-import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
-import com.example.bottomnavigation.moretab.profilefragment.LoginDialogFragment;
-import com.example.bottomnavigation.moretab.profilefragment.ProfileFragment;
-import com.example.bottomnavigation.moretab.profilefragment.VerificationCodeListener;
+import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
+import com.example.bottomnavigation.login.LoginStepTwoListener;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,22 +45,19 @@ public class MoreFragment extends Fragment {
     NavController navController;
     RecyclerView recyclerView;
     View view;
-    Button button;
     private MoreItemListener moreItemListener;
-    private VerificationCodeListener verificationCodeListener;
+    private LoginStepTwoListener loginStepTwoListener;
     private MoreViewModel moreViewModel;
-    private MoreViewModelFactory moreViewModelFactory;
-    private UserLocalDataSource userLocalDataSource = MoreModule.provideUserLocaleDataSource();
-    private LoginRepository loginRepository = MoreModule.provideUserLocaleDataSource(userLocalDataSource);
-    private ProfileFragment profileFragment = new ProfileFragment();
-    private Bundle bundle = new Bundle();
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
+    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userLocaleDataSourceImpl);
+    private UserDatabase database =LoginModule.provideUserDatabase();
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.more_fragment, container, false);
-        getItemId();
+        getItemType();
         setUpLogin();
         return view;
     }
@@ -72,12 +66,11 @@ public class MoreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        moreViewModelFactory = new MoreViewModelFactory(loginRepository);
+
         moreViewModel = new ViewModelProvider(this, moreViewModelFactory).get(MoreViewModel.class);
 
 
         recyclerView = view.findViewById(R.id.recycler_view);
-        button = view.findViewById(R.id.btn);
         navController = Navigation.findNavController(view);
 
         List<MoreModel> moreList = fill_with_Data();
@@ -90,17 +83,17 @@ public class MoreFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("FragmentLiveDataObserve")
+        moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onClick(View v) {
-
-//               LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-//                loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+            public void onChanged(Boolean isLogin) {
+                if (isLogin) {
+                    navController.navigate(R.id.action_moreFragment_to_profileFragment);
+                } else {
+                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
+                    loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
+                }
             }
         });
-
 
     }
 
@@ -115,10 +108,8 @@ public class MoreFragment extends Fragment {
         return moreLists;
     }
 
-    public void getItemId() {
+    public void getItemType() {
         moreItemListener = new MoreItemListener() {
-
-
             @SuppressLint("FragmentLiveDataObserve")
             @Override
             public void onClick(MoreModel item) {
@@ -127,22 +118,7 @@ public class MoreFragment extends Fragment {
 
                     case Profile:
 
-                        moreViewModel.isUserLogin(getContext(), new UserInformationListener() {
-                            @Override
-                            public void onUserInformation(User user) {
-                                if (user == null) {
-                                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-                                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
-                                } else {
-
-                                    bundle.putParcelable("body",user);
-                                    navController.navigate(R.id.action_moreFragment_to_profileFragment,bundle);
-                                    profileFragment.setArguments(bundle);
-
-                                }
-                            }
-                        });
-
+                        moreViewModel.isLogin(database);
                         break;
 
                     case About:
@@ -152,7 +128,6 @@ public class MoreFragment extends Fragment {
                     case Contact:
                         navController.navigate(R.id.action_moreFragment_to_contactFragment);
                         break;
-
                 }
             }
         };
@@ -160,36 +135,13 @@ public class MoreFragment extends Fragment {
 
     public void setUpLogin() {
 
-        verificationCodeListener = new VerificationCodeListener() {
+        loginStepTwoListener = new LoginStepTwoListener() {
             @Override
             public void onResponse(User user) {
                 Log.d(TAG, "onResponse: listener");
-
-                bundle.putParcelable("body", user);
-
-
-                navController.navigate(R.id.action_moreFragment_to_profileFragment, bundle);
-                profileFragment.setArguments(bundle);
+                navController.navigate(R.id.action_moreFragment_to_profileFragment);
             }
         };
-
-    }
-
-    public void isLogin() {
-        moreViewModel.isLoginUser.observe(MoreFragment.this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isLogin) {
-                if (isLogin) {
-
-                    LoginDialogFragment loginDialogFragment = new LoginDialogFragment(verificationCodeListener);
-                    loginDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
-                } else {
-
-                    navController.navigate(R.id.action_moreFragment_to_profileFragment);
-                }
-            }
-        });
-
     }
 }
 

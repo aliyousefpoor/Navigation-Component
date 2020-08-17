@@ -10,17 +10,29 @@
         android:id="@+id/toolbar"
         layout="@layout/profile_toolbar"
         />
+<include
+    android:id="@+id/progressBarLayout"
+    layout="@layout/progressbar_layout"/>
 
+<androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    app:layout_constraintBottom_toTopOf="@id/name"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/toolbar"
+    android:layout_marginTop="15dp"
+    app:cardCornerRadius="128dp"
+    >
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:src="@drawable/avatar"
-        app:layout_constraintBottom_toTopOf="@id/name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        />
+</androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/pen1"
@@ -41,7 +53,9 @@
         android:hint="@string/name"
         app:layout_constraintBottom_toTopOf="@id/date"
         app:layout_constraintEnd_toStartOf="@id/pen1"
-        app:layout_constraintTop_toBottomOf="@id/avatar" />
+        app:layout_constraintTop_toBottomOf="@id/cardView"
+
+        />
 
     <ImageView
         android:id="@+id/pen2"
@@ -106,7 +120,7 @@
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_marginTop="70dp"
-        android:background="@color/button_background"
+        android:background="@color/colorPrimary"
         android:text="@string/change"
         android:textColor="@color/white"
         app:layout_constraintCircleRadius="80dp"
@@ -118,14 +132,14 @@
         android:id="@+id/cancle"
         android:layout_width="120dp"
         android:layout_height="40dp"
-        android:background="@color/button_background"
-        android:text="@string/cancle"
+        android:background="@color/colorPrimary"
+        android:text="@string/cancel"
         android:textColor="@color/white"
         app:layout_constraintCircleRadius="80dp"
         app:layout_constraintEnd_toStartOf="@id/change"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/change"
-
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,7 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
-import com.example.bottomnavigation.data.datasource.CategoryRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.CategoryRemoteDataSource;
 import com.example.bottomnavigation.data.model.Category;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -41,11 +41,11 @@ public class CategoryFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
-    private CategoryViewModelFactory categoryViewModelFactory;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private CategoryRemoteDataSource categoryRemoteDataSource = CategoryTabModule.provideCategorySource(apiService);
+    private CategoryViewModelFactory categoryViewModelFactory=CategoryTabModule.provideCategoryViewModelFactory(categoryRemoteDataSource);
 
 
     @Nullable
@@ -60,8 +60,6 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        categoryViewModelFactory = new CategoryViewModelFactory(categoryRemoteDataSource);
         categoryViewModel = new ViewModelProvider(this, categoryViewModelFactory).get(CategoryViewModel.class);
 
         Log.d(TAG, "onViewCreated: ");

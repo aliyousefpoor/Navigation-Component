@@ -2,6 +2,7 @@ package com.example.bottomnavigation.data.model;
 
 import java.util.List;
 
+import com.example.bottomnavigation.utils.AppConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -152,8 +153,8 @@ public class Product {
         this.priceShow = priceShow;
     }
 
-    public Avatar getAvatar() {
-        return avatar;
+    public Object getAvatar() {
+        return AppConstants.baseUrl+avatar;
     }
 
     public void setAvatar(Avatar avatar) {

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bottomnavigation.data.datasource.HomeRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.HomeRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Store;
 

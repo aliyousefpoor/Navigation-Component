@@ -30,7 +30,7 @@
         />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.bottomnavigation.moretab.profilefragment.ProfileFragment"
+        android:name="com.example.bottomnavigation.moretab.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_fragment"
         />

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.datasource.HomeRemoteDataSource;
+import com.example.bottomnavigation.data.datasource.remote.HomeRemoteDataSource;
 
 
 public class HomeViewModelFactory implements ViewModelProvider.Factory {

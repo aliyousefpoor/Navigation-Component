@@ -69,7 +69,7 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, moreList.title + " کلیک شد ", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, moreList.title + " کلیک شد ", Toast.LENGTH_SHORT).show();
                     moreItemListener.onClick(moreList);
                 }
             });

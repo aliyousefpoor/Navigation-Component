@@ -68,8 +68,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void onBind(final Category category, final Context context) {
             textView.setText(category.getTitle());
-            Uri uri = Uri.parse(AppConstants.baseUrl + category.getAvatar());
-            Glide.with(context).load(uri).into(imageView);
+            Glide.with(context).load(category.getAvatar()).into(imageView);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
