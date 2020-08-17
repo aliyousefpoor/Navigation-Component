@@ -10,25 +10,24 @@ import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
 
 
 
-public class LoginAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
+public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "MyAsyncTask";
     @SuppressLint("StaticFieldLeak")
-    Context context;
-    LoginStepTwoResponseBody loginStepTwoResponseBody;
+    private UserDatabase database;
+    private LoginStepTwoResponseBody loginStepTwoResponseBody;
 
-    public LoginAsyncTask(LoginStepTwoResponseBody loginStepTwoResponseBody, Context context) {
+    public LoginAsyncTask(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database) {
         this.loginStepTwoResponseBody = loginStepTwoResponseBody;
-        this.context = context;
+        this.database = database;
     }
 
     @Override
-    protected UserEntity doInBackground(UserEntity... users) {
+    protected Void doInBackground(Void... voids) {
         final UserEntity user = new UserEntity();
-        UserDatabase dataBase = UserDatabase.getInstance(context);
 
         user.setUserId(loginStepTwoResponseBody.getUserId());
         user.setToken(loginStepTwoResponseBody.getToken());
-        dataBase.userDao().insertUser(user);
+        database.userDao().insertUser(user);
         Log.d(TAG, "onResponse: " + user.getUserId() + "\n" + user.getToken());
 
         return null;

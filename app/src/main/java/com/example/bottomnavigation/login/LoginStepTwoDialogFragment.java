@@ -2,6 +2,7 @@ package com.example.bottomnavigation.login;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
+import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
@@ -48,6 +51,8 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
     private User user = new User();
+    private Context context = CustomApp.getContext();
+    private UserDatabase database = DatabaseModule.provideUserDatabase(context);
 
 
     public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoListener loginStepTwoListener, ResendCodeListener resendCodeListener) {
@@ -133,7 +138,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
                     dismiss();
                     dialog.dismiss();
 
-                    loginStepTwoViewModel.userLogin(loginStepTwoResponseBody,getContext());
+                    loginStepTwoViewModel.userLogin(loginStepTwoResponseBody,database);
 
 
                 } else {

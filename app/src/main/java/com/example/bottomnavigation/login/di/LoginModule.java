@@ -1,7 +1,11 @@
 package com.example.bottomnavigation.login.di;
 
+import android.content.Context;
+
 import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
@@ -32,12 +36,18 @@ public class LoginModule {
     }
 
 
-    public static ProfileRepository provideIsLoginRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl, UserRemoteDataSourceImpl userRemoteDataSource) {
-        return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
+    public static ProfileRepository provideProfileRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl
+            ,UserRemoteDataSourceImpl userRemoteDataSource,UserDatabase database) {
+        return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource,database);
     }
 
     public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService) {
         return new UserRemoteDataSourceImpl(apiService);
     }
+
+   public static UserDatabase provideUserDatabase(){
+        Context context =CustomApp.getContext();
+        return UserDatabase.getInstance(context);
+   }
 
 }

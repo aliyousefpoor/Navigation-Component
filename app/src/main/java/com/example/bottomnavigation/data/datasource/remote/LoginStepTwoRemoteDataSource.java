@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoBody;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
@@ -41,8 +42,8 @@ public class LoginStepTwoRemoteDataSource {
         });
     }
 
-    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, Context context){
-        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, context);
+    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
+        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, database);
         loginAsyncTask.execute();
     }
 }

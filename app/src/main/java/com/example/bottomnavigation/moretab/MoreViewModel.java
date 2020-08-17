@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.IsLoginListener;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 
 public class MoreViewModel extends ViewModel {
     private static final String TAG = "MoreViewModel";
@@ -19,8 +20,8 @@ public class MoreViewModel extends ViewModel {
     private SingleLiveEvent<Boolean> _isLogin = new SingleLiveEvent<>();
     public SingleLiveEvent<Boolean> isLogin = _isLogin;
 
-    public void isLogin(Context context) {
-        userLocaleDataSource.isLogin(context, new IsLoginListener() {
+    public void isLogin(UserDatabase database) {
+        userLocaleDataSource.isLogin(database, new IsLoginListener() {
             @Override
             public void isLogin(Boolean isLogin) {
                 if (isLogin) {

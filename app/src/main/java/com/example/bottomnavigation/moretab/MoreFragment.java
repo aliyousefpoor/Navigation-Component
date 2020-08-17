@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
+import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.login.di.LoginModule;
@@ -31,10 +35,8 @@ import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
 import com.example.bottomnavigation.login.LoginStepTwoListener;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class MoreFragment extends Fragment {
@@ -48,7 +50,7 @@ public class MoreFragment extends Fragment {
     private MoreViewModel moreViewModel;
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
     private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userLocaleDataSourceImpl);
-
+    private UserDatabase database =LoginModule.provideUserDatabase();
 
 
     @Nullable
@@ -84,10 +86,9 @@ public class MoreFragment extends Fragment {
         moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLogin) {
-                if (isLogin){
+                if (isLogin) {
                     navController.navigate(R.id.action_moreFragment_to_profileFragment);
-                }
-                else {
+                } else {
                     LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
                     loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
                 }
@@ -116,7 +117,8 @@ public class MoreFragment extends Fragment {
                 switch (item.type) {
 
                     case Profile:
-                        moreViewModel.isLogin(getContext());
+
+                        moreViewModel.isLogin(database);
                         break;
 
                     case About:

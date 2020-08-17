@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -43,6 +44,8 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.CancelAsyncTask;
 import com.example.bottomnavigation.data.datasource.local.database.DateListener;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
+import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.repository.ProfileRepository;
@@ -80,11 +83,10 @@ public class ProfileFragment extends Fragment {
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private ProfileRepository profileRepository = LoginModule.provideIsLoginRepository(userLocaleDataSourceImpl, userRemoteDataSource);
+    private UserDatabase database = LoginModule.provideUserDatabase();
+    private ProfileRepository profileRepository = LoginModule.provideProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource,database);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(profileRepository);
     private User user;
-    private CalendarUtils calendarUtils;
-
 
     @Nullable
     @Override
@@ -121,33 +123,29 @@ public class ProfileFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
 
-
         profileViewModel.getUser.observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                ProfileFragment.this.user =user;
+                ProfileFragment.this.user = user;
                 progressBar.setVisibility(View.GONE);
                 name.setText(user.getName());
                 date.setText(user.getDate());
                 ProfileFragment.this.user.setToken(user.getToken());
                 Glide.with(getContext()).load(user.getAvatar()).into(avatar);
                 String checkGender = user.getGender();
-                if (checkGender !=null) {
+                if (checkGender != null) {
                     if (checkGender.equals("Male")) {
                         male.setChecked(true);
                     } else {
                         female.setChecked(true);
                     }
-                }
-                else {
+                } else {
                     male.setChecked(false);
                     female.setChecked(false);
                 }
             }
 
         });
-
-
 
 
         avatar.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +163,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getUser(getContext());
+        profileViewModel.getUser();
+
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +177,7 @@ public class ProfileFragment extends Fragment {
                     user.setGender("Female");
                 }
 
-                profileViewModel.updateProfile(user, getContext());
+                profileViewModel.updateProfile(user);
                 Log.d(TAG, "onClick: ");
 
             }
@@ -188,7 +187,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                CancelAsyncTask cancelAsyncTask = new CancelAsyncTask(getContext());
+                CancelAsyncTask cancelAsyncTask = new CancelAsyncTask(database);
                 cancelAsyncTask.execute();
 
             }
@@ -203,7 +202,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 radioSexButton = view.findViewById(checkedId);
-                Toast.makeText(getContext(), radioSexButton.getText().toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), radioSexButton.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -211,13 +210,13 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     public void showCalendar() {
-         calendarUtils = new CalendarUtils(getContext(), new DateListener() {
+        CalendarUtils calendarUtils = new CalendarUtils(getContext(), new DateListener() {
             @Override
             public void onDateChange(String persianDate) {
                 date.setText(persianDate);
             }
         });
-         calendarUtils.showCalendar();
+        calendarUtils.showCalendar();
 
     }
 
@@ -232,7 +231,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     pickImageFromGallery();
-                } 
+                }
                 dialog.dismiss();
             }
         });

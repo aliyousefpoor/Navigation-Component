@@ -1,6 +1,5 @@
 package com.example.bottomnavigation.moretab.profile;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.ProfileRepository;
@@ -34,8 +34,8 @@ public class ProfileViewModel extends ViewModel {
 
 
 
-    public void updateProfile(User user, Context context){
-        profileRepository.updateProfile(user,context, new DataSourceListener<UpdateResponseBody>() {
+    public void updateProfile(User user){
+        profileRepository.updateProfile(user, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
                 _updateUserProfile.postValue(response);
@@ -62,8 +62,8 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
-    public void getUser(Context context){
-        profileRepository.getProfile(context, new DataSourceListener<User>() {
+    public void getUser(){
+        profileRepository.getProfile( new DataSourceListener<User>() {
 
             @Override
             public void onResponse(User response) {

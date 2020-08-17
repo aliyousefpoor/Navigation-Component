@@ -9,10 +9,6 @@ import com.example.bottomnavigation.moretab.profile.ProfileViewModelFactory;
 
 public class MoreModule {
 
-
-
-
-
     public static MoreViewModelFactory provideMoreViewModelFactory(UserLocaleDataSourceImpl userLocaleDataSource){
         return new MoreViewModelFactory(userLocaleDataSource);
     }

@@ -8,23 +8,21 @@ import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.model.UserEntity;
 import com.example.bottomnavigation.data.model.User;
 
-//Todo correct
-public class GetUserDataAsyncTask extends AsyncTask<UserEntity, Void, UserEntity> {
+public class GetUserDataAsyncTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "GetDataAsyncTask";
     private DataSourceListener<User> dataSourceListener;
 
     @SuppressLint("StaticFieldLeak")
-    private Context context;
+    private UserDatabase database ;
 
-    public GetUserDataAsyncTask(Context context, DataSourceListener<User> dataSourceListener) {
+    public GetUserDataAsyncTask(UserDatabase database, DataSourceListener<User> dataSourceListener) {
         this.dataSourceListener = dataSourceListener;
-        this.context = context;
+        this.database = database;
     }
 
     @Override
-    protected UserEntity doInBackground(UserEntity... users) {
-        UserDatabase dataBase = UserDatabase.getInstance(context);
-        UserEntity userEntity = dataBase.userDao().getUser();
+    protected Void doInBackground(Void... voids) {
+        UserEntity userEntity = database.userDao().getUser();
         StringBuilder info = new StringBuilder(" ");
         if (userEntity != null) {
             User user = new User();

@@ -7,18 +7,17 @@ import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.local.model.UserEntity;
 
-public class CancelAsyncTask extends AsyncTask<UserEntity,Void,UserEntity> {
+public class CancelAsyncTask extends AsyncTask<Void,Void,Void> {
     private static final String TAG = "CancelAsyncTask";
     @SuppressLint("StaticFieldLeak")
-    private Context context;
+    private UserDatabase database;
 
-    public CancelAsyncTask(Context context){
-        this.context=context;
+    public CancelAsyncTask(UserDatabase database){
+        this.database=database;
     }
     @Override
-    protected UserEntity doInBackground(UserEntity... users) {
-        UserDatabase dataBase = UserDatabase.getInstance(context);
-        UserEntity userList = dataBase.userDao().getUser();
+    protected Void doInBackground(Void... voids) {
+        UserEntity userList = database.userDao().getUser();
         StringBuilder info = new StringBuilder(" ");
 
             int id = userList.getUserId();
