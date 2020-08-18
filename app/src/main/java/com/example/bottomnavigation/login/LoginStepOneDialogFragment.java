@@ -21,9 +21,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOne;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
-import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOneResponseBody;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -40,18 +41,18 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     Button submit;
     private LoginStepTwoDialogFragment loginStepTwoDialogFragment;
     private LoginStepTwoListener loginStepTwoListener;
-    private LoginStepOneViewModel loginStepOneViewModel;
+    private LoginSharedViewModel loginSharedViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource = LoginModule.provideLoginRemoteDataSource(apiService);
-    private LoginStepOneViewModelFactory loginStepOneViewModelFactory = LoginModule.provideLoginViewModelFactory(loginStepOneRemoteDataSource);
+    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource = LoginModule.provideLoginStepOneRemoteDataSource(apiService);
+    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService);
+    private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource);
     @SuppressLint("HardwareIds")
     private String androidId;
     private String deviceModel = AppConstants.getDeviceName();
     private String deviceOs = AppConstants.getAndroidVersion();
     private ProgressDialog dialog;
-    private ResendCodeListener resendCodeListener;
 
 
     public LoginStepOneDialogFragment(LoginStepTwoListener loginStepTwoListener) {
@@ -74,13 +75,14 @@ public class LoginStepOneDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        loginStepOneViewModel = new ViewModelProvider(this, loginStepOneViewModelFactory).get(LoginStepOneViewModel.class);
+        loginSharedViewModel = new ViewModelProvider(requireActivity(), loginSharedViewModelFactory).get(LoginSharedViewModel.class);
 
         title = view.findViewById(R.id.title);
         number = view.findViewById(R.id.edit_txt);
         submit = view.findViewById(R.id.submit);
-        postRequest();
-        resendCode();
+
+        loginStepOneResponse();
+
         final LoginStepOne loginStepOne = new LoginStepOne();
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +93,7 @@ public class LoginStepOneDialogFragment extends DialogFragment {
                 loginStepOne.setDeviceModel(deviceModel);
                 loginStepOne.setDeviceOs(deviceOs);
 
-                loginStepOneViewModel.loginStepOne(loginStepOne);
+                loginSharedViewModel.loginStepOne(loginStepOne);
 
                 dialog = new ProgressDialog(getContext());
                 dialog.setTitle(R.string.progressDialogTitle);
@@ -103,31 +105,18 @@ public class LoginStepOneDialogFragment extends DialogFragment {
 
     }
 
-    public void postRequest() {
-        loginStepOneViewModel.loginStepOneLiveData.observe(this, new Observer<LoginResponseBody>() {
+    public void loginStepOneResponse() {
+        loginSharedViewModel.loginStepOneLiveData.observe(getViewLifecycleOwner(), new Observer<LoginStepOneResponseBody>() {
             @Override
-            public void onChanged(LoginResponseBody loginBody) {
-                loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(number.getText().toString(),androidId, loginStepTwoListener,resendCodeListener);
-                loginStepTwoDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
+            public void onChanged(LoginStepOneResponseBody loginBody) {
+                loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(loginStepTwoListener);
+                loginStepTwoDialogFragment.show(getParentFragmentManager(), "LoginStepTwoDialogFragment");
                 Log.d(TAG, "onChanged: " + loginBody);
                 dismiss();
                 dialog.dismiss();
 
             }
         });
-    }
-    public void resendCode(){
-        final LoginStepOne loginStepOne= new LoginStepOne();
-        resendCodeListener=new ResendCodeListener() {
-            @Override
-            public void onResend(String number) {
-                loginStepOne.setNumber(number);
-                loginStepOne.setAndroidId(androidId);
-                loginStepOne.setDeviceModel(deviceModel);
-                loginStepOne.setDeviceOs(deviceOs);
-                loginStepOneViewModel.loginStepOne(loginStepOne);
-            }
-        };
     }
 
 }

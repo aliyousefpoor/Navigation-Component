@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.LoginStepOneBody;
-import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOneResponseBody;
 import com.example.bottomnavigation.data.model.LoginStepOne;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,14 +22,14 @@ public class LoginStepOneRemoteDataSource {
         this.apiService = apiService;
     }
 
-    public void loginStepOne(LoginStepOne loginStepOne, final DataSourceListener<LoginResponseBody> dataSourceListener) {
+    public void loginStepOne(LoginStepOne loginStepOne, final DataSourceListener<LoginStepOneResponseBody> dataSourceListener) {
 
         LoginStepOneBody loginStepOneBody = new LoginStepOneBody(loginStepOne.getNumber(),loginStepOne.getAndroidId(),
                 loginStepOne.getDeviceModel(),loginStepOne.getDeviceOs());
 
-        apiService.login(loginStepOneBody).enqueue(new Callback<LoginResponseBody>() {
+        apiService.login(loginStepOneBody).enqueue(new Callback<LoginStepOneResponseBody>() {
             @Override
-            public void onResponse(@NotNull Call<LoginResponseBody> call, @NotNull Response<LoginResponseBody> response) {
+            public void onResponse(@NotNull Call<LoginStepOneResponseBody> call, @NotNull Response<LoginStepOneResponseBody> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         dataSourceListener.onResponse(response.body());
@@ -39,7 +39,7 @@ public class LoginStepOneRemoteDataSource {
             }
 
             @Override
-            public void onFailure(@NotNull Call<LoginResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<LoginStepOneResponseBody> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

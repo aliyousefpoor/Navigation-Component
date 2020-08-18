@@ -1,7 +1,5 @@
 package com.example.bottomnavigation.data.datasource.remote;
 
-import android.content.Context;
-
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
@@ -42,7 +40,7 @@ public class LoginStepTwoRemoteDataSource {
         });
     }
 
-    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
+    public void loginUser(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
         LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, database);
         loginAsyncTask.execute();
     }

@@ -1,7 +1,5 @@
 package com.example.bottomnavigation.moretab;
 
-import android.content.Context;
-
 import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;

@@ -1,6 +1,5 @@
 package com.example.bottomnavigation.login;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -48,6 +47,6 @@ public class LoginStepTwoViewModel extends ViewModel {
     }
 
 public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
-        loginStepTwoRemoteDataSource.userLogin(loginStepTwoResponseBody,database);
+        loginStepTwoRemoteDataSource.loginUser(loginStepTwoResponseBody,database);
 }
 }

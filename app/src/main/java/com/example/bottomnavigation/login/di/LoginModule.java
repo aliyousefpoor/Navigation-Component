@@ -12,22 +12,27 @@ import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDat
 import com.example.bottomnavigation.data.repository.ProfileRepository;
 import com.example.bottomnavigation.login.LoginStepOneViewModelFactory;
 import com.example.bottomnavigation.login.LoginStepTwoViewModelFactory;
+import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 
 public class LoginModule {
 
-    public static LoginStepOneRemoteDataSource provideLoginRemoteDataSource(ApiService apiService) {
+    public static LoginStepOneRemoteDataSource provideLoginStepOneRemoteDataSource(ApiService apiService) {
         return new LoginStepOneRemoteDataSource(apiService);
     }
 
-    public static LoginStepOneViewModelFactory provideLoginViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource) {
+    public static LoginStepOneViewModelFactory provideLoginStepOneViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource) {
         return new LoginStepOneViewModelFactory(loginStepOneRemoteDataSource);
     }
 
-    public static LoginStepTwoViewModelFactory provideVerificationViewModelFactory(LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource) {
+    public static LoginStepTwoViewModelFactory provideLoginStepTwoViewModelFactory(LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource) {
         return new LoginStepTwoViewModelFactory(loginStepTwoRemoteDataSource);
     }
 
-    public static LoginStepTwoRemoteDataSource provideVerificationRemoteDataSource(ApiService apiService) {
+    public static LoginSharedViewModelFactory provideShareViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource
+    , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource){
+        return new LoginSharedViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource);
+    }
+    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService) {
         return new LoginStepTwoRemoteDataSource(apiService);
     }
 

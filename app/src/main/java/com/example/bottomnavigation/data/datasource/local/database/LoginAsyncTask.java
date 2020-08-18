@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.data.datasource.local.database;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
