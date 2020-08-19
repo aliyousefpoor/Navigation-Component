@@ -135,12 +135,12 @@ public class HomeFragment extends Fragment {
         homeViewModel.storeListLiveData.observe(this, new Observer<Store>() {
             @Override
             public void onChanged(Store store) {
-                showData(store);
+                showStoreData(store);
             }
         });
     }
 
-    private void showData(Store response) {
+    private void showStoreData(Store response) {
         Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
 
         List<Homeitem> homeList = response.getHomeitem();

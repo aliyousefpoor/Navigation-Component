@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.RemoteUser;
+import com.example.bottomnavigation.data.model.ProfileResponseBody;
 import com.example.bottomnavigation.data.model.UpdateProfileBody;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
@@ -32,7 +32,7 @@ public class UserRemoteDataSourceImpl {
     public void updateProfile(User user, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
         UpdateProfileBody updateProfileBody = new UpdateProfileBody(user.getName(),
                 user.getDate(), user.getGender());
-        apiService.update("Token "+user.getToken(), updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.update(updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
@@ -49,9 +49,9 @@ public class UserRemoteDataSourceImpl {
 
     public void getProfile(final String token, final DataSourceListener<User> dataSourceListener) {
         Log.d(TAG, "getProfile: "+token);
-        apiService.getUser("Token "+token).enqueue(new Callback<RemoteUser>() {
+        apiService.getUser().enqueue(new Callback<ProfileResponseBody>() {
             @Override
-            public void onResponse(@NotNull Call<RemoteUser> call, @NotNull Response<RemoteUser> response) {
+            public void onResponse(@NotNull Call<ProfileResponseBody> call, @NotNull Response<ProfileResponseBody> response) {
                 User user = new User();
                 user.setUserId(response.body().getId());
                 user.setName(response.body().getNickName());
@@ -64,23 +64,22 @@ public class UserRemoteDataSourceImpl {
             }
 
             @Override
-            public void onFailure(@NotNull Call<RemoteUser> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ProfileResponseBody> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });
     }
 
 
-    public void updateImage(String token, File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
+    public void updateImage(File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
 
-        apiService.updateImage("Token "+token, requestImage).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.updateImage(requestImage).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
-
             }
 
             @Override
@@ -90,5 +89,4 @@ public class UserRemoteDataSourceImpl {
             }
         });
     }
-
 }

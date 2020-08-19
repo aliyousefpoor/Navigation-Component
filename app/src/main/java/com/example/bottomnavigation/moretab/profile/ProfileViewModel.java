@@ -47,8 +47,8 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
-    public void updateImage(String token ,File file){
-        profileRepository.updateImage(token ,file, new DataSourceListener<UpdateResponseBody>() {
+    public void updateImage(File file){
+        profileRepository.updateImage(file, new DataSourceListener<UpdateResponseBody>() {
             @Override
             public void onResponse(UpdateResponseBody response) {
                 Log.d(TAG, "onResponse: "+response);
