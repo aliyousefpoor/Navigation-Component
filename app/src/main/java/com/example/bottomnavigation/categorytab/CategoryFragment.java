@@ -74,7 +74,7 @@ public class CategoryFragment extends Fragment {
         pull_Down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoryViewModel();
+                observeViewModel();
                 Log.d(TAG, "onClick: ");
             }
         });
@@ -87,12 +87,12 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-        categoryViewModel();
+        observeViewModel();
     }
 
     @SuppressLint("FragmentLiveDataObserve")
 
-    public void categoryViewModel() {
+    public void observeViewModel() {
 
         pull_Down.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
@@ -139,14 +139,14 @@ public class CategoryFragment extends Fragment {
         categoryViewModel.categoryLiveData.observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categoryList) {
-                showData(categoryList);
+                showCategoryList(categoryList);
             }
         });
 
 
     }
 
-    public void showData(List<Category> categories) {
+    public void showCategoryList(List<Category> categories) {
 
         Log.d(TAG, "showData: " + categories.toString());
 

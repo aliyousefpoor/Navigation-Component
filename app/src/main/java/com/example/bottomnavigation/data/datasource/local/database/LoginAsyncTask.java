@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.data.datasource.local.database;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -13,12 +12,12 @@ import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
 public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "MyAsyncTask";
     @SuppressLint("StaticFieldLeak")
-    private UserDatabase database;
+    private UserDao userDao;
     private LoginStepTwoResponseBody loginStepTwoResponseBody;
 
-    public LoginAsyncTask(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database) {
+    public LoginAsyncTask(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDao userDao) {
         this.loginStepTwoResponseBody = loginStepTwoResponseBody;
-        this.database = database;
+        this.userDao = userDao;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
 
         user.setUserId(loginStepTwoResponseBody.getUserId());
         user.setToken(loginStepTwoResponseBody.getToken());
-        database.userDao().insertUser(user);
+        userDao.insertUser(user);
         Log.d(TAG, "onResponse: " + user.getUserId() + "\n" + user.getToken());
 
         return null;

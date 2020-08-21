@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
@@ -51,13 +52,13 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private ProgressDialog dialog;
     private ResendCodeListener resendCodeListener;
     private User user = new User();
-//    private Context context = CustomApp.getContext();
     private UserDatabase database = LoginModule.provideUserDatabase();
+    private UserDao userDao = database.userDao();
 
 
     public LoginStepTwoDialogFragment(String number, String androidId, LoginStepTwoListener loginStepTwoListener, ResendCodeListener resendCodeListener) {
         this.number = number;
-        this.androidId=androidId;
+        this.androidId = androidId;
         this.loginStepTwoListener = loginStepTwoListener;
         this.resendCodeListener = resendCodeListener;
     }
@@ -138,7 +139,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
                     dismiss();
                     dialog.dismiss();
 
-                    loginStepTwoViewModel.userLogin(loginStepTwoResponseBody,database);
+                    loginStepTwoViewModel.userLogin(loginStepTwoResponseBody, userDao);
 
 
                 } else {

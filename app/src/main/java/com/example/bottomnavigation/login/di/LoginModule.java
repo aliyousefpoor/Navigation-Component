@@ -1,10 +1,14 @@
 package com.example.bottomnavigation.login.di;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
@@ -31,14 +35,14 @@ public class LoginModule {
         return new LoginStepTwoRemoteDataSource(apiService);
     }
 
-    public static UserLocaleDataSourceImpl provideUserLocaleDataSource() {
-        return new UserLocaleDataSourceImpl();
+    public static UserLocaleDataSourceImpl provideUserLocaleDataSource(UserDao userDao) {
+        return new UserLocaleDataSourceImpl(userDao);
     }
 
 
     public static ProfileRepository provideProfileRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl
-            ,UserRemoteDataSourceImpl userRemoteDataSource,UserDatabase database) {
-        return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource,database);
+            ,UserRemoteDataSourceImpl userRemoteDataSource) {
+        return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     }
 
     public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService) {
