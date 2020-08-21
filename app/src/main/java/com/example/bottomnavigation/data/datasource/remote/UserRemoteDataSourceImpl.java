@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.RemoteUser;
+import com.example.bottomnavigation.data.model.ProfileResponseBody;
 import com.example.bottomnavigation.data.model.UpdateProfileBody;
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
@@ -49,9 +49,9 @@ public class UserRemoteDataSourceImpl {
 
     public void getProfile(final String token, final DataSourceListener<User> dataSourceListener) {
         Log.d(TAG, "getProfile: "+token);
-        apiService.getUser("Token "+token).enqueue(new Callback<RemoteUser>() {
+        apiService.getUser("Token "+token).enqueue(new Callback<ProfileResponseBody>() {
             @Override
-            public void onResponse(@NotNull Call<RemoteUser> call, @NotNull Response<RemoteUser> response) {
+            public void onResponse(@NotNull Call<ProfileResponseBody> call, @NotNull Response<ProfileResponseBody> response) {
                 User user = new User();
                 user.setUserId(response.body().getId());
                 user.setName(response.body().getNickName());
@@ -64,7 +64,7 @@ public class UserRemoteDataSourceImpl {
             }
 
             @Override
-            public void onFailure(@NotNull Call<RemoteUser> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ProfileResponseBody> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

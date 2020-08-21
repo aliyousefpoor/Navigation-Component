@@ -11,7 +11,7 @@ import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOne;
-import com.example.bottomnavigation.data.model.LoginStepOneResponseBody;
+import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
 
@@ -27,17 +27,17 @@ public class LoginSharedViewModel extends ViewModel {
         this.loginStepTwoRemoteDataSource = loginStepTwoRemoteDataSource;
     }
 
-    private MutableLiveData<LoginStepOneResponseBody> _loginStepOneLiveData = new MutableLiveData<>();
-    public LiveData<LoginStepOneResponseBody> loginStepOneLiveData = _loginStepOneLiveData;
+    private MutableLiveData<LoginResponseBody> _loginStepOneLiveData = new MutableLiveData<>();
+    public LiveData<LoginResponseBody> loginStepOneLiveData = _loginStepOneLiveData;
 
     private MutableLiveData<LoginStepTwoResponseBody> _loginStepTwoLiveData = new MutableLiveData<>();
     public LiveData<LoginStepTwoResponseBody> loginStepTwoLiveData = _loginStepTwoLiveData;
 
     public void loginStepOne(LoginStepOne loginStepOne) {
         loginStepOneBody =loginStepOne;
-        loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginStepOneResponseBody>() {
+        loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginResponseBody>() {
             @Override
-            public void onResponse(LoginStepOneResponseBody response) {
+            public void onResponse(LoginResponseBody response) {
                 _loginStepOneLiveData.setValue(response);
             }
 
@@ -64,6 +64,6 @@ public class LoginSharedViewModel extends ViewModel {
     }
 
     public void loginUser(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
-        loginStepTwoRemoteDataSource.loginUser(loginStepTwoResponseBody,database);
+//        loginStepTwoRemoteDataSource.loginUser(loginStepTwoResponseBody,database);
     }
 }

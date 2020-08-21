@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.LoginStepOneResponseBody;
+import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.LoginStepOne;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 
@@ -21,16 +21,16 @@ public class LoginStepOneViewModel extends ViewModel {
     }
 
 
-    private MutableLiveData<LoginStepOneResponseBody> _loginStepOneLiveData = new MutableLiveData<>();
-    public LiveData<LoginStepOneResponseBody> loginStepOneLiveData = _loginStepOneLiveData;
+    private MutableLiveData<LoginResponseBody> _loginStepOneLiveData = new MutableLiveData<>();
+    public LiveData<LoginResponseBody> loginStepOneLiveData = _loginStepOneLiveData;
 
 
     public void loginStepOne(LoginStepOne loginStepOne) {
 
 
-        loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginStepOneResponseBody>() {
+        loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginResponseBody>() {
             @Override
-            public void onResponse(LoginStepOneResponseBody response) {
+            public void onResponse(LoginResponseBody response) {
                 _loginStepOneLiveData.setValue(response);
             }
 

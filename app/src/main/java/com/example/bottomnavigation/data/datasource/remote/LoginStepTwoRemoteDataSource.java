@@ -3,6 +3,7 @@ package com.example.bottomnavigation.data.datasource.remote;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
+import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoBody;
@@ -40,8 +41,8 @@ public class LoginStepTwoRemoteDataSource {
         });
     }
 
-    public void loginUser(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
-        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, database);
+    public void loginUser(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDao userDao){
+        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, userDao);
         loginAsyncTask.execute();
     }
 }

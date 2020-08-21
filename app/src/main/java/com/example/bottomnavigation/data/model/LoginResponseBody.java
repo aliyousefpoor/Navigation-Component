@@ -1,10 +1,10 @@
 package com.example.bottomnavigation.data.model;
 
-public class LoginStepOneResponseBody {
+public class LoginResponseBody {
     private String message;
     private String nickname;
 
-    public LoginStepOneResponseBody(String message, String nickname){
+    public LoginResponseBody(String message, String nickname){
         this.message=message;
         this.nickname = nickname;
     }

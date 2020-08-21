@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 
+import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
@@ -46,7 +47,7 @@ public class LoginStepTwoViewModel extends ViewModel {
 
     }
 
-public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
-        loginStepTwoRemoteDataSource.loginUser(loginStepTwoResponseBody,database);
+public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDao userDao){
+        loginStepTwoRemoteDataSource.loginUser(loginStepTwoResponseBody,userDao);
 }
 }
