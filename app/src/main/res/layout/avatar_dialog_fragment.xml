@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="160dp"
+    android:background="@drawable/layout_background">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginTop="5dp"
+        android:text="Profile photo"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/galleryCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/galleryCardView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="15dp"
+        app:cardCornerRadius="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title">
+
+        <ImageView
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gallery"
+            android:fontFamily="@font/amiri"
+            android:gravity="center"
+            android:text="@string/chooseFromGallery" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cameraCardView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="60dp"
+        app:layout_constraintStart_toEndOf="@id/galleryCardView"
+        app:layout_constraintTop_toTopOf="@id/galleryCardView">
+
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/camera"
+            android:fontFamily="@font/amiri"
+            android:gravity="center" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/removeCardView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="60dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintStart_toEndOf="@id/cameraCardView"
+        app:layout_constraintTop_toTopOf="@id/galleryCardView">
+
+        <ImageView
+            android:id="@+id/remove"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/remove"
+            android:gravity="center"
+            android:textColor="@color/red" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/galleryTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/galleryCardView"
+        app:layout_constraintStart_toStartOf="@id/galleryCardView"
+        app:layout_constraintEnd_toEndOf="@id/galleryCardView"
+        android:text="Gallery"
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/cameraTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cameraCardView"
+        app:layout_constraintStart_toStartOf="@id/cameraCardView"
+        app:layout_constraintEnd_toEndOf="@id/cameraCardView"
+        android:text="Camera"
+        android:textSize="10sp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/removeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/removeCardView"
+        app:layout_constraintStart_toStartOf="@id/removeCardView"
+        app:layout_constraintEnd_toEndOf="@id/removeCardView"
+        android:text="Remove Photo"
+        android:textSize="10sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

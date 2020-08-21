@@ -16,36 +16,48 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 
-import androidx.navigation.Navigation;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import com.example.bottomnavigation.AppViewModel;
+import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.remote.HomeRemoteDataSource;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.hometab.di.HomeTabModule;
 import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
 import com.example.bottomnavigation.data.model.Homeitem;
 import com.example.bottomnavigation.data.model.Store;
+import com.example.bottomnavigation.utils.ApiBuilder;
 
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 @SuppressLint("FragmentLiveDataObserve")
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    NavController navController;
-    ImageView arrow;
-    TextView pullDown;
-    SwipeRefreshLayout swipeRefreshLayout;
-    AppViewModel appViewModel;
-    RecyclerView recyclerView;
+
+    private ImageView arrow;
+    private TextView pullDown;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private HomeViewModel homeViewModel;
+
+    private RecyclerView recyclerView;
+    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
+    private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
+    private ApiService apiService = ApiBuilderModule.provideApiService(builder);
+    private HomeRemoteDataSource homeRemoteDataSource = HomeTabModule.provideHomeSource(apiService);
+    private HomeViewModelFactory homeViewModelFactory = HomeTabModule.provideHomeViewModelFactory(homeRemoteDataSource);
 
 
     @Nullable
@@ -60,44 +72,36 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        appViewModel = ViewModelProviders.of(this).get(AppViewModel.class);
+        homeViewModel = new ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel.class);
 
 
-        navController = Navigation.findNavController(view);
         arrow = view.findViewById(R.id.arrow);
-        pullDown = view.findViewById(R.id.pulldown);
-        swipeRefreshLayout = view.findViewById(R.id.swiprefreshing);
+        pullDown = view.findViewById(R.id.pull_down);
+        swipeRefreshLayout = view.findViewById(R.id.swipRefreshing);
         recyclerView = view.findViewById(R.id.rec_view);
 
 
         Log.d(TAG, "onViewCreated: ");
 
-        pullDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                observeViewMethod();
-                Log.d(TAG, "onClick: ");
-            }
-        });
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                appViewModel.getData();
+                homeViewModel.getStoreData();
+                Log.d(TAG, "onRefresh() called");
             }
         });
 
-        observeViewMethod();
+        observeViewModel();
 
     }
 
-    public void observeViewMethod() {
+    public void observeViewModel() {
 
         pullDown.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
 
-        appViewModel.loadingLiveData.observe(this, new Observer<Boolean>() {
+        homeViewModel.loadingLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loadingState) {
                 if (loadingState) {
@@ -113,7 +117,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        appViewModel.errorStateLiveData.observe(this, new Observer<Boolean>() {
+        homeViewModel.errorStateLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hasError) {
                 if (hasError) {
@@ -122,24 +126,21 @@ public class HomeFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                     recyclerView.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
-                } else {
-
+                    Log.d(TAG, "onChanged: Error");
                 }
 
             }
         });
 
-        appViewModel.storeListLiveData.observe(this, new Observer<Store>() {
+        homeViewModel.storeListLiveData.observe(this, new Observer<Store>() {
             @Override
             public void onChanged(Store store) {
-                showData(store);
+                showStoreData(store);
             }
         });
-
-
     }
 
-    private void showData(Store response) {
+    private void showStoreData(Store response) {
         Log.d(TAG, "viewPagerAdapter: " + response.getHomeitem());
 
         List<Homeitem> homeList = response.getHomeitem();
@@ -148,7 +149,6 @@ public class HomeFragment extends Fragment {
         MultipleTypeAdapter adapter = new MultipleTypeAdapter(getContext(), homeList, headerList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
     }
 

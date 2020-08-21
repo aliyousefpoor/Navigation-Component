@@ -1,5 +1,6 @@
 package com.example.bottomnavigation.data.model;
 
+import com.example.bottomnavigation.utils.AppConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,7 +22,7 @@ public class FeatureAvatar {
     private String mdpi;
 
     public String getXxxdpi() {
-        return xxxdpi;
+        return AppConstants.baseUrl+xxxdpi;
     }
 
     public void setXxxdpi(String xxxdpi) {

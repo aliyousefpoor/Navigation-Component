@@ -4,32 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar"/>
+
     <TextView
-        android:id="@+id/txt"
+        android:id="@+id/pull_down"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_fragment"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Refresh Again"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/amiri"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/cat_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/reload"
+        app:layout_constraintBottom_toBottomOf="@id/pull_down"
+        app:layout_constraintStart_toEndOf="@id/pull_down"
+        app:layout_constraintTop_toTopOf="@id/pull_down" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshing"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
 
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <Button
-        android:id="@+id/cat_btn"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        app:layout_constraintStart_toStartOf="@id/txt"
-        app:layout_constraintEnd_toEndOf="@id/txt"
-        app:layout_constraintTop_toBottomOf="@id/txt"
-        android:layout_marginTop="40dp"
-        android:text="next"
-        android:fontFamily="@font/amiri"
 
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

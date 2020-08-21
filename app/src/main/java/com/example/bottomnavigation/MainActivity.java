@@ -2,14 +2,12 @@ package com.example.bottomnavigation;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 
 import android.view.MenuItem;

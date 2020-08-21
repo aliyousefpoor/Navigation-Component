@@ -21,19 +21,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 
-
 public class ViewPagerAdapter extends PagerAdapter {
     private static final String TAG = "ViewPagerAdapter";
-    Integer id;
+
     private Context context;
     private List<Product> list;
-     ImageView imageView;
 
 
-    public ViewPagerAdapter(List<Product> list , Context context) {
+    public ViewPagerAdapter(List<Product> list, Context context) {
 
         this.list = list;
-        this.context=context;
+        this.context = context;
 
     }
 
@@ -53,20 +51,16 @@ public class ViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NotNull ViewGroup container, final int position) {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_layout, container, false);
-        id = list.get(position).getId();
-        imageView = view.findViewById(R.id.view_pager);
+        ImageView imageView = view.findViewById(R.id.view_pager);
 
-
-        Uri uri = Uri.parse(AppConstants.baseUrl + list.get(position).getFeatureAvatar().getXxxdpi());
-
-        Glide.with(context).load(uri).into(imageView);
+//        Uri uri = Uri.parse(AppConstants.baseUrl + list.get(position).getFeatureAvatar().getXxxdpi());
+        Glide.with(context).load(list.get(position).getFeatureAvatar().getXxxdpi()).into(imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,list.get(position).getName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, list.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         ViewPager viewPager = (ViewPager) container;
@@ -75,7 +69,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
 
         ViewPager viewPager = (ViewPager) container;
         View view = (View) object;
