@@ -2,7 +2,6 @@ package com.example.bottomnavigation.login;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOne;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
@@ -44,19 +42,19 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     TextView resendCode;
     String number;
     private LoginSharedViewModel loginSharedViewModel;
+    private UserDatabase database = LoginModule.provideUserDatabase();
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource =LoginModule.provideLoginStepOneRemoteDataSource(apiService);
-    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService);
+    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService,database.userDao());
     private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginStepOneRemoteDataSource,loginStepTwoRemoteDataSource);
     private String androidId;
     private LoginStepTwoListener loginStepTwoListener;
     private ProgressDialog dialog;
     private User user = new User();
 //
-    private UserDatabase database = LoginModule.provideUserDatabase();
-    private UserDao userDao =database.userDao();
+
 private LoginStepOne loginStepOne = new LoginStepOne();
 
     public LoginStepTwoDialogFragment( LoginStepTwoListener loginStepTwoListener) {
@@ -147,7 +145,7 @@ androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
                     dismiss();
                     dialog.dismiss();
 
-                    loginSharedViewModel.loginUser(loginStepTwoResponseBody,database);
+                    loginSharedViewModel.userLogin(loginStepTwoResponseBody);
 
 
                 } else {

@@ -63,7 +63,7 @@ public class LoginSharedViewModel extends ViewModel {
         });
     }
 
-    public void loginUser(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
-        loginStepTwoRemoteDataSource.loginUser(loginStepTwoResponseBody,database);
+    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody ){
+        loginStepTwoRemoteDataSource.userLogin(loginStepTwoResponseBody);
     }
 }

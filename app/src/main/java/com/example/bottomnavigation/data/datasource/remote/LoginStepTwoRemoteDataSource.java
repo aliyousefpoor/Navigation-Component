@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
+import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoBody;
@@ -20,10 +21,12 @@ import retrofit2.Response;
 public class LoginStepTwoRemoteDataSource {
     private static final String TAG = "UserVerificationSource";
     private ApiService apiService;
+    private UserDao userDao;
 
 
-    public LoginStepTwoRemoteDataSource(ApiService apiService) {
+    public LoginStepTwoRemoteDataSource(ApiService apiService,UserDao userDao) {
         this.apiService = apiService;
+        this.userDao=userDao;
     }
 
     public void loginStepTwo(LoginStepTwo loginStepTwo, final DataSourceListener<LoginStepTwoResponseBody> dataSourceListener) {
@@ -42,8 +45,8 @@ public class LoginStepTwoRemoteDataSource {
         });
     }
 
-    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDatabase database){
-        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, database);
+    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody){
+        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, userDao);
         loginAsyncTask.execute();
     }
 }

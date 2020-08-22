@@ -1,9 +1,6 @@
 package com.example.bottomnavigation.login.di;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
@@ -14,8 +11,6 @@ import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDat
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.repository.ProfileRepository;
-import com.example.bottomnavigation.login.LoginStepOneViewModelFactory;
-import com.example.bottomnavigation.login.LoginStepTwoViewModelFactory;
 import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 
 public class LoginModule {
@@ -36,8 +31,8 @@ public class LoginModule {
     , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource){
         return new LoginSharedViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource);
     }
-    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService) {
-        return new LoginStepTwoRemoteDataSource(apiService);
+    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService,UserDao userDao) {
+        return new LoginStepTwoRemoteDataSource(apiService,userDao);
     }
 
     public static UserLocaleDataSourceImpl provideUserLocaleDataSource(UserDao userDao) {
