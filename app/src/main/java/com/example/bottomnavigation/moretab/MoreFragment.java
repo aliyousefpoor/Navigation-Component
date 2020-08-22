@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MoreFragment extends Fragment {
     private static final String TAG = "MoreFragment";
 
@@ -48,9 +49,10 @@ public class MoreFragment extends Fragment {
     private MoreItemListener moreItemListener;
     private LoginStepTwoListener loginStepTwoListener;
     private MoreViewModel moreViewModel;
-    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
-    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userLocaleDataSourceImpl);
     private UserDatabase database =LoginModule.provideUserDatabase();
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource(database.userDao());
+    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userLocaleDataSourceImpl);
+
 
 
     @Nullable
@@ -62,7 +64,6 @@ public class MoreFragment extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -84,6 +85,7 @@ public class MoreFragment extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(Boolean isLogin) {
                 if (isLogin) {
@@ -118,7 +120,7 @@ public class MoreFragment extends Fragment {
 
                     case Profile:
 
-                        moreViewModel.isLogin(database);
+                        moreViewModel.isLogin();
                         break;
 
                     case About:

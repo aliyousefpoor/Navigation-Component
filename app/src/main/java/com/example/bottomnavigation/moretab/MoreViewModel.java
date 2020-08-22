@@ -18,8 +18,8 @@ public class MoreViewModel extends ViewModel {
     private SingleLiveEvent<Boolean> _isLogin = new SingleLiveEvent<>();
     public SingleLiveEvent<Boolean> isLogin = _isLogin;
 
-    public void isLogin(UserDatabase database) {
-        userLocaleDataSource.isLogin(database, new IsLoginListener() {
+    public void isLogin() {
+        userLocaleDataSource.isLogin( new IsLoginListener() {
             @Override
             public void isLogin(Boolean isLogin) {
                 if (isLogin) {

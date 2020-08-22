@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 
 import com.example.bottomnavigation.data.model.UpdateResponseBody;
 import com.example.bottomnavigation.data.model.User;
@@ -18,18 +17,18 @@ public class ProfileRepository {
     private static final String TAG = "UserRepository";
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl;
     private UserRemoteDataSourceImpl userRemoteDataSource;
-    private UserDatabase database;
+
 
     public ProfileRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl
-            , UserRemoteDataSourceImpl userRemoteDataSource,UserDatabase database) {
+            , UserRemoteDataSourceImpl userRemoteDataSource) {
         this.userLocaleDataSourceImpl = userLocaleDataSourceImpl;
         this.userRemoteDataSource = userRemoteDataSource;
-        this.database=database;
+
     }
 
 
     public void getProfile(final DataSourceListener<User> dataSourceListener) {
-        userLocaleDataSourceImpl.getUser(database, new DataSourceListener<User>() {
+        userLocaleDataSourceImpl.getUser( new DataSourceListener<User>() {
             @Override
             public void onResponse(User response) {
                 Log.d(TAG, "onResponse: " + response.getToken());
@@ -54,7 +53,7 @@ public class ProfileRepository {
                 user.setDate(response.getData().getBirthdayDate());
                 user.setName(response.getData().getNickName());
                 user.setAvatar(response.getData().getAvatar());
-                userLocaleDataSourceImpl.saveUser(user, database);
+                userLocaleDataSourceImpl.saveUser(user);
                 dataSourceListener.onResponse(response);
             }
 
@@ -76,7 +75,7 @@ public class ProfileRepository {
                 user.setGender(response.getGender());
                 user.setUserId(response.getUserId());
                 user.setAvatar(response.getAvatar());
-                userLocaleDataSourceImpl.saveUser(user, database);
+                userLocaleDataSourceImpl.saveUser(user);
                 dataSourceListener.onResponse(response);
             }
 
@@ -87,8 +86,8 @@ public class ProfileRepository {
         });
     }
 
-    public void updateImage(String token, File file, DataSourceListener<UpdateResponseBody> dataSourceListener) {
-        userRemoteDataSource.updateImage(token, file, dataSourceListener);
+    public void updateImage( File file, DataSourceListener<UpdateResponseBody> dataSourceListener) {
+        userRemoteDataSource.updateImage( file, dataSourceListener);
         Log.d(TAG, "updateImage: " + dataSourceListener);
     }
 }

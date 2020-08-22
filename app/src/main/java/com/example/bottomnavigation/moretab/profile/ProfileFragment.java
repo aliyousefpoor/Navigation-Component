@@ -76,13 +76,13 @@ public class ProfileFragment extends Fragment {
     private Uri imageUri;
 
     private ProfileViewModel profileViewModel;
-    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource();
+    private UserDatabase database = LoginModule.provideUserDatabase();
+    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource(database.userDao());
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserRemoteDataSourceImpl userRemoteDataSource = LoginModule.provideUserRemoteDataSource(apiService);
-    private UserDatabase database = LoginModule.provideUserDatabase();
-    private ProfileRepository profileRepository = LoginModule.provideProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource,database);
+    private ProfileRepository profileRepository = LoginModule.provideProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     private ProfileViewModelFactory profileViewModelFactory = MoreModule.provideProfileViewModelFactory(profileRepository);
     private User user;
 
@@ -95,7 +95,6 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -317,7 +316,7 @@ public class ProfileFragment extends Fragment {
     public void updateProfileImage(Uri imageUri) {
         File file = FileUtils.getFile(getContext(), imageUri);
         Log.d(TAG, "updateProfileImage: " + user.getToken());
-        profileViewModel.updateImage(user.getToken(), file);
+        profileViewModel.updateImage(file);
 
     }
 }

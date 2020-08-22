@@ -13,16 +13,16 @@ public class GetUserDataAsyncTask extends AsyncTask<Void, Void, Void> {
     private DataSourceListener<User> dataSourceListener;
 
     @SuppressLint("StaticFieldLeak")
-    private UserDatabase database ;
+    private UserDao userDao ;
 
-    public GetUserDataAsyncTask(UserDatabase database, DataSourceListener<User> dataSourceListener) {
+    public GetUserDataAsyncTask(UserDao userDao, DataSourceListener<User> dataSourceListener) {
         this.dataSourceListener = dataSourceListener;
-        this.database = database;
+        this.userDao = userDao;
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        UserEntity userEntity = database.userDao().getUser();
+        UserEntity userEntity = userDao.getUser();
         StringBuilder info = new StringBuilder(" ");
         if (userEntity != null) {
             User user = new User();
@@ -33,6 +33,7 @@ public class GetUserDataAsyncTask extends AsyncTask<Void, Void, Void> {
             user.setDate(userEntity.getDate());
             user.setGender(userEntity.getGender());
             user.setAvatar(userEntity.getAvatar());
+
             dataSourceListener.onResponse(user);
 
         } else {
