@@ -1,12 +1,9 @@
 package com.example.bottomnavigation.data.datasource.remote;
 
-import android.content.Context;
-
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
 import com.example.bottomnavigation.data.datasource.local.database.UserDao;
-import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoBody;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
@@ -23,14 +20,13 @@ public class LoginStepTwoRemoteDataSource {
     private ApiService apiService;
     private UserDao userDao;
 
-
-    public LoginStepTwoRemoteDataSource(ApiService apiService,UserDao userDao) {
+    public LoginStepTwoRemoteDataSource(ApiService apiService, UserDao userDao) {
         this.apiService = apiService;
-        this.userDao=userDao;
+        this.userDao = userDao;
     }
 
     public void loginStepTwo(LoginStepTwo loginStepTwo, final DataSourceListener<LoginStepTwoResponseBody> dataSourceListener) {
-        LoginStepTwoBody verification = new LoginStepTwoBody(loginStepTwo.getNumber(),loginStepTwo.getAndroidId(),loginStepTwo.getCode());
+        LoginStepTwoBody verification = new LoginStepTwoBody(loginStepTwo.getNumber(), loginStepTwo.getAndroidId(), loginStepTwo.getCode());
 
         apiService.verification(verification).enqueue(new Callback<LoginStepTwoResponseBody>() {
             @Override
@@ -45,7 +41,7 @@ public class LoginStepTwoRemoteDataSource {
         });
     }
 
-    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody){
+    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody) {
         LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponseBody, userDao);
         loginAsyncTask.execute();
     }

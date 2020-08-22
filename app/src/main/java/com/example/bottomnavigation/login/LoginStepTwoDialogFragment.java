@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOne;
@@ -40,24 +39,25 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     EditText code;
     Button submit, changeNumber;
     TextView resendCode;
-    String number;
+    private String number;
+    private String androidId;
+    private String deviceModel;
+    private String deviceOs;
     private LoginSharedViewModel loginSharedViewModel;
     private UserDatabase database = LoginModule.provideUserDatabase();
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource =LoginModule.provideLoginStepOneRemoteDataSource(apiService);
+    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource = LoginModule.provideLoginStepOneRemoteDataSource(apiService);
     private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService,database.userDao());
-    private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginStepOneRemoteDataSource,loginStepTwoRemoteDataSource);
-    private String androidId;
+    private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource);
     private LoginStepTwoListener loginStepTwoListener;
     private ProgressDialog dialog;
     private User user = new User();
-//
+    private LoginStepOne loginStepOne = new LoginStepOne();
 
-private LoginStepOne loginStepOne = new LoginStepOne();
 
-    public LoginStepTwoDialogFragment( LoginStepTwoListener loginStepTwoListener) {
+    public LoginStepTwoDialogFragment(LoginStepTwoListener loginStepTwoListener) {
         this.loginStepTwoListener = loginStepTwoListener;
     }
 
@@ -85,8 +85,9 @@ private LoginStepOne loginStepOne = new LoginStepOne();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-number = loginSharedViewModel.loginStepOneBody.getNumber();
-androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
+
+                number = loginSharedViewModel.loginStepOneBody.getNumber();
+                androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
                 loginStepTwo.setNumber(number);
                 loginStepTwo.setAndroidId(androidId);
                 loginStepTwo.setCode(code.getText().toString());
@@ -98,6 +99,7 @@ androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
                 dialog.setMessage(getString(R.string.loadingProgress));
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog.show();
+
             }
         });
 
@@ -105,8 +107,9 @@ androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+
                 LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
-                loginStepOneDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+                loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
 
             }
         });
@@ -115,14 +118,14 @@ androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
             @Override
             public void onClick(View v) {
 
-                String deviceModel =loginSharedViewModel.loginStepOneBody.getDeviceModel();
-                String deviceOs = loginSharedViewModel.loginStepOneBody.getDeviceOs();
+                deviceModel = loginSharedViewModel.loginStepOneBody.getDeviceModel();
+                deviceOs = loginSharedViewModel.loginStepOneBody.getDeviceOs();
+
                 loginStepOne.setNumber(number);
                 loginStepOne.setAndroidId(androidId);
                 loginStepOne.setDeviceModel(deviceModel);
                 loginStepOne.setDeviceOs(deviceOs);
                 loginSharedViewModel.loginStepOne(loginStepOne);
-
             }
         });
     }
@@ -133,7 +136,6 @@ androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
 
             @Override
             public void onChanged(final LoginStepTwoResponseBody loginStepTwoResponseBody) {
-
 
                 if (loginStepTwoResponseBody != null) {
 
@@ -146,13 +148,10 @@ androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
                     dialog.dismiss();
 
                     loginSharedViewModel.userLogin(loginStepTwoResponseBody);
-
-
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 }

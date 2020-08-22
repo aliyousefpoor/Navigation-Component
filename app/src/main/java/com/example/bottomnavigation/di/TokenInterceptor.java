@@ -32,13 +32,12 @@ public class TokenInterceptor implements Interceptor {
     }
 
     @NonNull
-    private Request newRequestWithAccessToken(@NonNull Request request,String accessToken) {
+    private Request newRequestWithAccessToken(@NonNull Request request, String accessToken) {
         if (accessToken != null) {
             return request.newBuilder()
                     .header("Authorization", "Token " + accessToken)
                     .build();
-        }
-        else {
+        } else {
 
             return request.newBuilder().build();
         }

@@ -32,7 +32,7 @@ public class UserRemoteDataSourceImpl {
     public void updateProfile(User user, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
         UpdateProfileBody updateProfileBody = new UpdateProfileBody(user.getName(),
                 user.getDate(), user.getGender());
-        apiService.update(updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.update("Token "+user.getToken(), updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
@@ -71,15 +71,16 @@ public class UserRemoteDataSourceImpl {
     }
 
 
-    public void updateImage(File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
+    public void updateImage(String token, File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
 
-        apiService.updateImage(requestImage).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.updateImage("Token "+token, requestImage).enqueue(new Callback<UpdateResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
                 dataSourceListener.onResponse(response.body());
+
             }
 
             @Override
@@ -89,4 +90,5 @@ public class UserRemoteDataSourceImpl {
             }
         });
     }
+
 }

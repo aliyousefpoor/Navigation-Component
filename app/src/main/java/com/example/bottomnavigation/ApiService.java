@@ -29,7 +29,7 @@ public interface ApiService {
     @POST("mobile_login_step1/16")Call<LoginStepOneResponseBody> login(@Body LoginStepOneBody loginStepOneBody);
     @POST("mobile_login_step2/16")Call<LoginStepTwoResponseBody> verification(@Body LoginStepTwoBody verification);
     @GET("profile")Call<ProfileResponseBody> getUser();
-    @POST("profile")Call<UpdateResponseBody> update(@Body UpdateProfileBody updateProfileBody);
+    @POST("profile")Call<UpdateResponseBody> update( @Body UpdateProfileBody updateProfileBody);
     @Multipart
     @POST("profile")Call<UpdateResponseBody> updateImage(@Part MultipartBody.Part avatar);
 }
