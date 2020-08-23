@@ -26,8 +26,8 @@ public interface ApiService {
 
     @GET("store/16")Call<Store> getStore();
     @GET("category/16/463")Call<List<Category>> getCategory();
-    @POST("mobile_login_step1/16")Call<LoginStepOneResponseBody> login(@Body LoginStepOneBody loginStepOneBody);
-    @POST("mobile_login_step2/16")Call<LoginStepTwoResponseBody> verification(@Body LoginStepTwoBody verification);
+    @POST("mobile_login_step1/16")Call<LoginStepOneResponseBody> login_step_one(@Body LoginStepOneBody loginStepOneBody);
+    @POST("mobile_login_step2/16")Call<LoginStepTwoResponseBody> login_step_two(@Body LoginStepTwoBody loginStepTwoBody);
     @GET("profile")Call<ProfileResponseBody> getUser();
     @POST("profile")Call<UpdateResponseBody> update( @Body UpdateProfileBody updateProfileBody);
     @Multipart

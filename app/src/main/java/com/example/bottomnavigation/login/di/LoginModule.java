@@ -19,20 +19,13 @@ public class LoginModule {
         return new LoginStepOneRemoteDataSource(apiService);
     }
 
-    public static LoginStepOneViewModelFactory provideLoginStepOneViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource) {
-        return new LoginStepOneViewModelFactory(loginStepOneRemoteDataSource);
-    }
-
-    public static LoginStepTwoViewModelFactory provideLoginStepTwoViewModelFactory(LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource) {
-        return new LoginStepTwoViewModelFactory(loginStepTwoRemoteDataSource);
-    }
-
     public static LoginSharedViewModelFactory provideShareViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource
-    , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource){
-        return new LoginSharedViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource);
+            , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource, UserLocaleDataSourceImpl userLocaleDataSource) {
+        return new LoginSharedViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource, userLocaleDataSource);
     }
-    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService,UserDao userDao) {
-        return new LoginStepTwoRemoteDataSource(apiService,userDao);
+
+    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService, UserDao userDao) {
+        return new LoginStepTwoRemoteDataSource(apiService, userDao);
     }
 
     public static UserLocaleDataSourceImpl provideUserLocaleDataSource(UserDao userDao) {
@@ -41,7 +34,7 @@ public class LoginModule {
 
 
     public static ProfileRepository provideProfileRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl
-            ,UserRemoteDataSourceImpl userRemoteDataSource) {
+            , UserRemoteDataSourceImpl userRemoteDataSource) {
         return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     }
 
@@ -49,9 +42,9 @@ public class LoginModule {
         return new UserRemoteDataSourceImpl(apiService);
     }
 
-   public static UserDatabase provideUserDatabase(){
-        Context context =CustomApp.getContext();
+    public static UserDatabase provideUserDatabase() {
+        Context context = CustomApp.getContext();
         return UserDatabase.getInstance(context);
-   }
+    }
 
 }

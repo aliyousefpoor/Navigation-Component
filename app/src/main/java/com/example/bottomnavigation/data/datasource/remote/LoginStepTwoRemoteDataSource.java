@@ -26,9 +26,9 @@ public class LoginStepTwoRemoteDataSource {
     }
 
     public void loginStepTwo(LoginStepTwo loginStepTwo, final DataSourceListener<LoginStepTwoResponseBody> dataSourceListener) {
-        LoginStepTwoBody verification = new LoginStepTwoBody(loginStepTwo.getNumber(), loginStepTwo.getAndroidId(), loginStepTwo.getCode());
+        LoginStepTwoBody loginStepTwoBody = new LoginStepTwoBody(loginStepTwo.getNumber(), loginStepTwo.getAndroidId(), loginStepTwo.getCode());
 
-        apiService.verification(verification).enqueue(new Callback<LoginStepTwoResponseBody>() {
+        apiService.login_step_two(loginStepTwoBody).enqueue(new Callback<LoginStepTwoResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<LoginStepTwoResponseBody> call, @NotNull Response<LoginStepTwoResponseBody> response) {
                 dataSourceListener.onResponse(response.body());

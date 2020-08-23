@@ -27,7 +27,7 @@ public class LoginStepOneRemoteDataSource {
         LoginStepOneBody loginStepOneBody = new LoginStepOneBody(loginStepOne.getNumber(),loginStepOne.getAndroidId(),
                 loginStepOne.getDeviceModel(),loginStepOne.getDeviceOs());
 
-        apiService.login(loginStepOneBody).enqueue(new Callback<LoginStepOneResponseBody>() {
+        apiService.login_step_one(loginStepOneBody).enqueue(new Callback<LoginStepOneResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<LoginStepOneResponseBody> call, @NotNull Response<LoginStepOneResponseBody> response) {
                 if (response.isSuccessful()) {
