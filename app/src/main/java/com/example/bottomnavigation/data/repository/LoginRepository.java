@@ -45,7 +45,7 @@ public class LoginRepository {
         userLocaleDataSource.loginUser(loginStepTwoResponse);
     }
 
-    public void isLogin(IsLoginListener isLoginListener){
+    public void isLogin(IsLoginListener isLoginListener) {
         userLocaleDataSource.isLogin(isLoginListener);
     }
 }

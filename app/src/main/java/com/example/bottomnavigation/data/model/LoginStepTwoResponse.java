@@ -17,7 +17,6 @@ public class LoginStepTwoResponse {
     }
 
 
-
     public int getUserId() {
         return user_id;
     }

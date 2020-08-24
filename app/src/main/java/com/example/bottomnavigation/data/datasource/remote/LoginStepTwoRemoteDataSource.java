@@ -2,10 +2,6 @@ package com.example.bottomnavigation.data.datasource.remote;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
-import com.example.bottomnavigation.data.datasource.local.database.UserDao;
-import com.example.bottomnavigation.data.model.LoginStepOneRequest;
-import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 

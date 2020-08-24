@@ -22,7 +22,7 @@ public class FeatureAvatar {
     private String mdpi;
 
     public String getXxxdpi() {
-        return AppConstants.baseUrl+xxxdpi;
+        return AppConstants.baseUrl + xxxdpi;
     }
 
     public void setXxxdpi(String xxxdpi) {

@@ -25,12 +25,25 @@ import retrofit2.http.Part;
 
 public interface ApiService {
 
-    @GET("store/16")Call<Store> getStore();
-    @GET("category/16/463")Call<List<Category>> getCategory();
-    @POST("mobile_login_step1/16")Call<LoginStepOneResponse> loginStepOne(@Body LoginStepOneRequest loginStepOneRequest);
-    @POST("mobile_login_step2/16")Call<LoginStepTwoResponse> loginStepTwo(@Body LoginStepTwoRequest loginStepTwoRequest);
-    @GET("profile")Call<ProfileResponse> getUser();
-    @POST("profile")Call<UpdateResponse> update(@Body UpdateProfile updateProfile);
+    @GET("store/16")
+    Call<Store> getStore();
+
+    @GET("category/16/463")
+    Call<List<Category>> getCategory();
+
+    @POST("mobile_login_step1/16")
+    Call<LoginStepOneResponse> loginStepOne(@Body LoginStepOneRequest loginStepOneRequest);
+
+    @POST("mobile_login_step2/16")
+    Call<LoginStepTwoResponse> loginStepTwo(@Body LoginStepTwoRequest loginStepTwoRequest);
+
+    @GET("profile")
+    Call<ProfileResponse> getUser();
+
+    @POST("profile")
+    Call<UpdateResponse> update(@Body UpdateProfile updateProfile);
+
     @Multipart
-    @POST("profile")Call<UpdateResponse> updateImage(@Part MultipartBody.Part avatar);
+    @POST("profile")
+    Call<UpdateResponse> updateImage(@Part MultipartBody.Part avatar);
 }

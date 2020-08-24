@@ -6,7 +6,6 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
-import com.example.bottomnavigation.data.model.LoginStepOne;
 
 import org.jetbrains.annotations.NotNull;
 

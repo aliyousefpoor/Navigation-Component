@@ -57,7 +57,7 @@ public class User implements Parcelable {
         this.token = token;
     }
 
-    public String getRequestToken(){
+    public String getRequestToken() {
         return "Token " + token;
     }
 

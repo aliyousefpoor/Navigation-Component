@@ -55,7 +55,7 @@ public class Category {
     }
 
     public Object getAvatar() {
-        return AppConstants.baseUrl+avatar;
+        return AppConstants.baseUrl + avatar;
     }
 
     public void setAvatar(Object avatar) {

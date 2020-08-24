@@ -41,11 +41,13 @@ public class Store {
     public void setParentCategories(List<Category> parentCategories) {
         this.parentCategories = parentCategories;
     }
-    public List<Category> getCategory(){
+
+    public List<Category> getCategory() {
         return category;
     }
-    public void setCategory(List<Category> category){
-        this.category= category;
+
+    public void setCategory(List<Category> category) {
+        this.category = category;
     }
 
     public List<Object> getTabStrip() {
