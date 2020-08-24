@@ -32,6 +32,7 @@ import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDat
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.LoginSharedViewModel;
 import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
@@ -63,10 +64,10 @@ public class MoreFragment extends Fragment {
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource = LoginModule.provideLoginStepOneRemoteDataSource(apiService);
-    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService, database.userDao());
+    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource(database.userDao());
-    private LoginSharedViewModelFactory sharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginStepOneRemoteDataSource,
-            loginStepTwoRemoteDataSource, userLocaleDataSourceImpl);
+    private LoginRepository loginRepository = LoginModule.provideLoginRepository(loginStepOneRemoteDataSource,loginStepTwoRemoteDataSource,userLocaleDataSourceImpl);
+    private LoginSharedViewModelFactory sharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
 
 
     @Nullable

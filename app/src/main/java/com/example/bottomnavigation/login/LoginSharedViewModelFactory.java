@@ -7,25 +7,21 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 
 
 public class LoginSharedViewModelFactory implements ViewModelProvider.Factory {
-    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource;
-    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource;
-    private UserLocaleDataSourceImpl userLocaleDataSource;
+    private LoginRepository loginRepository;
 
-    public LoginSharedViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource
-            , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource, UserLocaleDataSourceImpl userLocaleDataSource) {
-        this.loginStepOneRemoteDataSource = loginStepOneRemoteDataSource;
-        this.loginStepTwoRemoteDataSource = loginStepTwoRemoteDataSource;
-        this.userLocaleDataSource = userLocaleDataSource;
+    public LoginSharedViewModelFactory(LoginRepository loginRepository){
+        this.loginRepository =loginRepository;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(LoginSharedViewModel.class)) {
-            return (T) new LoginSharedViewModel(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource,userLocaleDataSource);
+            return (T) new LoginSharedViewModel(loginRepository);
         } else {
             throw new IllegalArgumentException("UnKnown Class");
         }

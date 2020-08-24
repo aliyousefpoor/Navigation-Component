@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 
-import com.example.bottomnavigation.data.model.UpdateResponseBody;
+import com.example.bottomnavigation.data.model.UpdateResponse;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 
@@ -44,10 +44,10 @@ public class ProfileRepository {
         });
     }
 
-    public void updateProfile(final User user, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
-        userRemoteDataSource.updateProfile(user, new DataSourceListener<UpdateResponseBody>() {
+    public void updateProfile(final User user, final DataSourceListener<UpdateResponse> dataSourceListener) {
+        userRemoteDataSource.updateProfile(user, new DataSourceListener<UpdateResponse>() {
             @Override
-            public void onResponse(UpdateResponseBody response) {
+            public void onResponse(UpdateResponse response) {
 
                 user.setGender(response.getData().getGender());
                 user.setDate(response.getData().getBirthdayDate());
@@ -86,7 +86,7 @@ public class ProfileRepository {
         });
     }
 
-    public void updateImage( File file, DataSourceListener<UpdateResponseBody> dataSourceListener) {
+    public void updateImage( File file, DataSourceListener<UpdateResponse> dataSourceListener) {
         userRemoteDataSource.updateImage( file, dataSourceListener);
         Log.d(TAG, "updateImage: " + dataSourceListener);
     }

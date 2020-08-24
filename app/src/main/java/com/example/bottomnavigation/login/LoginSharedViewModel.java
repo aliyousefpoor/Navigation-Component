@@ -9,44 +9,41 @@ import androidx.lifecycle.ViewModel;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.IsLoginListener;
-import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOne;
-import com.example.bottomnavigation.data.model.LoginStepOneResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOneRequest;
+import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
-import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
 public class LoginSharedViewModel extends ViewModel {
     private static final String TAG = "LoginSharedViewModel";
-    private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource;
-    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource;
-    private UserLocaleDataSourceImpl userLocaleDataSource;
-    LoginStepOne loginStepOneBody;
+    private LoginRepository loginRepository;
+    LoginStepOneRequest loginStepOneBody;
     Boolean isLoginUser;
 
-    public LoginSharedViewModel(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource
-            , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource, UserLocaleDataSourceImpl userLocaleDataSource) {
-        this.loginStepOneRemoteDataSource = loginStepOneRemoteDataSource;
-        this.loginStepTwoRemoteDataSource = loginStepTwoRemoteDataSource;
-        this.userLocaleDataSource = userLocaleDataSource;
+    public LoginSharedViewModel(LoginRepository loginRepository) {
+        this.loginRepository = loginRepository;
     }
 
-    private MutableLiveData<LoginStepOneResponseBody> _loginStepOneLiveData = new MutableLiveData<>();
-    public LiveData<LoginStepOneResponseBody> loginStepOneLiveData = _loginStepOneLiveData;
+    private MutableLiveData<LoginStepOneResponse> _loginStepOneLiveData = new MutableLiveData<>();
+    public LiveData<LoginStepOneResponse> loginStepOneLiveData = _loginStepOneLiveData;
 
-    private MutableLiveData<LoginStepTwoResponseBody> _loginStepTwoLiveData = new MutableLiveData<>();
-    public LiveData<LoginStepTwoResponseBody> loginStepTwoLiveData = _loginStepTwoLiveData;
+    private MutableLiveData<LoginStepTwoResponse> _loginStepTwoLiveData = new MutableLiveData<>();
+    public LiveData<LoginStepTwoResponse> loginStepTwoLiveData = _loginStepTwoLiveData;
 
     private SingleLiveEvent<Boolean> _isLogin = new SingleLiveEvent<>();
     public SingleLiveEvent<Boolean> isLogin = _isLogin;
 
-    public void loginStepOne(LoginStepOne loginStepOne) {
-        loginStepOneBody = loginStepOne;
-        loginStepOneRemoteDataSource.loginStepOne(loginStepOne, new DataSourceListener<LoginStepOneResponseBody>() {
+    public void loginStepOne(LoginStepOneRequest loginStepOneRequest) {
+        loginStepOneBody = loginStepOneRequest;
+        loginRepository.loginStepOne(loginStepOneRequest, new DataSourceListener<LoginStepOneResponse>() {
             @Override
-            public void onResponse(LoginStepOneResponseBody response) {
+            public void onResponse(LoginStepOneResponse response) {
                 _loginStepOneLiveData.setValue(response);
             }
 
@@ -58,10 +55,10 @@ public class LoginSharedViewModel extends ViewModel {
         });
     }
 
-    public void loginStepTwo(LoginStepTwo loginStepTwo) {
-        loginStepTwoRemoteDataSource.loginStepTwo(loginStepTwo, new DataSourceListener<LoginStepTwoResponseBody>() {
+    public void loginStepTwo(LoginStepTwoRequest loginStepTwoRequest) {
+        loginRepository.loginStepTwo(loginStepTwoRequest, new DataSourceListener<LoginStepTwoResponse>() {
             @Override
-            public void onResponse(LoginStepTwoResponseBody response) {
+            public void onResponse(LoginStepTwoResponse response) {
                 _loginStepTwoLiveData.setValue(response);
             }
 
@@ -72,21 +69,18 @@ public class LoginSharedViewModel extends ViewModel {
         });
     }
 
-    public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody) {
-        loginStepTwoRemoteDataSource.userLogin(loginStepTwoResponseBody);
-    }
 
     public void isLogin() {
-
-        userLocaleDataSource.isLogin(new IsLoginListener() {
+        loginRepository.isLogin(new IsLoginListener() {
             @Override
             public void isLogin(Boolean isLogin) {
+                isLoginUser = isLogin;
                 if (isLogin) {
                     _isLogin.postValue(true);
-                    isLoginUser = true;
+
                 } else {
                     _isLogin.postValue(false);
-                    isLoginUser = false;
+
                 }
             }
         });

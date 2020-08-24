@@ -25,10 +25,13 @@ import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceIm
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOne;
+import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
+import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
-import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -51,12 +54,13 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private UserLocaleDataSourceImpl userLocaleDataSource = LoginModule.provideUserLocaleDataSource(database.userDao());
     private LoginStepOneRemoteDataSource loginStepOneRemoteDataSource = LoginModule.provideLoginStepOneRemoteDataSource(apiService);
-    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService, database.userDao());
-    private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource, userLocaleDataSource);
+    private LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource = LoginModule.provideLoginStepTwoRemoteDataSource(apiService);
+    private LoginRepository loginRepository =LoginModule.provideLoginRepository(loginStepOneRemoteDataSource,loginStepTwoRemoteDataSource,userLocaleDataSource);
+    private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
     private LoginStepTwoListener loginStepTwoListener;
     private ProgressDialog dialog;
     private User user = new User();
-    private LoginStepOne loginStepOne = new LoginStepOne();
+    private LoginStepOneRequest loginStepOneRequest = new LoginStepOneRequest();
 
 
     public LoginStepTwoDialogFragment(LoginStepTwoListener loginStepTwoListener) {
@@ -82,18 +86,18 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
         changeNumber = view.findViewById(R.id.changeNumber);
         resendCode = view.findViewById(R.id.resendCode);
         loginStepTwoResponse();
-        final LoginStepTwo loginStepTwo = new LoginStepTwo();
+        final LoginStepTwoRequest loginStepTwoRequest = new LoginStepTwoRequest();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                number = loginSharedViewModel.loginStepOneBody.getNumber();
-                androidId = loginSharedViewModel.loginStepOneBody.getAndroidId();
-                loginStepTwo.setNumber(number);
-                loginStepTwo.setAndroidId(androidId);
-                loginStepTwo.setCode(code.getText().toString());
-                loginSharedViewModel.loginStepTwo(loginStepTwo);
+                number = loginSharedViewModel.loginStepOneBody.getMobile();
+                androidId = loginSharedViewModel.loginStepOneBody.getDevice_id();
+                loginStepTwoRequest.setMobile(number);
+                loginStepTwoRequest.setDevice_id(androidId);
+                loginStepTwoRequest.setVerification_code(code.getText().toString());
+                loginSharedViewModel.loginStepTwo(loginStepTwoRequest);
                 Log.d(TAG, "onClick: " + number);
 
                 dialog = new ProgressDialog(getContext());
@@ -120,36 +124,36 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                deviceModel = loginSharedViewModel.loginStepOneBody.getDeviceModel();
-                deviceOs = loginSharedViewModel.loginStepOneBody.getDeviceOs();
+                deviceModel = loginSharedViewModel.loginStepOneBody.getDevice_model();
+                deviceOs = loginSharedViewModel.loginStepOneBody.getDevice_os();
 
-                loginStepOne.setNumber(number);
-                loginStepOne.setAndroidId(androidId);
-                loginStepOne.setDeviceModel(deviceModel);
-                loginStepOne.setDeviceOs(deviceOs);
-                loginSharedViewModel.loginStepOne(loginStepOne);
+                loginStepOneRequest.setMobile(number);
+                loginStepOneRequest.setDevice_id(androidId);
+                loginStepOneRequest.setDevice_model(deviceModel);
+                loginStepOneRequest.setDevice_os(deviceOs);
+                loginSharedViewModel.loginStepOne(loginStepOneRequest);
             }
         });
     }
 
 
     public void loginStepTwoResponse() {
-        loginSharedViewModel.loginStepTwoLiveData.observe(this, new Observer<LoginStepTwoResponseBody>() {
+        loginSharedViewModel.loginStepTwoLiveData.observe(this, new Observer<LoginStepTwoResponse>() {
 
             @Override
-            public void onChanged(final LoginStepTwoResponseBody loginStepTwoResponseBody) {
+            public void onChanged(final LoginStepTwoResponse loginStepTwoResponse) {
 
-                if (loginStepTwoResponseBody != null) {
+                if (loginStepTwoResponse != null) {
 
-                    user.setUserId(loginStepTwoResponseBody.getUserId());
-                    user.setToken(loginStepTwoResponseBody.getToken());
+                    user.setUserId(loginStepTwoResponse.getUserId());
+                    user.setToken(loginStepTwoResponse.getToken());
                     Log.d(TAG, "onChanged: " + user.getUserId());
                     loginStepTwoListener.onResponse(user);
 
                     dismiss();
                     dialog.dismiss();
 
-                    loginSharedViewModel.userLogin(loginStepTwoResponseBody);
+//                    loginSharedViewModel.loginUser(loginStepTwoResponse);
                 } else {
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
                 }

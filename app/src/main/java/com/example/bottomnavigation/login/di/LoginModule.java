@@ -10,6 +10,7 @@ import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.UserRemoteDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.data.repository.ProfileRepository;
 import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 
@@ -19,13 +20,12 @@ public class LoginModule {
         return new LoginStepOneRemoteDataSource(apiService);
     }
 
-    public static LoginSharedViewModelFactory provideShareViewModelFactory(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource
-            , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource, UserLocaleDataSourceImpl userLocaleDataSource) {
-        return new LoginSharedViewModelFactory(loginStepOneRemoteDataSource, loginStepTwoRemoteDataSource, userLocaleDataSource);
+    public static LoginSharedViewModelFactory provideShareViewModelFactory(LoginRepository loginRepository) {
+        return new LoginSharedViewModelFactory(loginRepository);
     }
 
-    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService, UserDao userDao) {
-        return new LoginStepTwoRemoteDataSource(apiService, userDao);
+    public static LoginStepTwoRemoteDataSource provideLoginStepTwoRemoteDataSource(ApiService apiService) {
+        return new LoginStepTwoRemoteDataSource(apiService);
     }
 
     public static UserLocaleDataSourceImpl provideUserLocaleDataSource(UserDao userDao) {
@@ -38,6 +38,11 @@ public class LoginModule {
         return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     }
 
+    public static LoginRepository provideLoginRepository(LoginStepOneRemoteDataSource loginStepOneRemoteDataSource
+            , LoginStepTwoRemoteDataSource loginStepTwoRemoteDataSource, UserLocaleDataSourceImpl userLocaleDataSource){
+     return new LoginRepository(loginStepOneRemoteDataSource,loginStepTwoRemoteDataSource,userLocaleDataSource);
+    }
+
     public static UserRemoteDataSourceImpl provideUserRemoteDataSource(ApiService apiService) {
         return new UserRemoteDataSourceImpl(apiService);
     }
@@ -46,5 +51,11 @@ public class LoginModule {
         Context context = CustomApp.getContext();
         return UserDatabase.getInstance(context);
     }
+
+//    public void provideLoginRepository(ApiService apiService, UserDao userDao) {
+//        provideLoginStepOneRemoteDataSource(apiService);
+//        provideLoginStepTwoRemoteDataSource(apiService);
+//        provideUserLocaleDataSource(userDao);
+//    }
 
 }

@@ -1,14 +1,15 @@
 package com.example.bottomnavigation;
 
 import com.example.bottomnavigation.data.model.Category;
-import com.example.bottomnavigation.data.model.LoginStepOneBody;
-import com.example.bottomnavigation.data.model.LoginStepOneResponseBody;
-import com.example.bottomnavigation.data.model.ProfileResponseBody;
-import com.example.bottomnavigation.data.model.UpdateProfileBody;
-import com.example.bottomnavigation.data.model.UpdateResponseBody;
-import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOneRequest;
+import com.example.bottomnavigation.data.model.LoginStepOneResponse;
+
+import com.example.bottomnavigation.data.model.ProfileResponse;
+import com.example.bottomnavigation.data.model.UpdateProfile;
+import com.example.bottomnavigation.data.model.UpdateResponse;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.model.Store;
-import com.example.bottomnavigation.data.model.LoginStepTwoBody;
+import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
 
 import java.util.List;
 
@@ -26,10 +27,10 @@ public interface ApiService {
 
     @GET("store/16")Call<Store> getStore();
     @GET("category/16/463")Call<List<Category>> getCategory();
-    @POST("mobile_login_step1/16")Call<LoginStepOneResponseBody> login_step_one(@Body LoginStepOneBody loginStepOneBody);
-    @POST("mobile_login_step2/16")Call<LoginStepTwoResponseBody> login_step_two(@Body LoginStepTwoBody loginStepTwoBody);
-    @GET("profile")Call<ProfileResponseBody> getUser();
-    @POST("profile")Call<UpdateResponseBody> update( @Body UpdateProfileBody updateProfileBody);
+    @POST("mobile_login_step1/16")Call<LoginStepOneResponse> loginStepOne(@Body LoginStepOneRequest loginStepOneRequest);
+    @POST("mobile_login_step2/16")Call<LoginStepTwoResponse> loginStepTwo(@Body LoginStepTwoRequest loginStepTwoRequest);
+    @GET("profile")Call<ProfileResponse> getUser();
+    @POST("profile")Call<UpdateResponse> update(@Body UpdateProfile updateProfile);
     @Multipart
-    @POST("profile")Call<UpdateResponseBody> updateImage(@Part MultipartBody.Part avatar);
+    @POST("profile")Call<UpdateResponse> updateImage(@Part MultipartBody.Part avatar);
 }
