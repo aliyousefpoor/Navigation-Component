@@ -130,7 +130,7 @@ public class CategoryFragment extends Fragment {
                     arrow.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Check Your Connection !", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onChanged: Error");
                 } else {
                     pull_Down.setVisibility(View.GONE);
