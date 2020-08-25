@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.ListProducts;
+import com.example.bottomnavigation.data.model.ProductsList;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ public class ProductListViewModel extends ViewModel {
         this.productListRemoteDataSource = productListRemoteDataSource;
     }
 
-    private MutableLiveData<List<ListProducts>> _productListLiveData = new MutableLiveData<>();
-    public LiveData<List<ListProducts>> productListLiveData = _productListLiveData;
+    private MutableLiveData<List<ProductsList>> _productListLiveData = new MutableLiveData<>();
+    public LiveData<List<ProductsList>> productListLiveData = _productListLiveData;
 
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
     public LiveData<Boolean> loadingLiveData = _loadingLiveData;
@@ -28,9 +28,9 @@ public class ProductListViewModel extends ViewModel {
 
     public void getProductList(Integer id) {
         _loadingLiveData.setValue(true);
-        productListRemoteDataSource.getProductList(id, new DataSourceListener<List<ListProducts>>() {
+        productListRemoteDataSource.getProductList(id, new DataSourceListener<List<ProductsList>>() {
             @Override
-            public void onResponse(List<ListProducts> response) {
+            public void onResponse(List<ProductsList> response) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
                 _productListLiveData.setValue(response);

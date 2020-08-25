@@ -2,7 +2,7 @@ package com.example.bottomnavigation.data.datasource.remote;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.ListProducts;
+import com.example.bottomnavigation.data.model.ProductsList;
 
 import java.util.List;
 
@@ -17,15 +17,15 @@ public class ProductListRemoteDataSource {
         this.apiService = apiService;
     }
 
-    public void getProductList(Integer id, final DataSourceListener<List<ListProducts>> dataSourceListener) {
-        apiService.getProductList(id, 20, 0).enqueue(new Callback<List<ListProducts>>() {
+    public void getProductList(Integer id, final DataSourceListener<List<ProductsList>> dataSourceListener) {
+        apiService.getProductList(id, 20, 0).enqueue(new Callback<List<ProductsList>>() {
             @Override
-            public void onResponse(Call<List<ListProducts>> call, Response<List<ListProducts>> response) {
+            public void onResponse(Call<List<ProductsList>> call, Response<List<ProductsList>> response) {
                 dataSourceListener.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<ListProducts>> call, Throwable t) {
+            public void onFailure(Call<List<ProductsList>> call, Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

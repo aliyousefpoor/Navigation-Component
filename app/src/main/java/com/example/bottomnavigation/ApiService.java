@@ -1,7 +1,7 @@
 package com.example.bottomnavigation;
 
 import com.example.bottomnavigation.data.model.Category;
-import com.example.bottomnavigation.data.model.ListProducts;
+import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.data.model.LoginStepOneBody;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.ProfileResponseBody;
@@ -37,7 +37,7 @@ public interface ApiService {
     @Multipart
     @POST("profile")Call<UpdateResponseBody> updateImage(@Part MultipartBody.Part avatar);
     @GET("listproducts/{categoryId}")
-    Call<List<ListProducts>> getProductList(@Path("categoryId") int categoryId,
+    Call<List<ProductsList>> getProductList(@Path("categoryId") int categoryId,
                                             @Query("limit") int limit,
                                             @Query("offset") int offset);
 }

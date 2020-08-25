@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -21,7 +22,7 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.ListProducts;
+import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
@@ -75,7 +76,7 @@ public class ProductListFragment extends Fragment {
         });
     }
 
-    public void observeProductListViewModel(){
+    public void observeProductListViewModel() {
         refresh.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
@@ -83,14 +84,12 @@ public class ProductListFragment extends Fragment {
         productListViewModel.loadingLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loadingState) {
-                if (loadingState){
+                if (loadingState) {
                     refresh.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(true);
-                }
-
-                else {
+                } else {
                     refresh.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
@@ -101,14 +100,13 @@ public class ProductListFragment extends Fragment {
         productListViewModel.errorStateLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hasError) {
-                if (hasError){
+                if (hasError) {
                     refresh.setVisibility(View.VISIBLE);
                     arrow.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getContext(),"Check Your Connection !",Toast.LENGTH_SHORT).show();
-                }
-                else {
+                    Toast.makeText(getContext(), "Check Your Connection !", Toast.LENGTH_SHORT).show();
+                } else {
                     refresh.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
@@ -118,15 +116,17 @@ public class ProductListFragment extends Fragment {
             }
         });
 
-        productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<ListProducts>>() {
+        productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<ProductsList>>() {
             @Override
-            public void onChanged(List<ListProducts> listProducts) {
-                showProductList(listProducts);
+            public void onChanged(List<ProductsList> productLists) {
+                showProductList(productLists);
             }
         });
     }
 
-    public void showProductList(List<ListProducts> products){
-
+    public void showProductList(List<ProductsList> products) {
+        ProductListAdapter adapter = new ProductListAdapter(products, getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }

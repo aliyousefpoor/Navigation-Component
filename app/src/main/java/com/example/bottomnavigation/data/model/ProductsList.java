@@ -1,12 +1,13 @@
 package com.example.bottomnavigation.data.model;
 
 
+import com.example.bottomnavigation.utils.AppConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ListProducts {
+public class ProductsList {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -33,10 +34,10 @@ public class ListProducts {
     private Object priceShow;
     @SerializedName("avatar")
     @Expose
-    private Avatar avatar;
+    private Object avatar;
     @SerializedName("feature_avatar")
     @Expose
-    private FeatureAvatar featureAvatar;
+    private Object featureAvatar;
     @SerializedName("rank")
     @Expose
     private Double rank;
@@ -78,7 +79,7 @@ public class ListProducts {
     private String customJson;
     @SerializedName("polls")
     @Expose
-    private List<Object> polls=null;
+    private List<Object> polls = null;
     @SerializedName("date_added")
     @Expose
     private String dateAdded;
@@ -171,15 +172,15 @@ public class ListProducts {
         this.priceShow = priceShow;
     }
 
-    public Avatar getAvatar() {
-        return avatar;
+    public Object getAvatar() {
+        return AppConstants.baseUrl + avatar;
     }
 
-    public void setAvatar(Avatar avatar) {
+    public void setAvatar(Object avatar) {
         this.avatar = avatar;
     }
 
-    public FeatureAvatar getFeatureAvatar() {
+    public Object getFeatureAvatar() {
         return featureAvatar;
     }
 
