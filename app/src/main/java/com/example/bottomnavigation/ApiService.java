@@ -1,6 +1,7 @@
 package com.example.bottomnavigation;
 
 import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.data.model.ListProducts;
 import com.example.bottomnavigation.data.model.LoginStepOneBody;
 import com.example.bottomnavigation.data.model.LoginResponseBody;
 import com.example.bottomnavigation.data.model.ProfileResponseBody;
@@ -21,6 +22,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 public interface ApiService {
@@ -33,4 +36,8 @@ public interface ApiService {
     @POST("profile")Call<UpdateResponseBody> update( @Body UpdateProfileBody updateProfileBody);
     @Multipart
     @POST("profile")Call<UpdateResponseBody> updateImage(@Part MultipartBody.Part avatar);
+    @GET("listproducts/{categoryId}")
+    Call<List<ListProducts>> getProductList(@Path("categoryId") int categoryId,
+                                            @Query("limit") int limit,
+                                            @Query("offset") int offset);
 }

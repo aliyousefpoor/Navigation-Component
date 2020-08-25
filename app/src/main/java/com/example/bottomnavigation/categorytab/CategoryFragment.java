@@ -41,6 +41,7 @@ public class CategoryFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
+    private CategoryIdListener categoryIdListener;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
@@ -150,9 +151,10 @@ public class CategoryFragment extends Fragment {
 
         Log.d(TAG, "showData: " + categories.toString());
 
-        CategoryAdapter adapter = new CategoryAdapter(categories, getContext());
+        CategoryAdapter adapter = new CategoryAdapter(categories, getContext(),categoryIdListener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
     }
+
+
 }

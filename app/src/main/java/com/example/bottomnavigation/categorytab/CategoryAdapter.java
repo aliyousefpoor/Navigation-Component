@@ -24,10 +24,12 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Category> categoryList;
+    private CategoryIdListener categoryIdListener;
 
-    public CategoryAdapter(List<Category> categoryList, Context context) {
+    public CategoryAdapter(List<Category> categoryList, Context context,CategoryIdListener categoryIdListener) {
         this.context = context;
         this.categoryList = categoryList;
+        this.categoryIdListener=categoryIdListener;
     }
 
     @NonNull
@@ -43,7 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
 
-        categoryViewHolder.onBind(categoryList.get(position), context);
+        categoryViewHolder.onBind(categoryList.get(position), context,categoryIdListener);
 
     }
 
@@ -66,7 +68,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cardView = itemView.findViewById(R.id.card_view);
         }
 
-        public void onBind(final Category category, final Context context) {
+        public void onBind(final Category category, final Context context,final CategoryIdListener categoryIdListener) {
             textView.setText(category.getTitle());
             Glide.with(context).load(category.getAvatar()).into(imageView);
 
@@ -74,6 +76,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, category.getTitle(), Toast.LENGTH_SHORT).show();
+                    categoryIdListener.onClick(category.getId());
                 }
             });
         }

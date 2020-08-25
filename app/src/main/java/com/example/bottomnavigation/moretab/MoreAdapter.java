@@ -21,7 +21,7 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     List<MoreModel> moreLists;
-    MoreItemListener moreItemListener;
+    private MoreItemListener moreItemListener;
 
 
     public MoreAdapter(List<MoreModel> moreLists, Context context, MoreItemListener moreItemListener) {
