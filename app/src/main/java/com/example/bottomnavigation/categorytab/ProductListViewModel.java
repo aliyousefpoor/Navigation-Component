@@ -13,8 +13,10 @@ import java.util.List;
 public class ProductListViewModel extends ViewModel {
     private ProductListRemoteDataSource productListRemoteDataSource;
 
+
     public ProductListViewModel(ProductListRemoteDataSource productListRemoteDataSource) {
         this.productListRemoteDataSource = productListRemoteDataSource;
+
     }
 
     private MutableLiveData<List<ProductsList>> _productListLiveData = new MutableLiveData<>();
@@ -26,7 +28,7 @@ public class ProductListViewModel extends ViewModel {
     private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
-    public void getProductList(Integer id) {
+    public void getProductList(int id) {
         _loadingLiveData.setValue(true);
         productListRemoteDataSource.getProductList(id, new DataSourceListener<List<ProductsList>>() {
             @Override

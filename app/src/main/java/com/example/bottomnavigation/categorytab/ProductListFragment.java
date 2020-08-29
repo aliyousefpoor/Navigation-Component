@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -55,16 +55,16 @@ public class ProductListFragment extends Fragment {
 
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
-        final Integer id = getArguments().getInt("categoryId");
+        final int id = getArguments().getInt("categoryId");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
         recyclerView = view.findViewById(R.id.recyclerView);
-
+        observeProductListViewModel();
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                observeProductListViewModel();
+                productListViewModel.getProductList(id);
             }
         });
 
@@ -74,6 +74,8 @@ public class ProductListFragment extends Fragment {
                 productListViewModel.getProductList(id);
             }
         });
+
+        productListViewModel.getProductList(id);
     }
 
     public void observeProductListViewModel() {
@@ -127,6 +129,6 @@ public class ProductListFragment extends Fragment {
     public void showProductList(List<ProductsList> products) {
         ProductListAdapter adapter = new ProductListAdapter(products, getContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
     }
 }

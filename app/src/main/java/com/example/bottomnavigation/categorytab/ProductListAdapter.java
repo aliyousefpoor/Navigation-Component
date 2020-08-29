@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -47,18 +47,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public static class ProductListViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
-        TextView id;
         TextView title;
-        TextView name;
+        CardView cardView;
 
         public ProductListViewHolder(@NonNull View itemView) {
             super(itemView);
+            avatar = itemView.findViewById(R.id.productAvatar);
+            title =itemView.findViewById(R.id.productTitle);
+            cardView=itemView.findViewById(R.id.productListCardView);
         }
 
         public void onBind(ProductsList productsList, Context context) {
-            id.setText(productsList.getId());
-            title.setText(productsList.getCategoryModel().get(productsList.getId()).getTitle());
-            name.setText(productsList.getName());
+            title.setText(productsList.getName());
             Glide.with(context).load(productsList.getAvatar()).into(avatar);
         }
     }

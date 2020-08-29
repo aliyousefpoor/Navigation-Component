@@ -34,7 +34,7 @@ public class ProductsList {
     private Object priceShow;
     @SerializedName("avatar")
     @Expose
-    private Object avatar;
+    private Avatar avatar;
     @SerializedName("feature_avatar")
     @Expose
     private Object featureAvatar;
@@ -55,13 +55,13 @@ public class ProductsList {
     private Integer comments;
     @SerializedName("is_bookmarked")
     @Expose
-    private Integer isBookmarked;
+    private Boolean isBookmarked;
     @SerializedName("sku")
     @Expose
     private String sku;
     @SerializedName("tags")
     @Expose
-    private List<Tags> tags = null;
+    private String[] tags ;
     @SerializedName("category_model")
     @Expose
     private List<Category> categoryModel = null;
@@ -172,11 +172,11 @@ public class ProductsList {
         this.priceShow = priceShow;
     }
 
-    public Object getAvatar() {
-        return AppConstants.baseUrl + avatar;
+    public String getAvatar() {
+        return AppConstants.baseUrl + avatar.getXhdpi();
     }
 
-    public void setAvatar(Object avatar) {
+    public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
     }
 
@@ -228,11 +228,11 @@ public class ProductsList {
         this.comments = comments;
     }
 
-    public Integer getIsBookmarked() {
+    public Boolean getIsBookmarked() {
         return isBookmarked;
     }
 
-    public void setIsBookmarked(Integer isBookmarked) {
+    public void setIsBookmarked(Boolean isBookmarked) {
         this.isBookmarked = isBookmarked;
     }
 
@@ -244,11 +244,11 @@ public class ProductsList {
         this.sku = sku;
     }
 
-    public List<Tags> getTags() {
+    public String[] getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(String[] tags) {
         this.tags = tags;
     }
 
