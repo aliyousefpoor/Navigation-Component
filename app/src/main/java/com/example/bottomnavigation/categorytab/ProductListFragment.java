@@ -1,6 +1,5 @@
 package com.example.bottomnavigation.categorytab;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,6 +35,7 @@ public class ProductListFragment extends Fragment {
     private TextView refresh;
     private ImageView arrow;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private View progressBar;
     private RecyclerView recyclerView;
     private int id;
     private int offset = 0;
@@ -68,6 +67,7 @@ public class ProductListFragment extends Fragment {
         arrow = view.findViewById(R.id.productArrow);
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
         recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.progressBar);
         observeProductListViewModel();
         showProductList();
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -91,15 +91,15 @@ public class ProductListFragment extends Fragment {
         refresh.setVisibility(View.GONE);
         arrow.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
-
+        progressBar.setVisibility(View.GONE);
         productListViewModel.loadingLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loadingState) {
                 if (loadingState) {
                     refresh.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
-
-                    swipeRefreshLayout.setRefreshing(true);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                 } else {
                     refresh.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
@@ -122,7 +122,6 @@ public class ProductListFragment extends Fragment {
                     arrow.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     recyclerView.setVisibility(View.VISIBLE);
-
                 }
             }
         });
@@ -130,7 +129,12 @@ public class ProductListFragment extends Fragment {
         productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<ProductsList>>() {
             @Override
             public void onChanged(List<ProductsList> productLists) {
+                if (!productLists.isEmpty()) {
+                    progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -148,7 +152,6 @@ public class ProductListFragment extends Fragment {
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-
         }
 
         @Override
@@ -160,15 +163,11 @@ public class ProductListFragment extends Fragment {
             if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
                 offset = offset + recyclerView.getAdapter().getItemCount();
                 getData();
-
             }
         }
-
     };
-
 
     public void getData() {
         productListViewModel.getProductList(id, offset);
     }
-
 }

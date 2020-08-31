@@ -22,8 +22,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<ProductsList> products;
     private Context context;
 
-    public ProductListAdapter( Context context) {
-//        this.products = products;
+    public ProductListAdapter(Context context) {
         products = new ArrayList<>();
         this.context = context;
     }
@@ -55,8 +54,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public ProductListViewHolder(@NonNull View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.productAvatar);
-            title =itemView.findViewById(R.id.productTitle);
-            cardView=itemView.findViewById(R.id.productListCardView);
+            title = itemView.findViewById(R.id.productTitle);
+            cardView = itemView.findViewById(R.id.productListCardView);
         }
 
         public void onBind(ProductsList productsList, Context context) {
@@ -65,7 +64,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void addList(List<ProductsList> productsList){
+    public void addList(List<ProductsList> productsList) {
         products.addAll(productsList);
     }
 }
