@@ -11,7 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
+
 public class AppModule {
     private static final String TAG = "AppModule";
 

@@ -1,5 +1,6 @@
 package com.example.bottomnavigation.categorytab;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -35,12 +38,17 @@ public class ProductListFragment extends Fragment {
     private ImageView arrow;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
+    private int id;
+    private int offset = 0;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private ProductListRemoteDataSource productListRemoteDataSource = CategoryTabModule.provideProductListRemoteDataSource(apiService);
     private ProductListViewModelFactory productListViewModelFactory = CategoryTabModule.provideProductListViewModelFactory(productListRemoteDataSource);
+    private GridLayoutManager layoutManager;
+    private ProductListAdapter adapter;
+    private int lastVisibleItemPosition;
 
     @Nullable
     @Override
@@ -55,27 +63,28 @@ public class ProductListFragment extends Fragment {
 
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
-        final int id = getArguments().getInt("categoryId");
+        id = getArguments().getInt("categoryId");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
         recyclerView = view.findViewById(R.id.recyclerView);
         observeProductListViewModel();
+        showProductList();
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productListViewModel.getProductList(id);
+                getData();
             }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                productListViewModel.getProductList(id);
+                getData();
             }
         });
 
-        productListViewModel.getProductList(id);
+        getData();
     }
 
     public void observeProductListViewModel() {
@@ -89,7 +98,7 @@ public class ProductListFragment extends Fragment {
                 if (loadingState) {
                     refresh.setVisibility(View.GONE);
                     arrow.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
+
                     swipeRefreshLayout.setRefreshing(true);
                 } else {
                     refresh.setVisibility(View.VISIBLE);
@@ -121,14 +130,45 @@ public class ProductListFragment extends Fragment {
         productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<ProductsList>>() {
             @Override
             public void onChanged(List<ProductsList> productLists) {
-                showProductList(productLists);
+                    adapter.addList(productLists);
             }
         });
     }
 
-    public void showProductList(List<ProductsList> products) {
-        ProductListAdapter adapter = new ProductListAdapter(products, getContext());
+    public void showProductList() {
+
+        adapter = new ProductListAdapter(getContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(recyclerViewOnScrollListener);
     }
+
+    private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                    .findLastCompletelyVisibleItemPosition();
+            if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                offset = offset + recyclerView.getAdapter().getItemCount();
+                getData();
+
+            }
+        }
+
+    };
+
+
+    public void getData() {
+        productListViewModel.getProductList(id, offset);
+    }
+
 }

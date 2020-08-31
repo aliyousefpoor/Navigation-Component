@@ -17,8 +17,8 @@ public class ProductListRemoteDataSource {
         this.apiService = apiService;
     }
 
-    public void getProductList(Integer id, final DataSourceListener<List<ProductsList>> dataSourceListener) {
-        apiService.getProductList(id, 20, 0).enqueue(new Callback<List<ProductsList>>() {
+    public void getProductList(Integer id,int offset ,final DataSourceListener<List<ProductsList>> dataSourceListener) {
+        apiService.getProductList(id, 20, offset).enqueue(new Callback<List<ProductsList>>() {
             @Override
             public void onResponse(Call<List<ProductsList>> call, Response<List<ProductsList>> response) {
                 dataSourceListener.onResponse(response.body());

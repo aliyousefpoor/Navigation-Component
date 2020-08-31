@@ -15,14 +15,16 @@ import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.ProductsList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ProductsList> products;
     private Context context;
 
-    public ProductListAdapter(List<ProductsList> products, Context context) {
-        this.products = products;
+    public ProductListAdapter( Context context) {
+//        this.products = products;
+        products = new ArrayList<>();
         this.context = context;
     }
 
@@ -61,5 +63,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             title.setText(productsList.getName());
             Glide.with(context).load(productsList.getAvatar()).into(avatar);
         }
+    }
+
+    public void addList(List<ProductsList> productsList){
+        products.addAll(productsList);
     }
 }

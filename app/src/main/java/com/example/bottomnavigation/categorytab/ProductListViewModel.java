@@ -28,9 +28,9 @@ public class ProductListViewModel extends ViewModel {
     private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
-    public void getProductList(int id) {
+    public void getProductList(int id,int offset) {
         _loadingLiveData.setValue(true);
-        productListRemoteDataSource.getProductList(id, new DataSourceListener<List<ProductsList>>() {
+        productListRemoteDataSource.getProductList(id,offset,new DataSourceListener<List<ProductsList>>() {
             @Override
             public void onResponse(List<ProductsList> response) {
                 _loadingLiveData.setValue(false);
