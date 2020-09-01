@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class UpdateResponseBody {
+public class UpdateResponse {
     @SerializedName("error")
     @Expose
     private String error;

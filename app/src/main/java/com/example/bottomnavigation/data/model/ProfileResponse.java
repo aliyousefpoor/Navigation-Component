@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProfileResponseBody {
+public class ProfileResponse {
     @SerializedName("credit")
     @Expose
     private Credit credits = null;
@@ -118,7 +118,7 @@ public class ProfileResponseBody {
     }
 
     public String getAvatar() {
-        return AppConstants.baseUrl+avatar;
+        return AppConstants.baseUrl + avatar;
     }
 
     public void setAvatar(String avatar) {

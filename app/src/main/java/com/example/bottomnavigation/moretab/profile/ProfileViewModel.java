@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.UpdateResponseBody;
+import com.example.bottomnavigation.data.model.UpdateResponse;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.ProfileRepository;
 import com.example.bottomnavigation.moretab.SingleLiveEvent;
@@ -25,8 +25,8 @@ public class ProfileViewModel extends ViewModel {
         this.profileRepository = profileRepository;
     }
 
-    private SingleLiveEvent<UpdateResponseBody> _updateUserProfile = new SingleLiveEvent<>();
-    public SingleLiveEvent<UpdateResponseBody> updateUserProfile = _updateUserProfile;
+    private SingleLiveEvent<UpdateResponse> _updateUserProfile = new SingleLiveEvent<>();
+    public SingleLiveEvent<UpdateResponse> updateUserProfile = _updateUserProfile;
 
     private MutableLiveData<User> _getUser = new MutableLiveData<>();
     public MutableLiveData<User> getUser = _getUser;
@@ -34,9 +34,9 @@ public class ProfileViewModel extends ViewModel {
 
 
     public void updateProfile(User user){
-        profileRepository.updateProfile(user, new DataSourceListener<UpdateResponseBody>() {
+        profileRepository.updateProfile(user, new DataSourceListener<UpdateResponse>() {
             @Override
-            public void onResponse(UpdateResponseBody response) {
+            public void onResponse(UpdateResponse response) {
                 _updateUserProfile.postValue(response);
             }
 
@@ -48,9 +48,9 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void updateImage(File file){
-        profileRepository.updateImage(file, new DataSourceListener<UpdateResponseBody>() {
+        profileRepository.updateImage(file, new DataSourceListener<UpdateResponse>() {
             @Override
-            public void onResponse(UpdateResponseBody response) {
+            public void onResponse(UpdateResponse response) {
                 Log.d(TAG, "onResponse: "+response);
             }
 
