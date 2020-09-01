@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.ProfileResponseBody;
-import com.example.bottomnavigation.data.model.UpdateProfileBody;
-import com.example.bottomnavigation.data.model.UpdateResponseBody;
+import com.example.bottomnavigation.data.model.ProfileResponse;
+import com.example.bottomnavigation.data.model.UpdateProfile;
+import com.example.bottomnavigation.data.model.UpdateResponse;
 import com.example.bottomnavigation.data.model.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,18 +29,18 @@ public class UserRemoteDataSourceImpl {
     }
 
 
-    public void updateProfile(User user, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
-        UpdateProfileBody updateProfileBody = new UpdateProfileBody(user.getName(),
+    public void updateProfile(User user, final DataSourceListener<UpdateResponse> dataSourceListener) {
+        UpdateProfile updateProfile = new UpdateProfile(user.getName(),
                 user.getDate(), user.getGender());
-        apiService.update(updateProfileBody).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.update(updateProfile).enqueue(new Callback<UpdateResponse>() {
             @Override
-            public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
+            public void onResponse(@NotNull Call<UpdateResponse> call, @NotNull Response<UpdateResponse> response) {
                 dataSourceListener.onResponse(response.body());
 
             }
 
             @Override
-            public void onFailure(@NotNull Call<UpdateResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<UpdateResponse> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });
@@ -49,9 +49,9 @@ public class UserRemoteDataSourceImpl {
 
     public void getProfile(final String token, final DataSourceListener<User> dataSourceListener) {
         Log.d(TAG, "getProfile: "+token);
-        apiService.getUser().enqueue(new Callback<ProfileResponseBody>() {
+        apiService.getUser().enqueue(new Callback<ProfileResponse>() {
             @Override
-            public void onResponse(@NotNull Call<ProfileResponseBody> call, @NotNull Response<ProfileResponseBody> response) {
+            public void onResponse(@NotNull Call<ProfileResponse> call, @NotNull Response<ProfileResponse> response) {
                 User user = new User();
                 user.setUserId(response.body().getId());
                 user.setName(response.body().getNickName());
@@ -64,26 +64,26 @@ public class UserRemoteDataSourceImpl {
             }
 
             @Override
-            public void onFailure(@NotNull Call<ProfileResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ProfileResponse> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });
     }
 
 
-    public void updateImage(File file, final DataSourceListener<UpdateResponseBody> dataSourceListener) {
+    public void updateImage(File file, final DataSourceListener<UpdateResponse> dataSourceListener) {
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
 
-        apiService.updateImage(requestImage).enqueue(new Callback<UpdateResponseBody>() {
+        apiService.updateImage(requestImage).enqueue(new Callback<UpdateResponse>() {
             @Override
-            public void onResponse(@NotNull Call<UpdateResponseBody> call, @NotNull Response<UpdateResponseBody> response) {
+            public void onResponse(@NotNull Call<UpdateResponse> call, @NotNull Response<UpdateResponse> response) {
                 dataSourceListener.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<UpdateResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<UpdateResponse> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
                 Log.d(TAG, "onFailure: updateImage");
             }

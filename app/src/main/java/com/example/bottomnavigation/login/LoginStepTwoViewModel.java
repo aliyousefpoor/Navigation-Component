@@ -9,9 +9,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 
 import com.example.bottomnavigation.data.datasource.local.database.UserDao;
-import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
-import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 
 public class LoginStepTwoViewModel extends ViewModel {
@@ -23,15 +22,15 @@ public class LoginStepTwoViewModel extends ViewModel {
         this.loginStepTwoRemoteDataSource = loginStepTwoRemoteDataSource;
     }
 
-    private MutableLiveData<LoginStepTwoResponseBody> _LoginStepTwoLiveData = new MutableLiveData<>();
-    public LiveData<LoginStepTwoResponseBody> loginStepTwoLiveData = _LoginStepTwoLiveData;
+    private MutableLiveData<LoginStepTwoResponse> _LoginStepTwoLiveData = new MutableLiveData<>();
+    public LiveData<LoginStepTwoResponse> loginStepTwoLiveData = _LoginStepTwoLiveData;
 
     public void loginStepTwo(LoginStepTwo loginStepTwo) {
-        loginStepTwoRemoteDataSource.loginStepTwo(loginStepTwo, new DataSourceListener<LoginStepTwoResponseBody>() {
+        loginStepTwoRemoteDataSource.loginStepTwo(loginStepTwo, new DataSourceListener<LoginStepTwoResponse>() {
 
             @Override
 
-            public void onResponse(LoginStepTwoResponseBody response) {
+            public void onResponse(LoginStepTwoResponse response) {
                 _LoginStepTwoLiveData.setValue(response);
 
                 Log.d(TAG, "onResponse:Verification ");
@@ -47,7 +46,7 @@ public class LoginStepTwoViewModel extends ViewModel {
 
     }
 
-public void userLogin(LoginStepTwoResponseBody loginStepTwoResponseBody, UserDao userDao){
-        loginStepTwoRemoteDataSource.userLogin(loginStepTwoResponseBody,userDao);
+public void userLogin(LoginStepTwoResponse loginStepTwoResponse, UserDao userDao){
+        loginStepTwoRemoteDataSource.userLogin(loginStepTwoResponse,userDao);
 }
 }

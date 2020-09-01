@@ -1,14 +1,14 @@
 package com.example.bottomnavigation.data.model;
 
 
-public class UpdateProfileBody {
+public class UpdateProfile {
     private String nickname;
     private String date_of_birth;
     private String gender;
     private Object avatar;
 
 
-    public UpdateProfileBody(String nickname, String date_of_birth, String gender){
+    public UpdateProfile(String nickname, String date_of_birth, String gender){
         this.nickname=nickname;
         this.date_of_birth=date_of_birth;
         this.gender=gender;

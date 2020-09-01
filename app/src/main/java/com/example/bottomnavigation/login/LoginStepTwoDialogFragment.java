@@ -2,7 +2,6 @@ package com.example.bottomnavigation.login;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,11 +23,10 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.local.database.UserDao;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
-import com.example.bottomnavigation.data.model.LoginStepTwoResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -123,23 +121,23 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
 
 
     public void postVerificationCodeRequest() {
-        loginStepTwoViewModel.loginStepTwoLiveData.observe(this, new Observer<LoginStepTwoResponseBody>() {
+        loginStepTwoViewModel.loginStepTwoLiveData.observe(this, new Observer<LoginStepTwoResponse>() {
 
             @Override
-            public void onChanged(final LoginStepTwoResponseBody loginStepTwoResponseBody) {
+            public void onChanged(final LoginStepTwoResponse loginStepTwoResponse) {
 
 
-                if (loginStepTwoResponseBody != null) {
+                if (loginStepTwoResponse != null) {
 
-                    user.setUserId(loginStepTwoResponseBody.getUserId());
-                    user.setToken(loginStepTwoResponseBody.getToken());
+                    user.setUserId(loginStepTwoResponse.getUserId());
+                    user.setToken(loginStepTwoResponse.getToken());
                     Log.d(TAG, "onChanged: " + user.getUserId());
                     loginStepTwoListener.onResponse(user);
 
                     dismiss();
                     dialog.dismiss();
 
-                    loginStepTwoViewModel.userLogin(loginStepTwoResponseBody, userDao);
+                    loginStepTwoViewModel.userLogin(loginStepTwoResponse, userDao);
 
 
                 } else {

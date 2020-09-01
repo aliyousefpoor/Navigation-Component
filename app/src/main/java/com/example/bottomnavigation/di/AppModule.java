@@ -1,9 +1,5 @@
 package com.example.bottomnavigation.di;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.example.bottomnavigation.utils.AppConstants;
 
 import okhttp3.OkHttpClient;

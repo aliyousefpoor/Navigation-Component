@@ -23,7 +23,7 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.LoginStepOne;
 import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
-import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -104,9 +104,9 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     }
 
     public void postRequest() {
-        loginStepOneViewModel.loginStepOneLiveData.observe(this, new Observer<LoginResponseBody>() {
+        loginStepOneViewModel.loginStepOneLiveData.observe(this, new Observer<LoginStepOneResponse>() {
             @Override
-            public void onChanged(LoginResponseBody loginBody) {
+            public void onChanged(LoginStepOneResponse loginBody) {
                 loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(number.getText().toString(),androidId, loginStepTwoListener,resendCodeListener);
                 loginStepTwoDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
                 Log.d(TAG, "onChanged: " + loginBody);
