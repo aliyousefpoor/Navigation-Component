@@ -149,6 +149,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
                     dialog.dismiss();
 
                 } else {
+
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
                 }
             }

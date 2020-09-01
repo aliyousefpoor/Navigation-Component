@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +48,7 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService,database.userDao());
+    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService, database.userDao());
     private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
     @SuppressLint("HardwareIds")
     private String androidId;
@@ -109,15 +110,15 @@ public class LoginStepOneDialogFragment extends DialogFragment {
         loginSharedViewModel.loginStepOneLiveData.observe(getViewLifecycleOwner(), new Observer<LoginStepOneResponse>() {
             @Override
             public void onChanged(LoginStepOneResponse loginBody) {
-                if (loginBody!=null) {
+                if (loginBody != null) {
                     loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(loginStepTwoListener);
                     loginStepTwoDialogFragment.show(getParentFragmentManager(), "LoginStepTwoDialogFragment");
                     Log.d(TAG, "onChanged: " + loginBody);
                     dismiss();
                     dialog.dismiss();
-                }
-                else {
-                    Snackbar.make(getView(),"Error Occurred",Snackbar.LENGTH_SHORT).show();
+                } else {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(),"Error Occurred",Toast.LENGTH_LONG).show();
                 }
             }
         });

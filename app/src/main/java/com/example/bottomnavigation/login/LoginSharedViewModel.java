@@ -57,11 +57,13 @@ public class LoginSharedViewModel extends ViewModel {
             @Override
             public void onResponse(LoginStepTwoResponse response) {
                 _loginStepTwoLiveData.setValue(response);
+
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 _loginStepTwoLiveData.setValue(null);
+                throwable.getMessage();
             }
         });
     }
