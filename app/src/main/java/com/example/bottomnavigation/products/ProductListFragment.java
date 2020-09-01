@@ -135,6 +135,7 @@ public class ProductListFragment extends Fragment {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
+                    adapter.notifyDataSetChanged();
                     toolbar.setTitle(productLists.get(0).getCategoryModel().get(0).getTitle());
                 } else {
                     progressBar.setVisibility(View.GONE);

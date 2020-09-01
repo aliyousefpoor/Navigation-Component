@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -65,6 +66,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void addList(List<ProductsList> productsList) {
-        products.addAll(productsList);
+        final ProductListDiffCallback diffCallback = new ProductListDiffCallback(this.products,productsList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+       products.addAll(productsList);
+       diffResult.dispatchUpdatesTo(this);
     }
 }
