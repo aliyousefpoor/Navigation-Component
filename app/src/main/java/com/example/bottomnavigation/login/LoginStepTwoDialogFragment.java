@@ -21,12 +21,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
-import com.example.bottomnavigation.data.model.LoginStepTwo;
 import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
-import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
@@ -48,13 +50,12 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService,database.userDao());
+    private LoginRepository loginRepository =LoginModule.provideLoginRepository(apiService,database.userDao());
     private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
     private LoginStepTwoListener loginStepTwoListener;
     private ProgressDialog dialog;
     private User user = new User();
     private LoginStepOneRequest loginStepOneRequest = new LoginStepOneRequest();
-
 
 
     public LoginStepTwoDialogFragment(LoginStepTwoListener loginStepTwoListener) {
@@ -86,7 +87,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                number =loginSharedViewModel.loginStepOneBody.getMobile();
+                number = loginSharedViewModel.loginStepOneBody.getMobile();
                 androidId = loginSharedViewModel.loginStepOneBody.getDevice_id();
                 loginStepTwoRequest.setMobile(number);
                 loginStepTwoRequest.setDevice_id(androidId);
@@ -99,6 +100,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
                 dialog.setMessage(getString(R.string.loadingProgress));
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog.show();
+
             }
         });
 
@@ -106,8 +108,9 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+
                 LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
-                loginStepOneDialogFragment.show(getParentFragmentManager(), "FirstDialogFragment");
+                loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
 
             }
         });
@@ -115,14 +118,14 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
         resendCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deviceModel =loginSharedViewModel.loginStepOneBody.getDevice_model();
+
+                deviceModel = loginSharedViewModel.loginStepOneBody.getDevice_model();
                 deviceOs = loginSharedViewModel.loginStepOneBody.getDevice_os();
 
                 loginStepOneRequest.setMobile(number);
                 loginStepOneRequest.setDevice_id(androidId);
                 loginStepOneRequest.setDevice_model(deviceModel);
                 loginStepOneRequest.setDevice_os(deviceOs);
-
                 loginSharedViewModel.loginStepOne(loginStepOneRequest);
             }
         });
@@ -147,10 +150,10 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
                     dialog.dismiss();
 
                 } else {
+
                     Toast.makeText(getContext(), "enter valid code", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 }

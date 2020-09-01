@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
@@ -33,7 +32,6 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.LoginSharedViewModel;
 import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 import com.example.bottomnavigation.login.di.LoginModule;
-import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
 import com.example.bottomnavigation.login.LoginStepTwoListener;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -45,7 +43,6 @@ import java.util.List;
 import retrofit2.Retrofit;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MoreFragment extends Fragment {
     private static final String TAG = "MoreFragment";
 
@@ -55,13 +52,12 @@ public class MoreFragment extends Fragment {
     private MoreItemListener moreItemListener;
     private LoginStepTwoListener loginStepTwoListener;
     private LoginSharedViewModel sharedViewModel;
-    private UserDatabase database =LoginModule.provideUserDatabase();
+    private UserDatabase database = LoginModule.provideUserDatabase();
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService,database.userDao());
-    private LoginSharedViewModelFactory SharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
-
+    private LoginSharedViewModelFactory sharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
 
 
     @Nullable
@@ -77,7 +73,7 @@ public class MoreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sharedViewModel = new ViewModelProvider(this, SharedViewModelFactory).get(LoginSharedViewModel.class);
+        sharedViewModel = new ViewModelProvider(this, sharedViewModelFactory).get(LoginSharedViewModel.class);
 
 
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -96,11 +92,14 @@ public class MoreFragment extends Fragment {
         sharedViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLogin) {
-                if (isLogin) {
+                if (isLogin){
                     navController.navigate(R.id.action_moreFragment_to_profileFragment);
-                } else {
+
+                }
+                else{
                     LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(loginStepTwoListener);
                     loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
+
                 }
             }
         });

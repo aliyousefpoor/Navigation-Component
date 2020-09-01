@@ -118,7 +118,7 @@ public class ProfileResponse {
     }
 
     public String getAvatar() {
-        return AppConstants.baseUrl+avatar;
+        return AppConstants.baseUrl + avatar;
     }
 
     public void setAvatar(String avatar) {

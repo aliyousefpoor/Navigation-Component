@@ -34,11 +34,11 @@ public class LoginModule {
 
 
     public static ProfileRepository provideProfileRepository(UserLocaleDataSourceImpl userLocaleDataSourceImpl
-            ,UserRemoteDataSourceImpl userRemoteDataSource) {
+            , UserRemoteDataSourceImpl userRemoteDataSource) {
         return new ProfileRepository(userLocaleDataSourceImpl, userRemoteDataSource);
     }
 
-    public static LoginRepository provideLoginRepository(ApiService apiService, UserDao userDao) {
+    public static LoginRepository provideLoginRepository(ApiService apiService,UserDao userDao) {
 
         return new LoginRepository(provideLoginStepOneRemoteDataSource(apiService), provideLoginStepTwoRemoteDataSource(apiService)
                 ,provideUserLocaleDataSource(userDao));
@@ -48,8 +48,8 @@ public class LoginModule {
         return new UserRemoteDataSourceImpl(apiService);
     }
 
-   public static UserDatabase provideUserDatabase(){
-        Context context =CustomApp.getContext();
+   public static UserDatabase provideUserDatabase() {
+        Context context = CustomApp.getContext();
         return UserDatabase.getInstance(context);
    }
 

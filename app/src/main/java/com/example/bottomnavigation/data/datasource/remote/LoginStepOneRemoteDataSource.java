@@ -6,7 +6,6 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
-import com.example.bottomnavigation.data.model.LoginStepOne;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,12 +21,13 @@ public class LoginStepOneRemoteDataSource {
         this.apiService = apiService;
     }
 
-    public void loginStepOne(LoginStepOneRequest loginStepOne, final DataSourceListener<LoginStepOneResponse> dataSourceListener) {
+    public void loginStepOne(LoginStepOneRequest loginStepOneRequest1, final DataSourceListener<LoginStepOneResponse> dataSourceListener) {
 
-        LoginStepOneRequest loginStepOneRequest = new LoginStepOneRequest(loginStepOne.getMobile(),loginStepOne.getDevice_id(),
-                loginStepOne.getDevice_model(),loginStepOne.getDevice_os());
+        LoginStepOneRequest loginStepOneRequest = new LoginStepOneRequest(loginStepOneRequest1.getMobile()
+                ,loginStepOneRequest1.getDevice_id(),loginStepOneRequest1.getDevice_model()
+                ,loginStepOneRequest1.getDevice_os());
 
-        apiService.login(loginStepOneRequest).enqueue(new Callback<LoginStepOneResponse>() {
+        apiService.loginStepOne(loginStepOneRequest).enqueue(new Callback<LoginStepOneResponse>() {
             @Override
             public void onResponse(@NotNull Call<LoginStepOneResponse> call, @NotNull Response<LoginStepOneResponse> response) {
                 if (response.isSuccessful()) {

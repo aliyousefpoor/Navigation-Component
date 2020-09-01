@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.example.bottomnavigation.utils.AppConstants;
+import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Retrofit;
 
@@ -53,8 +55,6 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     private String deviceModel = AppConstants.getDeviceName();
     private String deviceOs = AppConstants.getAndroidVersion();
     private ProgressDialog dialog;
-    private ResendCodeListener resendCodeListener;
-
 
     public LoginStepOneDialogFragment(LoginStepTwoListener loginStepTwoListener) {
         this.loginStepTwoListener = loginStepTwoListener;
@@ -81,7 +81,9 @@ public class LoginStepOneDialogFragment extends DialogFragment {
         title = view.findViewById(R.id.title);
         number = view.findViewById(R.id.edit_txt);
         submit = view.findViewById(R.id.submit);
+
         loginStepOneResponse();
+
         final LoginStepOneRequest loginStepOneRequest = new LoginStepOneRequest();
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -105,16 +107,21 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     }
 
     public void loginStepOneResponse() {
-        loginSharedViewModel.loginStepOneLiveData.observe(this, new Observer<LoginStepOneResponse>() {
+        loginSharedViewModel.loginStepOneLiveData.observe(getViewLifecycleOwner(), new Observer<LoginStepOneResponse>() {
             @Override
             public void onChanged(LoginStepOneResponse loginBody) {
-                loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(loginStepTwoListener);
-                loginStepTwoDialogFragment.show(getParentFragmentManager(), "SecondDialogFragment");
-                Log.d(TAG, "onChanged: " + loginBody);
-                dismiss();
-                dialog.dismiss();
-
+                if (loginBody != null) {
+                    loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(loginStepTwoListener);
+                    loginStepTwoDialogFragment.show(getParentFragmentManager(), "LoginStepTwoDialogFragment");
+                    Log.d(TAG, "onChanged: " + loginBody);
+                    dismiss();
+                    dialog.dismiss();
+                } else {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(),"Error Occurred",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
+
 }

@@ -71,7 +71,7 @@ public class UserRemoteDataSourceImpl {
     }
 
 
-    public void updateImage(File file, final DataSourceListener<UpdateResponse> dataSourceListener) {
+    public void updateImage( File file, final DataSourceListener<UpdateResponse> dataSourceListener) {
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part requestImage = MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);

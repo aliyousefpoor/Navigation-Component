@@ -44,7 +44,6 @@ public class LoginSharedViewModel extends ViewModel {
 
             @Override
             public void onFailure(Throwable throwable) {
-                //Todo
                 Log.d(TAG, "onFailure: ");
                 _loginStepOneLiveData.setValue(null);
             }

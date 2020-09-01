@@ -8,10 +8,10 @@ public class UpdateProfile {
     private Object avatar;
 
 
-    public UpdateProfile(String nickname, String date_of_birth, String gender){
-        this.nickname=nickname;
-        this.date_of_birth=date_of_birth;
-        this.gender=gender;
+    public UpdateProfile(String nickname, String date_of_birth, String gender) {
+        this.nickname = nickname;
+        this.date_of_birth = date_of_birth;
+        this.gender = gender;
 
     }
 
