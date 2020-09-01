@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.data.model.CategoryId;
 import com.example.bottomnavigation.utils.AppConstants;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView imageView;
         private TextView textView;
         private CardView cardView;
+        CategoryId categoryId;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);

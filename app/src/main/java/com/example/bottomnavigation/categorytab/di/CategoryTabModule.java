@@ -2,7 +2,7 @@ package com.example.bottomnavigation.categorytab.di;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.categorytab.CategoryViewModelFactory;
-import com.example.bottomnavigation.categorytab.ProductListViewModelFactory;
+import com.example.bottomnavigation.categorytab.products.ProductListViewModelFactory;
 import com.example.bottomnavigation.data.datasource.remote.CategoryRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 

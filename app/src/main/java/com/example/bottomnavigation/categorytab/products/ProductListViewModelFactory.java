@@ -1,9 +1,10 @@
-package com.example.bottomnavigation.categorytab;
+package com.example.bottomnavigation.categorytab.products;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.bottomnavigation.categorytab.products.ProductListViewModel;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 
 public class ProductListViewModelFactory implements ViewModelProvider.Factory {

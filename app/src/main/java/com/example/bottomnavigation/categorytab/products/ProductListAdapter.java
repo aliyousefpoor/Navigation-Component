@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.categorytab;
+package com.example.bottomnavigation.categorytab.products;
 
 import android.content.Context;
 import android.view.LayoutInflater;

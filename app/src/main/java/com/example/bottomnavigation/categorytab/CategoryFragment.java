@@ -29,6 +29,7 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.remote.CategoryRemoteDataSource;
 import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.data.model.CategoryId;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 

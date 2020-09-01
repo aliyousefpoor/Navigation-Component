@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.categorytab;
+package com.example.bottomnavigation.categorytab.products;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +26,7 @@ import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteData
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 
@@ -45,9 +46,8 @@ public class ProductListFragment extends Fragment {
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private ProductListRemoteDataSource productListRemoteDataSource = CategoryTabModule.provideProductListRemoteDataSource(apiService);
     private ProductListViewModelFactory productListViewModelFactory = CategoryTabModule.provideProductListViewModelFactory(productListRemoteDataSource);
-    private GridLayoutManager layoutManager;
     private ProductListAdapter adapter;
-    private int lastVisibleItemPosition;
+    private MaterialToolbar toolbar;
 
     @Nullable
     @Override
@@ -68,6 +68,8 @@ public class ProductListFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        toolbar = view.findViewById(R.id.toolbar);
+
         observeProductListViewModel();
         showProductList();
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +134,7 @@ public class ProductListFragment extends Fragment {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
+                    toolbar.setTitle(productLists.get(0).getCategoryModel().get(0).getTitle());
                 } else {
                     progressBar.setVisibility(View.GONE);
                 }
@@ -143,7 +146,7 @@ public class ProductListFragment extends Fragment {
 
         adapter = new ProductListAdapter(getContext());
         recyclerView.setAdapter(adapter);
-        layoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(recyclerViewOnScrollListener);
     }
@@ -158,7 +161,7 @@ public class ProductListFragment extends Fragment {
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
 
-            lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
                     .findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
                 offset = offset + recyclerView.getAdapter().getItemCount();
