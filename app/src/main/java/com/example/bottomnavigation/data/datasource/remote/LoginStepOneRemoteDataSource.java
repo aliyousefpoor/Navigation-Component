@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.model.LoginStepOneBody;
-import com.example.bottomnavigation.data.model.LoginResponseBody;
+import com.example.bottomnavigation.data.model.LoginStepOneRequest;
+import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 import com.example.bottomnavigation.data.model.LoginStepOne;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,14 +22,14 @@ public class LoginStepOneRemoteDataSource {
         this.apiService = apiService;
     }
 
-    public void loginStepOne(LoginStepOne loginStepOne, final DataSourceListener<LoginResponseBody> dataSourceListener) {
+    public void loginStepOne(LoginStepOneRequest loginStepOne, final DataSourceListener<LoginStepOneResponse> dataSourceListener) {
 
-        LoginStepOneBody loginStepOneBody = new LoginStepOneBody(loginStepOne.getNumber(),loginStepOne.getAndroidId(),
-                loginStepOne.getDeviceModel(),loginStepOne.getDeviceOs());
+        LoginStepOneRequest loginStepOneRequest = new LoginStepOneRequest(loginStepOne.getMobile(),loginStepOne.getDevice_id(),
+                loginStepOne.getDevice_model(),loginStepOne.getDevice_os());
 
-        apiService.login(loginStepOneBody).enqueue(new Callback<LoginResponseBody>() {
+        apiService.login(loginStepOneRequest).enqueue(new Callback<LoginStepOneResponse>() {
             @Override
-            public void onResponse(@NotNull Call<LoginResponseBody> call, @NotNull Response<LoginResponseBody> response) {
+            public void onResponse(@NotNull Call<LoginStepOneResponse> call, @NotNull Response<LoginStepOneResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         dataSourceListener.onResponse(response.body());
@@ -39,7 +39,7 @@ public class LoginStepOneRemoteDataSource {
             }
 
             @Override
-            public void onFailure(@NotNull Call<LoginResponseBody> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<LoginStepOneResponse> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

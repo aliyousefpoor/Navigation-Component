@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.local.database.IsLoginListener;
+import com.example.bottomnavigation.data.datasource.local.database.LoginAsyncTask;
 import com.example.bottomnavigation.data.datasource.local.database.UserDao;
+import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.datasource.local.database.GetUserDataAsyncTask;
 import com.example.bottomnavigation.data.datasource.local.database.UpdateUserAsyncTask;
@@ -15,7 +17,7 @@ public class UserLocaleDataSourceImpl {
     private UserDao userDao;
 
     public UserLocaleDataSourceImpl(UserDao userDao) {
-        this. userDao= userDao;
+        this.userDao = userDao;
     }
 
     public void saveUser(User user) {
@@ -26,6 +28,11 @@ public class UserLocaleDataSourceImpl {
     public void getUser(final DataSourceListener<User> dataSourceListener) {
         GetUserDataAsyncTask getUserDataAsyncTask = new GetUserDataAsyncTask(userDao, dataSourceListener);
         getUserDataAsyncTask.execute();
+    }
+
+    public void loginUser(LoginStepTwoResponse loginStepTwoResponse) {
+        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponse, userDao);
+        loginAsyncTask.execute();
     }
 
     public void isLogin(final IsLoginListener isLoginListener) {
@@ -45,10 +52,9 @@ public class UserLocaleDataSourceImpl {
     }
 
     public String getTokenBlocking() {
-        if (userDao.getUser()!=null) {
+        if (userDao.getUser() != null) {
             return userDao.getUser().getToken();
-        }
-        else {
+        } else {
             return null;
         }
     }

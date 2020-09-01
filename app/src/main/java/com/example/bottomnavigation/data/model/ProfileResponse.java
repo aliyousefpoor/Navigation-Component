@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProfileResponseBody {
+public class ProfileResponse {
     @SerializedName("credit")
     @Expose
     private Credit credits = null;

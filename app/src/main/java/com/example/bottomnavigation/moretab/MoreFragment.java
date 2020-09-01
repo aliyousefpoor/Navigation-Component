@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,21 +21,28 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.repository.LoginRepository;
+import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.login.LoginSharedViewModel;
+import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
 import com.example.bottomnavigation.login.LoginStepTwoListener;
+import com.example.bottomnavigation.utils.ApiBuilder;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -48,10 +54,13 @@ public class MoreFragment extends Fragment {
     View view;
     private MoreItemListener moreItemListener;
     private LoginStepTwoListener loginStepTwoListener;
-    private MoreViewModel moreViewModel;
+    private LoginSharedViewModel sharedViewModel;
     private UserDatabase database =LoginModule.provideUserDatabase();
-    private UserLocaleDataSourceImpl userLocaleDataSourceImpl = LoginModule.provideUserLocaleDataSource(database.userDao());
-    private MoreViewModelFactory moreViewModelFactory = MoreModule.provideMoreViewModelFactory(userLocaleDataSourceImpl);
+    private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
+    private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
+    private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
+    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService,database.userDao());
+    private LoginSharedViewModelFactory SharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
 
 
 
@@ -68,7 +77,7 @@ public class MoreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        moreViewModel = new ViewModelProvider(this, moreViewModelFactory).get(MoreViewModel.class);
+        sharedViewModel = new ViewModelProvider(this, SharedViewModelFactory).get(LoginSharedViewModel.class);
 
 
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -84,8 +93,7 @@ public class MoreFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        moreViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+        sharedViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLogin) {
                 if (isLogin) {
@@ -120,7 +128,7 @@ public class MoreFragment extends Fragment {
 
                     case Profile:
 
-                        moreViewModel.isLogin();
+                        sharedViewModel.isLogin();
                         break;
 
                     case About:

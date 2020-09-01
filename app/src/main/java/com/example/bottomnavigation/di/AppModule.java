@@ -1,16 +1,10 @@
 package com.example.bottomnavigation.di;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.example.bottomnavigation.utils.AppConstants;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class AppModule {
     private static final String TAG = "AppModule";
