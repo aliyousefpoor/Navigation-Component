@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/productListFragment"
-        android:name="com.example.bottomnavigation.categorytab.products.ProductListFragment"
+        android:name="com.example.bottomnavigation.products.ProductListFragment"
         android:label="ProductListFragment"
         tools:layout="@layout/product_list_fragment"
         />

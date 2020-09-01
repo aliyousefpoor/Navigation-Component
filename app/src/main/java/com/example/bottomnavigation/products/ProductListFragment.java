@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.categorytab.products;
+package com.example.bottomnavigation.products;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +25,7 @@ import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -44,8 +45,8 @@ public class ProductListFragment extends Fragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
-    private ProductListRemoteDataSource productListRemoteDataSource = CategoryTabModule.provideProductListRemoteDataSource(apiService);
-    private ProductListViewModelFactory productListViewModelFactory = CategoryTabModule.provideProductListViewModelFactory(productListRemoteDataSource);
+    private ProductListRemoteDataSource productListRemoteDataSource = ProductModule.provideProductListRemoteDataSource(apiService);
+    private ProductListViewModelFactory productListViewModelFactory = ProductModule.provideProductListViewModelFactory(productListRemoteDataSource);
     private ProductListAdapter adapter;
     private MaterialToolbar toolbar;
 

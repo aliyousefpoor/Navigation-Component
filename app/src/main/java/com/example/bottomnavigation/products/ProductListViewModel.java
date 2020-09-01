@@ -1,4 +1,4 @@
-package com.example.bottomnavigation.categorytab.products;
+package com.example.bottomnavigation.products;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
