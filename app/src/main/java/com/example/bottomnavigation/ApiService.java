@@ -49,6 +49,7 @@ public interface ApiService {
     @Multipart
     @POST("profile")
     Call<UpdateResponse> updateImage(@Part MultipartBody.Part avatar);
+
     @GET("listproducts/{categoryId}")
     Call<List<ProductsList>> getProductList(@Path("categoryId") int categoryId,
                                             @Query("limit") int limit,
