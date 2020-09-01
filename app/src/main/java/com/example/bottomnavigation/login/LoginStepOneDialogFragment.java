@@ -21,10 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 import com.example.bottomnavigation.data.repository.LoginRepository;
@@ -32,6 +29,7 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.example.bottomnavigation.utils.AppConstants;
+import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Retrofit;
 
@@ -111,12 +109,16 @@ public class LoginStepOneDialogFragment extends DialogFragment {
         loginSharedViewModel.loginStepOneLiveData.observe(getViewLifecycleOwner(), new Observer<LoginStepOneResponse>() {
             @Override
             public void onChanged(LoginStepOneResponse loginBody) {
-                loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(loginStepTwoListener);
-                loginStepTwoDialogFragment.show(getParentFragmentManager(), "LoginStepTwoDialogFragment");
-                Log.d(TAG, "onChanged: " + loginBody);
-                dismiss();
-                dialog.dismiss();
-
+                if (loginBody!=null) {
+                    loginStepTwoDialogFragment = new LoginStepTwoDialogFragment(loginStepTwoListener);
+                    loginStepTwoDialogFragment.show(getParentFragmentManager(), "LoginStepTwoDialogFragment");
+                    Log.d(TAG, "onChanged: " + loginBody);
+                    dismiss();
+                    dialog.dismiss();
+                }
+                else {
+                    Snackbar.make(getView(),"Error Occurred",Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
