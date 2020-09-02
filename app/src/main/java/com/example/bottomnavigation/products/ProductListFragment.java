@@ -70,6 +70,7 @@ public class ProductListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setTitle(categoryTitle);
 
         observeProductListViewModel();
         showProductList();
@@ -135,8 +136,12 @@ public class ProductListFragment extends Fragment {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
-//                    adapter.notifyDataSetChanged();
-                    toolbar.setTitle(categoryTitle);
+                    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                        @Override
+                        public void onItemRangeInserted(int positionStart, int itemCount) {
+                            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 3);
+                        }
+                    });
                 } else {
                     progressBar.setVisibility(View.GONE);
                 }

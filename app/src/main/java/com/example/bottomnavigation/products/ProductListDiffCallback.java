@@ -23,7 +23,7 @@ public class ProductListDiffCallback extends DiffUtil.Callback {
 
     @Override
     public int getNewListSize() {
-        return newProductsList.size();
+            return newProductsList.size();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ProductListDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        ProductsList oldList =oldProductsList.get(oldItemPosition);
+        ProductsList oldList = oldProductsList.get(oldItemPosition);
         ProductsList newList = newProductsList.get(newItemPosition);
         return oldList.getName().equals(newList.getName());
     }
