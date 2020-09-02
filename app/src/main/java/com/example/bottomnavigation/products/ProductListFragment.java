@@ -21,9 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.CategoryId;
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.products.di.ProductModule;
@@ -42,7 +40,6 @@ public class ProductListFragment extends Fragment {
     private RecyclerView recyclerView;
     private int categoryId;
     private String categoryTitle;
-    private int offset = 0;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -169,13 +166,12 @@ public class ProductListFragment extends Fragment {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
                     .findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                offset = offset + recyclerView.getAdapter().getItemCount();
                 getData();
             }
         }
     };
 
     public void getData() {
-        productListViewModel.getProductList(categoryId, offset);
+        productListViewModel.getProductList(categoryId);
     }
 }

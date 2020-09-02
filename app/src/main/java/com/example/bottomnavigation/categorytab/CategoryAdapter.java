@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.categorytab;
 
 import android.content.Context;
-import android.net.Uri;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Category;
-import com.example.bottomnavigation.data.model.CategoryId;
-import com.example.bottomnavigation.utils.AppConstants;
 
 import java.util.List;
 
