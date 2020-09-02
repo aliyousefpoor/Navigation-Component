@@ -164,12 +164,13 @@ public class CategoryFragment extends Fragment {
     public void showCategoryProduct() {
         categoryIdListener = new CategoryIdListener() {
             @Override
-            public void onClick(Integer id) {
+            public void onClick(CategoryId categoryId) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("categoryId",id);
+                bundle.putParcelable("categoryId",categoryId);
                 navController.navigate(R.id.action_categoryFragment_to_productListFragment,bundle);
             }
         };
+
     }
 
 }

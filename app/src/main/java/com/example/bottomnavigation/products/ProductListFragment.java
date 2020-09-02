@@ -23,6 +23,7 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.categorytab.di.CategoryTabModule;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
+import com.example.bottomnavigation.data.model.CategoryId;
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.products.di.ProductModule;
@@ -39,7 +40,7 @@ public class ProductListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View progressBar;
     private RecyclerView recyclerView;
-    private int id;
+    private CategoryId categoryId;
     private int offset = 0;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
@@ -63,7 +64,7 @@ public class ProductListFragment extends Fragment {
 
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
-        id = getArguments().getInt("categoryId");
+        categoryId = getArguments().getParcelable("categoryId");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
@@ -136,7 +137,7 @@ public class ProductListFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
                     adapter.notifyDataSetChanged();
-                    toolbar.setTitle(productLists.get(0).getCategoryModel().get(0).getTitle());
+                    toolbar.setTitle(categoryId.getTitle());
                 } else {
                     progressBar.setVisibility(View.GONE);
                 }
@@ -173,6 +174,6 @@ public class ProductListFragment extends Fragment {
     };
 
     public void getData() {
-        productListViewModel.getProductList(id, offset);
+        productListViewModel.getProductList(categoryId.getId(), offset);
     }
 }

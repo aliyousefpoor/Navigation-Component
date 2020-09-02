@@ -78,7 +78,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, category.getTitle(), Toast.LENGTH_SHORT).show();
-                    categoryIdListener.onClick(category.getId());
+                    CategoryId categoryId = new CategoryId();
+                    categoryId.setId(category.getId());
+                    categoryId.setTitle(category.getTitle());
+                    categoryIdListener.onClick(categoryId);
                 }
             });
         }
