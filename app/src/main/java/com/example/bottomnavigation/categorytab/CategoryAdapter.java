@@ -60,7 +60,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView imageView;
         private TextView textView;
         private CardView cardView;
-        CategoryId categoryId;
+
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,10 +78,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, category.getTitle(), Toast.LENGTH_SHORT).show();
-                    CategoryId categoryId = new CategoryId();
-                    categoryId.setId(category.getId());
-                    categoryId.setTitle(category.getTitle());
-                    categoryIdListener.onClick(categoryId);
+                    categoryIdListener.onClick(category.getId(),category.getTitle());
                 }
             });
         }

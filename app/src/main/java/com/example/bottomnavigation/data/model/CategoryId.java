@@ -7,7 +7,10 @@ import android.os.Parcelable;
 public class CategoryId implements Parcelable {
     private Integer id;
     private String title;
-public CategoryId(){}
+
+    public CategoryId() {
+    }
+
     protected CategoryId(Parcel in) {
         if (in.readByte() == 0) {
             id = null;

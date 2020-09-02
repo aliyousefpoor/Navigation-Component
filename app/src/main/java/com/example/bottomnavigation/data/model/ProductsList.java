@@ -108,7 +108,7 @@ public class ProductsList {
     @Expose
     private Object approvedAge;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

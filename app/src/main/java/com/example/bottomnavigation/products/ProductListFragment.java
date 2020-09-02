@@ -40,7 +40,8 @@ public class ProductListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View progressBar;
     private RecyclerView recyclerView;
-    private CategoryId categoryId;
+    private int categoryId;
+    private String categoryTitle;
     private int offset = 0;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
@@ -64,7 +65,8 @@ public class ProductListFragment extends Fragment {
 
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
-        categoryId = getArguments().getParcelable("categoryId");
+        categoryId = getArguments().getInt("categoryId");
+        categoryTitle = getArguments().getString("categoryTitle");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
@@ -136,8 +138,8 @@ public class ProductListFragment extends Fragment {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
-                    adapter.notifyDataSetChanged();
-                    toolbar.setTitle(categoryId.getTitle());
+//                    adapter.notifyDataSetChanged();
+                    toolbar.setTitle(categoryTitle);
                 } else {
                     progressBar.setVisibility(View.GONE);
                 }
@@ -174,6 +176,6 @@ public class ProductListFragment extends Fragment {
     };
 
     public void getData() {
-        productListViewModel.getProductList(categoryId.getId(), offset);
+        productListViewModel.getProductList(categoryId, offset);
     }
 }
