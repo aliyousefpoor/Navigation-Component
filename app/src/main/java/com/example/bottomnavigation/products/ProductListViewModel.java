@@ -7,19 +7,22 @@ import androidx.lifecycle.ViewModel;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListViewModel extends ViewModel {
     private ProductListRemoteDataSource productListRemoteDataSource;
     int offset = 0;
+    private List<ProductsList> productsLists = new ArrayList<>();
 
     public ProductListViewModel(ProductListRemoteDataSource productListRemoteDataSource) {
         this.productListRemoteDataSource = productListRemoteDataSource;
 
     }
 
-    private MutableLiveData<List<ProductsList>> _productListLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<ProductsList>> _productListLiveData = new SingleLiveEvent<>();
     public LiveData<List<ProductsList>> productListLiveData = _productListLiveData;
 
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
@@ -35,7 +38,8 @@ public class ProductListViewModel extends ViewModel {
             public void onResponse(List<ProductsList> response) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
-                _productListLiveData.setValue(response);
+                productsLists.addAll(response);
+                _productListLiveData.setValue(productsLists);
                 offset = offset + response.size();
             }
 

@@ -39,7 +39,6 @@ public class ProductListFragment extends Fragment {
     private View progressBar;
     private RecyclerView recyclerView;
     private int categoryId;
-    private String categoryTitle;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -47,7 +46,6 @@ public class ProductListFragment extends Fragment {
     private ProductListRemoteDataSource productListRemoteDataSource = ProductModule.provideProductListRemoteDataSource(apiService);
     private ProductListViewModelFactory productListViewModelFactory = ProductModule.provideProductListViewModelFactory(productListRemoteDataSource);
     private ProductListAdapter adapter;
-    private MaterialToolbar toolbar;
 
     @Nullable
     @Override
@@ -63,13 +61,13 @@ public class ProductListFragment extends Fragment {
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
         categoryId = getArguments().getInt("categoryId");
-        categoryTitle = getArguments().getString("categoryTitle");
+        String categoryTitle = getArguments().getString("categoryTitle");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
         swipeRefreshLayout = view.findViewById(R.id.productRefreshing);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-        toolbar = view.findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle(categoryTitle);
 
         observeProductListViewModel();
@@ -136,12 +134,7 @@ public class ProductListFragment extends Fragment {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
-                    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                        @Override
-                        public void onItemRangeInserted(int positionStart, int itemCount) {
-                            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 3);
-                        }
-                    });
+                    adapter.notifyDataSetChanged();
                 } else {
                     progressBar.setVisibility(View.GONE);
                 }
