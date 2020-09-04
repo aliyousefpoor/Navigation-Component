@@ -51,4 +51,7 @@ public class ProductListViewModel extends ViewModel {
             }
         });
     }
+    public int listSize(){
+       return productsLists.size();
+    }
 }

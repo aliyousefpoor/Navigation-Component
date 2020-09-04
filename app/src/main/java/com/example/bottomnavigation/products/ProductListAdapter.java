@@ -68,6 +68,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void addList(List<ProductsList> productsList) {
         final ProductListDiffCallback diffCallback = new ProductListDiffCallback(this.products, productsList);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        products = productsList;
         diffResult.dispatchUpdatesTo(this);
 
     }

@@ -1,6 +1,8 @@
 package com.example.bottomnavigation.products;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,7 @@ public class ProductListFragment extends Fragment {
     private ProductListRemoteDataSource productListRemoteDataSource = ProductModule.provideProductListRemoteDataSource(apiService);
     private ProductListViewModelFactory productListViewModelFactory = ProductModule.provideProductListViewModelFactory(productListRemoteDataSource);
     private ProductListAdapter adapter;
+    private int orientation;
 
     @Nullable
     @Override
@@ -85,8 +88,7 @@ public class ProductListFragment extends Fragment {
                 getData();
             }
         });
-
-        getData();
+        checkOrientation();
     }
 
     public void observeProductListViewModel() {
@@ -171,5 +173,32 @@ public class ProductListFragment extends Fragment {
 
     public void getData() {
         productListViewModel.getProductList(categoryId);
+    }
+
+    public void getScreenOrientation() {
+        Display getOrient = getActivity().getWindowManager().getDefaultDisplay();
+        orientation = Configuration.ORIENTATION_UNDEFINED;
+        if (getOrient.getWidth() == getOrient.getHeight()) {
+            orientation = Configuration.ORIENTATION_SQUARE;
+        } else {
+            if (getOrient.getWidth() < getOrient.getHeight()) {
+                orientation = Configuration.ORIENTATION_PORTRAIT;
+            } else {
+                orientation = Configuration.ORIENTATION_LANDSCAPE;
+            }
+        }
+    }
+    public void checkOrientation(){
+        getScreenOrientation();
+       int size = productListViewModel.listSize();
+        if (orientation == 1 && size == 0) {
+            getData();
+        } else if (orientation == 1 && size > 0) {
+            Toast.makeText(getContext(), "Rotate to Portrait Mode", Toast.LENGTH_SHORT).show();
+        } else if (orientation == 2 && size == 0) {
+            getData();
+        } else if (orientation == 2 && size > 0) {
+            Toast.makeText(getContext(), "Rotate to LandScape Mode", Toast.LENGTH_SHORT).show();
+        }
     }
 }
