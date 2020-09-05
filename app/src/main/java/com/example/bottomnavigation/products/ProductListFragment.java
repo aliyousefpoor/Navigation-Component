@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +43,7 @@ public class ProductListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View progressBar;
     private RecyclerView recyclerView;
+    private NavController navController;
     private int categoryId;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
@@ -55,6 +58,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_list_fragment, container, false);
+        passProductId();
         return view;
     }
 
@@ -72,6 +76,7 @@ public class ProductListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
+        navController = Navigation.findNavController(view);
         toolbar.setTitle(categoryTitle);
 
         observeProductListViewModel();
@@ -183,7 +188,8 @@ public class ProductListFragment extends Fragment {
             @Override
             public void onClick(int id) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("productId",id);
+                bundle.putInt("productId", id);
+                navController.navigate(R.id.action_productListFragment_to_productDetailFragment, bundle);
             }
         };
     }

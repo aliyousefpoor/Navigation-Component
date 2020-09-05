@@ -13,6 +13,7 @@ import com.example.bottomnavigation.R;
 
 public class ProductDetailFragment extends Fragment {
     private static final String TAG = "ProductDetailFragment";
+    private int id;
 
     @Nullable
     @Override
@@ -24,5 +25,7 @@ public class ProductDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        id = getArguments().getInt("productId");
+
     }
 }
