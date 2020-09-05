@@ -59,16 +59,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView = itemView.findViewById(R.id.productListCardView);
         }
 
-        public void onBind(ProductsList productsList, Context context) {
+        public void onBind(final ProductsList productsList, final Context context) {
             title.setText(productsList.getName());
             Glide.with(context).load(productsList.getAvatar()).into(avatar);
         }
     }
 
-    public void addList(List<ProductsList> productsList) {
-        final ProductListDiffCallback diffCallback = new ProductListDiffCallback(this.products, productsList);
+    public void addList(List<ProductsList> productLists) {
+        final ProductListDiffCallback diffCallback = new ProductListDiffCallback(this.products, productLists);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-        products = productsList;
+        products = productLists;
         diffResult.dispatchUpdatesTo(this);
 
     }
