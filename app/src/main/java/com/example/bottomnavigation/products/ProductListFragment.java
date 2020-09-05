@@ -26,6 +26,7 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.productdetail.ProductIdListener;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -48,6 +49,7 @@ public class ProductListFragment extends Fragment {
     private ProductListRemoteDataSource productListRemoteDataSource = ProductModule.provideProductListRemoteDataSource(apiService);
     private ProductListViewModelFactory productListViewModelFactory = ProductModule.provideProductListViewModelFactory(productListRemoteDataSource);
     private ProductListAdapter adapter;
+    private ProductIdListener productIdListener;
 
     @Nullable
     @Override
@@ -147,7 +149,7 @@ public class ProductListFragment extends Fragment {
 
     public void showProductList() {
 
-        adapter = new ProductListAdapter(getContext());
+        adapter = new ProductListAdapter(getContext(), productIdListener);
         recyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -176,4 +178,13 @@ public class ProductListFragment extends Fragment {
         productListViewModel.getProductList(categoryId);
     }
 
+    public void passProductId() {
+        productIdListener = new ProductIdListener() {
+            @Override
+            public void onClick(int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("productId",id);
+            }
+        };
+    }
 }

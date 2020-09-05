@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.productdetail.ProductIdListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,12 @@ import java.util.List;
 public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ProductsList> products;
     private Context context;
+    private ProductIdListener productIdListener;
 
-    public ProductListAdapter(Context context) {
+    public ProductListAdapter(Context context, ProductIdListener productIdListener) {
         products = new ArrayList<>();
         this.context = context;
+        this.productIdListener = productIdListener;
     }
 
     @NonNull
@@ -39,7 +42,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ProductListViewHolder productListViewHolder = (ProductListViewHolder) holder;
-        productListViewHolder.onBind(products.get(position), context);
+        productListViewHolder.onBind(products.get(position), context, productIdListener);
     }
 
     @Override
@@ -59,9 +62,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView = itemView.findViewById(R.id.productListCardView);
         }
 
-        public void onBind(final ProductsList productsList, final Context context) {
+        public void onBind(final ProductsList productsList, final Context context, final ProductIdListener productIdListener) {
             title.setText(productsList.getName());
             Glide.with(context).load(productsList.getAvatar()).into(avatar);
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    productIdListener.onClick(productsList.getId());
+                }
+            });
         }
     }
 
