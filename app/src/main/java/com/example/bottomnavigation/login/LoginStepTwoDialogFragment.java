@@ -21,13 +21,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
 import com.example.bottomnavigation.data.model.User;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
@@ -137,6 +134,7 @@ public class LoginStepTwoDialogFragment extends DialogFragment {
 
             @Override
             public void onChanged(final LoginStepTwoResponse loginStepTwoResponse) {
+
 
                 if (loginStepTwoResponse != null) {
 

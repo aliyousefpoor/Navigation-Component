@@ -36,9 +36,4 @@ public class LoginStepTwoRemoteDataSource {
             }
         });
     }
-
-//    public void loginUser(LoginStepTwoResponse loginStepTwoResponse) {
-//        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(loginStepTwoResponse, userDao);
-//        loginAsyncTask.execute();
-//    }
 }

@@ -17,7 +17,7 @@ public class UserLocaleDataSourceImpl {
     private UserDao userDao;
 
     public UserLocaleDataSourceImpl(UserDao userDao) {
-        this. userDao= userDao;
+        this.userDao = userDao;
     }
 
     public void saveUser(User user) {
@@ -52,10 +52,9 @@ public class UserLocaleDataSourceImpl {
     }
 
     public String getTokenBlocking() {
-        if (userDao.getUser()!=null) {
+        if (userDao.getUser() != null) {
             return userDao.getUser().getToken();
-        }
-        else {
+        } else {
             return null;
         }
     }

@@ -30,7 +30,7 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.example.bottomnavigation.utils.AppConstants;
-import com.google.android.material.snackbar.Snackbar;
+
 
 import retrofit2.Retrofit;
 
@@ -48,7 +48,7 @@ public class LoginStepOneDialogFragment extends DialogFragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
-    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService, database.userDao());
+    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService,database.userDao());
     private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
     @SuppressLint("HardwareIds")
     private String androidId;

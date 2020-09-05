@@ -80,7 +80,6 @@ public class UserRemoteDataSourceImpl {
             @Override
             public void onResponse(@NotNull Call<UpdateResponse> call, @NotNull Response<UpdateResponse> response) {
                 dataSourceListener.onResponse(response.body());
-
             }
 
             @Override
@@ -90,5 +89,4 @@ public class UserRemoteDataSourceImpl {
             }
         });
     }
-
 }

@@ -14,7 +14,6 @@ import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.moretab.SingleLiveEvent;
-import com.google.android.material.snackbar.Snackbar;
 
 public class LoginSharedViewModel extends ViewModel {
     private static final String TAG = "LoginSharedViewModel";
@@ -45,7 +44,6 @@ public class LoginSharedViewModel extends ViewModel {
 
             @Override
             public void onFailure(Throwable throwable) {
-                //Todo
                 Log.d(TAG, "onFailure: ");
                 _loginStepOneLiveData.setValue(null);
             }

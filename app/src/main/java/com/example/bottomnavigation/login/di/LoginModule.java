@@ -48,9 +48,9 @@ public class LoginModule {
         return new UserRemoteDataSourceImpl(apiService);
     }
 
-    public static UserDatabase provideUserDatabase() {
+   public static UserDatabase provideUserDatabase() {
         Context context = CustomApp.getContext();
         return UserDatabase.getInstance(context);
-    }
+   }
 
 }

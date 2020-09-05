@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,14 +40,16 @@ public class CategoryFragment extends Fragment {
     private static final String TAG = "CategoryFragment";
     private TextView pull_Down;
     private ImageView arrow;
+    private NavController navController;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private CategoryViewModel categoryViewModel;
+    private CategoryIdListener categoryIdListener;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(builder);
     private CategoryRemoteDataSource categoryRemoteDataSource = CategoryTabModule.provideCategorySource(apiService);
-    private CategoryViewModelFactory categoryViewModelFactory=CategoryTabModule.provideCategoryViewModelFactory(categoryRemoteDataSource);
+    private CategoryViewModelFactory categoryViewModelFactory = CategoryTabModule.provideCategoryViewModelFactory(categoryRemoteDataSource);
 
 
     @Nullable
@@ -53,7 +57,7 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.category_fragment, container, false);
-
+        showCategoryProduct();
         return view;
     }
 
@@ -69,6 +73,7 @@ public class CategoryFragment extends Fragment {
         arrow = view.findViewById(R.id.cat_arrow);
         swipeRefreshLayout = view.findViewById(R.id.refreshing);
         recyclerView = view.findViewById(R.id.recycler_view);
+        navController = Navigation.findNavController(view);
 
 
         pull_Down.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +130,7 @@ public class CategoryFragment extends Fragment {
                     arrow.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getContext(), "Check Your Conecction !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Check Your Connection !", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onChanged: Error");
                 } else {
                     pull_Down.setVisibility(View.GONE);
@@ -150,9 +155,23 @@ public class CategoryFragment extends Fragment {
 
         Log.d(TAG, "showData: " + categories.toString());
 
-        CategoryAdapter adapter = new CategoryAdapter(categories, getContext());
+        CategoryAdapter adapter = new CategoryAdapter(categories, getContext(), categoryIdListener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    public void showCategoryProduct() {
+        categoryIdListener = new CategoryIdListener() {
+
+            @Override
+            public void onClick(int id, String title) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("categoryId",id);
+                bundle.putString("categoryTitle",title);
+                navController.navigate(R.id.action_categoryFragment_to_productListFragment,bundle);
+            }
+        };
 
     }
+
 }

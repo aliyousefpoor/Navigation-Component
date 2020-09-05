@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.remote.CategoryRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
+import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 import com.example.bottomnavigation.data.model.Category;
 
 import java.util.List;
@@ -53,4 +54,9 @@ public class CategoryViewModel extends ViewModel {
         });
 
     }
+
+    public void getList(){
+
+    }
+
 }

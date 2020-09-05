@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.hometab.homeadapter;
 
 import android.content.Context;
-import android.net.Uri;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Product;
-import com.example.bottomnavigation.utils.AppConstants;
 
 import java.util.List;
 
@@ -67,12 +65,10 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             textView= itemView.findViewById(R.id.discription);
             imageView =itemView.findViewById(R.id.cv_image);
             cardView = itemView.findViewById(R.id.product_cv);
-
         }
 
         public void onBind(final Product product, final Context context) {
             textView.setText(product.getName());
-//            Uri uri = Uri.parse(AppConstants.baseUrl+product.getFeatureAvatar().getXxxdpi());
             Glide.with(context).load(product.getFeatureAvatar().getXxxdpi()).into(imageView);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,8 +76,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     Toast.makeText(context,product.getName(),Toast.LENGTH_SHORT).show();
                 }
             });
-
-
         }
     }
 }

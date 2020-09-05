@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.moretab;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,11 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.local.database.di.DatabaseModule;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.model.MoreModel;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.LoginRepository;
@@ -37,7 +32,6 @@ import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.login.LoginSharedViewModel;
 import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 import com.example.bottomnavigation.login.di.LoginModule;
-import com.example.bottomnavigation.moretab.di.MoreModule;
 import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
 import com.example.bottomnavigation.login.LoginStepTwoListener;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -49,7 +43,6 @@ import java.util.List;
 import retrofit2.Retrofit;
 
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class MoreFragment extends Fragment {
     private static final String TAG = "MoreFragment";
 

@@ -4,11 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepOneRemoteDataSource;
-import com.example.bottomnavigation.data.datasource.remote.LoginStepTwoRemoteDataSource;
 import com.example.bottomnavigation.data.repository.LoginRepository;
-
 
 public class LoginSharedViewModelFactory implements ViewModelProvider.Factory {
     private LoginRepository loginRepository;
