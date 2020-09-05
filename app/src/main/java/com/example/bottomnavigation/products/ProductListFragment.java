@@ -188,17 +188,24 @@ public class ProductListFragment extends Fragment {
             }
         }
     }
-    public void checkOrientation(){
+
+    public void checkOrientation() {
         getScreenOrientation();
-       int size = productListViewModel.listSize();
-        if (orientation == 1 && size == 0) {
-            getData();
-        } else if (orientation == 1 && size > 0) {
-            Toast.makeText(getContext(), "Rotate to Portrait Mode", Toast.LENGTH_SHORT).show();
-        } else if (orientation == 2 && size == 0) {
-            getData();
-        } else if (orientation == 2 && size > 0) {
-            Toast.makeText(getContext(), "Rotate to LandScape Mode", Toast.LENGTH_SHORT).show();
-        }
+        productListViewModel.checkListSize();
+        productListViewModel.listSize.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (orientation == 1 && !aBoolean) {
+                    getData();
+                } else if (orientation == 1) {
+                    Toast.makeText(getContext(), "Rotate to Portrait Mode", Toast.LENGTH_SHORT).show();
+                } else if (orientation == 2 && !aBoolean) {
+                    getData();
+                } else if (orientation == 2) {
+                    Toast.makeText(getContext(), "Rotate to LandScape Mode", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

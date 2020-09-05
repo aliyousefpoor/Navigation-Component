@@ -31,6 +31,9 @@ public class ProductListViewModel extends ViewModel {
     private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
+    private MutableLiveData<Boolean> _listSize = new MutableLiveData<>();
+    public LiveData<Boolean> listSize = _listSize;
+
     public void getProductList(int id) {
         _loadingLiveData.setValue(true);
         productListRemoteDataSource.getProductList(id, offset, new DataSourceListener<List<ProductsList>>() {
@@ -51,7 +54,12 @@ public class ProductListViewModel extends ViewModel {
             }
         });
     }
-    public int listSize(){
-       return productsLists.size();
+
+    public void checkListSize() {
+        if (productsLists.size() > 0) {
+            _listSize.setValue(true);
+        } else {
+            _listSize.setValue(false);
+        }
     }
 }
