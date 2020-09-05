@@ -54,4 +54,6 @@ public interface ApiService {
     Call<List<ProductsList>> getProductList(@Path("categoryId") int categoryId,
                                             @Query("limit") int limit,
                                             @Query("offset") int offset);
+    @GET("product/{productId}?device_os=ios")
+    Call<ProductsList> getProductDetail(@Path("productId") int productId);
 }
