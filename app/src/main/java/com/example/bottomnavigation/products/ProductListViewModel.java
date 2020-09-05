@@ -52,11 +52,7 @@ public class ProductListViewModel extends ViewModel {
         });
     }
 
-    public boolean checkListSize() {
-        if (productsLists.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isProductListEmpty() {
+        return productsLists.size() == 0;
     }
 }

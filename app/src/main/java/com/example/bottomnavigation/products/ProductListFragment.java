@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.products;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,7 +87,9 @@ public class ProductListFragment extends Fragment {
                 getData();
             }
         });
-        checkOrientation();
+
+        if (productListViewModel.isProductListEmpty())
+            getData();
     }
 
     public void observeProductListViewModel() {
@@ -171,21 +174,6 @@ public class ProductListFragment extends Fragment {
 
     public void getData() {
         productListViewModel.getProductList(categoryId);
-    }
-
-    public void checkOrientation() {
-
-        int orientation = this.getResources().getConfiguration().orientation;
-
-        if (orientation == 1 && !productListViewModel.checkListSize()) {
-            getData();
-        } else if (orientation == 1) {
-            Toast.makeText(getContext(), "Rotate to Portrait Mode", Toast.LENGTH_SHORT).show();
-        } else if (orientation == 2 && !productListViewModel.checkListSize()) {
-            getData();
-        } else if (orientation == 2) {
-            Toast.makeText(getContext(), "Rotate to LandScape Mode", Toast.LENGTH_SHORT).show();
-        }
     }
 
 }
