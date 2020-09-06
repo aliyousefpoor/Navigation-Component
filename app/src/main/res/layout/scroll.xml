@@ -63,8 +63,9 @@
                     android:layout_marginTop="245dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="right"
+                    android:text="@string/change"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -95,7 +96,8 @@
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="20dp"
+                >
 
                 <TextView
                     android:id="@+id/userComment"
@@ -114,24 +116,15 @@
                     android:id="@+id/comment"
                     android:layout_width="100dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@color/colorPrimary"
                     android:text="نظر دهید"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginStart="10dp"
+                    />
             </androidx.cardview.widget.CardView>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/banner" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/ban" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/commentRefreshing"
@@ -147,6 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
