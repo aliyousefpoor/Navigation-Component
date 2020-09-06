@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="جزئیات محصول" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="409dp"
         android:layout_height="729dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                     android:layout_gravity="right"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:text="توضیحات"
+                    android:text="@string/productDescription"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
@@ -92,7 +92,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/commentCardView"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="800dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
                 app:cardCornerRadius="10dp">
@@ -103,8 +103,8 @@
                     android:layout_height="40dp"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginStart="180dp"
-                    android:layout_marginTop="20dp"
-                    android:text="نظرات کاربران"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/userComment"
                     android:textColor="@color/black"
                     android:textSize="20sp"
 
@@ -118,21 +118,19 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@color/colorPrimary"
-                    android:text="نظر دهید"
+                    android:text="@string/writeComment"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                app:layout_constraintEnd_toEndOf="@id/avatarCardView"
+                app:layout_constraintStart_toStartOf="@id/avatarCardView"
+                app:layout_constraintTop_toBottomOf="@id/comment" />
             </androidx.cardview.widget.CardView>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/commentRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintEnd_toEndOf="@id/avatarCardView"
-                    app:layout_constraintStart_toStartOf="@id/avatarCardView"
-                    app:layout_constraintTop_toBottomOf="@id/userComment"
-                    />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
