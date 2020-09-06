@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.ApiService;
@@ -30,6 +32,8 @@ public class ProductDetailFragment extends Fragment {
     private int id;
     private ImageView avatar;
     private TextView productName;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProductDetailViewModel productDetailViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -51,6 +55,8 @@ public class ProductDetailFragment extends Fragment {
         id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
+        recyclerView = view.findViewById(R.id.commentRecyclerView);
+        swipeRefreshLayout = view.findViewById(R.id.commentRefreshing);
 
         observeProductDetailViewModel();
         getProductDetail();
