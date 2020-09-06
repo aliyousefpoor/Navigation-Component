@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -96,7 +97,9 @@ public class ProductDetailFragment extends Fragment {
     }
 
     public void showComment(List<Comment> comments) {
-        ProductCommentAdapter adapter = new ProductCommentAdapter(getContext(),comments);
-
+        ProductCommentAdapter adapter = new ProductCommentAdapter(getContext(), comments);
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
     }
 }
