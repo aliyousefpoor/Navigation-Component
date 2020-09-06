@@ -20,10 +20,13 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
+import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
+
+import java.util.List;
 
 import retrofit2.Retrofit;
 
@@ -78,9 +81,22 @@ public class ProductDetailFragment extends Fragment {
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
             }
         });
+
+        productDetailViewModel.productComment.observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
+            @Override
+            public void onChanged(List<Comment> comments) {
+                showComment(comments);
+            }
+        });
     }
 
     public void getProductDetail() {
         productDetailViewModel.getProductDetails(id);
+        productDetailViewModel.getProductComment(id);
+    }
+
+    public void showComment(List<Comment> comments) {
+        ProductCommentAdapter adapter = new ProductCommentAdapter(getContext(),comments);
+
     }
 }
