@@ -1,6 +1,7 @@
 package com.example.bottomnavigation;
 
 import com.example.bottomnavigation.data.model.Category;
+import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 
@@ -56,4 +57,6 @@ public interface ApiService {
                                             @Query("offset") int offset);
     @GET("product/{productId}?device_os=ios")
     Call<ProductsList> getProductDetail(@Path("productId") int productId);
+    @GET("comment/{productId}")
+    Call<List<Comment>> getComment(@Path("productId") int productId);
 }
