@@ -60,7 +60,7 @@ public class ProductDetailFragment extends Fragment {
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
-        swipeRefreshLayout = view.findViewById(R.id.commentRefreshing);
+//        swipeRefreshLayout = view.findViewById(R.id.commentRefreshing);
 
         observeProductDetailViewModel();
         getProductDetail();
