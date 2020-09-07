@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,10 +20,16 @@ import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
+import com.example.bottomnavigation.data.datasource.local.database.UserDao;
+import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
+import com.example.bottomnavigation.login.LoginStepTwoListener;
+import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
@@ -31,6 +38,7 @@ import java.util.List;
 import retrofit2.Retrofit;
 
 public class ProductDetailFragment extends Fragment {
+    private Button commentButton;
     private ImageView avatar;
     private TextView productName;
     private RecyclerView recyclerView;
@@ -38,9 +46,11 @@ public class ProductDetailFragment extends Fragment {
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
+    private UserDatabase database =LoginModule.provideUserDatabase();
     private ProductDetailRemoteDataSource productDetailRemoteDataSource = ProductModule.provideProductDetailRemoteDataSource(apiService);
-    private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource);
-
+    private UserLocaleDataSourceImpl userLocaleDataSource = LoginModule.provideUserLocaleDataSource(database.userDao());
+    private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource,userLocaleDataSource);
+private LoginStepTwoListener loginStepTwoListener;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +65,7 @@ public class ProductDetailFragment extends Fragment {
         int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
+        commentButton = view.findViewById(R.id.commentButton);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
 
         productDetailViewModel.setProductId(id);

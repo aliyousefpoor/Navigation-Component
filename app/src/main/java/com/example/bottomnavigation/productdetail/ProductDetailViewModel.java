@@ -73,6 +73,8 @@ public class ProductDetailViewModel extends ViewModel {
     public void setProductId(int id) {
         this.id = id;
     }
+
+
     public void isLogin(){
         userLocaleDataSource.isLogin(new IsLoginListener() {
             @Override

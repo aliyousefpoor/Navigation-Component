@@ -3,7 +3,6 @@ package com.example.bottomnavigation.data.datasource.remote;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Comment;
-import com.example.bottomnavigation.data.model.CommentPostResponse;
 import com.example.bottomnavigation.data.model.Product;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,20 +43,6 @@ public class ProductDetailRemoteDataSource {
 
             @Override
             public void onFailure(@NotNull Call<List<Comment>> call, @NotNull Throwable t) {
-                dataSourceListener.onFailure(t);
-            }
-        });
-    }
-
-    public void sendComment(String title, int score, String commentText, int id, final DataSourceListener<CommentPostResponse> dataSourceListener) {
-        apiService.sendComment(title, score, commentText, id).enqueue(new Callback<CommentPostResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<CommentPostResponse> call, @NotNull Response<CommentPostResponse> response) {
-                dataSourceListener.onResponse(response.body());
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<CommentPostResponse> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });
