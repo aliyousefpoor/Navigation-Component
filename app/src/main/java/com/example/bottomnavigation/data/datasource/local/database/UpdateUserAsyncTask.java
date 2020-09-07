@@ -24,7 +24,6 @@ public class UpdateUserAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        //Todo injectiob
         UserEntity userEntity = new UserEntity();
         userEntity.setUserId(user.getUserId());
         userEntity.setToken(user.getToken());

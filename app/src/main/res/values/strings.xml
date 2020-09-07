@@ -28,4 +28,7 @@
     <string name="chooseFromGallery">Choose From Gallery</string>
     <string name="openCamera">Open Camera</string>
     <string name="cancelChoosePhoto">Cancel</string>
+    <string name="productDescription">توضیحات</string>
+    <string name="userComment">نظرات کاربران</string>
+    <string name="writeComment">نظر دهید</string>
 </resources>

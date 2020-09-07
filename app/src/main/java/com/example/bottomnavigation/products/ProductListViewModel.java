@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
 import java.util.ArrayList;
@@ -15,15 +15,16 @@ import java.util.List;
 public class ProductListViewModel extends ViewModel {
     private ProductListRemoteDataSource productListRemoteDataSource;
     int offset = 0;
-    private List<ProductsList> productsLists = new ArrayList<>();
+    Integer categoryId;
+    private List<Product> productsLists = new ArrayList<>();
 
     public ProductListViewModel(ProductListRemoteDataSource productListRemoteDataSource) {
         this.productListRemoteDataSource = productListRemoteDataSource;
 
     }
 
-    private MutableLiveData<List<ProductsList>> _productListLiveData = new SingleLiveEvent<>();
-    public LiveData<List<ProductsList>> productListLiveData = _productListLiveData;
+    private MutableLiveData<List<Product>> _productListLiveData = new SingleLiveEvent<>();
+    public LiveData<List<Product>> productListLiveData = _productListLiveData;
 
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
     public LiveData<Boolean> loadingLiveData = _loadingLiveData;
@@ -31,11 +32,11 @@ public class ProductListViewModel extends ViewModel {
     private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
-    public void getProductList(int id) {
+    public void loadData() {
         _loadingLiveData.setValue(true);
-        productListRemoteDataSource.getProductList(id, offset, new DataSourceListener<List<ProductsList>>() {
+        productListRemoteDataSource.getProductList(this.categoryId, offset, new DataSourceListener<List<Product>>() {
             @Override
-            public void onResponse(List<ProductsList> response) {
+            public void onResponse(List<Product> response) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
                 productsLists.addAll(response);
@@ -52,7 +53,13 @@ public class ProductListViewModel extends ViewModel {
         });
     }
 
-    public boolean isProductListEmpty() {
-        return productsLists.size() == 0;
+    public void getFirstData() {
+        if(productsLists.size() == 0){
+            loadData();
+        }
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId=categoryId;
     }
 }

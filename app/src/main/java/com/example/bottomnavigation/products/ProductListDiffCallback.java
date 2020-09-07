@@ -3,15 +3,15 @@ package com.example.bottomnavigation.products;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 
 import java.util.List;
 
 public class ProductListDiffCallback extends DiffUtil.Callback {
-    private List<ProductsList> oldProductsList;
-    private List<ProductsList> newProductsList;
+    private List<Product> oldProductsList;
+    private List<Product> newProductsList;
 
-    public ProductListDiffCallback(List<ProductsList> oldProductsList, List<ProductsList> newProductsList) {
+    public ProductListDiffCallback(List<Product> oldProductsList, List<Product> newProductsList) {
         this.oldProductsList = oldProductsList;
         this.newProductsList = newProductsList;
     }
@@ -33,8 +33,8 @@ public class ProductListDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        ProductsList oldList = oldProductsList.get(oldItemPosition);
-        ProductsList newList = newProductsList.get(newItemPosition);
+        Product oldList = oldProductsList.get(oldItemPosition);
+        Product newList = newProductsList.get(newItemPosition);
         return oldList.getName().equals(newList.getName());
     }
 

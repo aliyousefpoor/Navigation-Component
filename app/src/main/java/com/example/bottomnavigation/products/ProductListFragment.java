@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.products;
 
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,8 +25,9 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.productdetail.ProductListener;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -40,7 +42,7 @@ public class ProductListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View progressBar;
     private RecyclerView recyclerView;
-    private int categoryId;
+    private NavController navController;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -62,7 +64,7 @@ public class ProductListFragment extends Fragment {
 
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
-        categoryId = getArguments().getInt("categoryId");
+        int categoryId = getArguments().getInt("categoryId");
         String categoryTitle = getArguments().getString("categoryTitle");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
@@ -70,6 +72,7 @@ public class ProductListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
+        navController = Navigation.findNavController(view);
         toolbar.setTitle(categoryTitle);
 
         observeProductListViewModel();
@@ -77,19 +80,18 @@ public class ProductListFragment extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getData();
+                productListViewModel.loadData();
             }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                productListViewModel.loadData();
             }
         });
-
-        if (productListViewModel.isProductListEmpty())
-            getData();
+        productListViewModel.setCategoryId(categoryId);
+        productListViewModel.getFirstData();
     }
 
     public void observeProductListViewModel() {
@@ -131,9 +133,9 @@ public class ProductListFragment extends Fragment {
             }
         });
 
-        productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<ProductsList>>() {
+        productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
             @Override
-            public void onChanged(List<ProductsList> productLists) {
+            public void onChanged(List<Product> productLists) {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);
@@ -146,8 +148,14 @@ public class ProductListFragment extends Fragment {
     }
 
     public void showProductList() {
-
-        adapter = new ProductListAdapter(getContext());
+        adapter = new ProductListAdapter(getContext(), new ProductListener() {
+            @Override
+            public void onClick(int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("productId", id);
+                navController.navigate(R.id.action_productListFragment_to_productDetailFragment, bundle);
+            }
+        });
         recyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -167,13 +175,8 @@ public class ProductListFragment extends Fragment {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
                     .findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                getData();
+                productListViewModel.loadData();
             }
         }
     };
-
-    public void getData() {
-        productListViewModel.getProductList(categoryId);
-    }
-
 }
