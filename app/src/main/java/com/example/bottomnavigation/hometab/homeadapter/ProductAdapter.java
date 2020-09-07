@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.productdetail.ProductListener;
 
 import java.util.List;
 
@@ -24,17 +25,19 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private Context context;
     private List<Product> productList;
+    private ProductListener productListener;
 
-    public ProductAdapter(List<Product> productList ,Context context){
-        this.context=context;
-        this.productList=productList;
+    public ProductAdapter(List<Product> productList, Context context, ProductListener productListener) {
+        this.context = context;
+        this.productList = productList;
+        this.productListener = productListener;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view= LayoutInflater.from(context).inflate(R.layout.product_layout,parent,false);
+        view = LayoutInflater.from(context).inflate(R.layout.product_layout, parent, false);
         return new ProductViewHolder(view);
 
     }
@@ -42,8 +45,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final ProductViewHolder productHolder = (ProductViewHolder) holder;
 
-        productHolder.onBind(productList.get(position),context);
-
+        productHolder.onBind(productList.get(position), context, productListener);
 
 
     }
@@ -54,7 +56,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardView;
         public ImageView imageView;
@@ -62,18 +64,19 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView= itemView.findViewById(R.id.discription);
-            imageView =itemView.findViewById(R.id.cv_image);
+            textView = itemView.findViewById(R.id.discription);
+            imageView = itemView.findViewById(R.id.cv_image);
             cardView = itemView.findViewById(R.id.product_cv);
         }
 
-        public void onBind(final Product product, final Context context) {
+        public void onBind(final Product product, final Context context, final ProductListener productListener) {
             textView.setText(product.getName());
             Glide.with(context).load(product.getFeatureAvatar().getXxxdpi()).into(imageView);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,product.getName(),Toast.LENGTH_SHORT).show();
+                    productListener.onClick(product.getId());
+                    Toast.makeText(context, product.getName(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

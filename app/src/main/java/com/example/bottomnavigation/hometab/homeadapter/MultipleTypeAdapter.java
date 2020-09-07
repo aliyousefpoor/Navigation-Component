@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.model.Homeitem;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.productdetail.ProductListener;
 
 import java.util.List;
 
@@ -29,13 +30,14 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private List<Homeitem> homeList;
     private List<Product> headerList;
+    private ProductListener productListener;
 
-
-    public MultipleTypeAdapter(Context context, List<Homeitem> homeList, List<Product> headerList) {
+    public MultipleTypeAdapter(Context context, List<Homeitem> homeList, List<Product> headerList,ProductListener productListener) {
 
         this.context = context;
         this.homeList = homeList;
         this.headerList = headerList;
+        this.productListener=productListener;
     }
 
     @Override
@@ -86,7 +88,7 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 final ListViewHolder list_holder = (ListViewHolder) holder;
                 Log.d(TAG, "HorizontalList_Type: " + position);
-                list_holder.onBind(homeList.get(position - 1), context);
+                list_holder.onBind(homeList.get(position - 1), context,productListener);
 
 
                 break;
@@ -129,9 +131,9 @@ public class MultipleTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
-        public void onBind(Homeitem homeitem, Context context) {
+        public void onBind(Homeitem homeitem, Context context, ProductListener productListener) {
             title.setText(homeitem.getTitle());
-            product_recyclerView.setAdapter(new ProductAdapter(homeitem.getProducts(), context));
+            product_recyclerView.setAdapter(new ProductAdapter(homeitem.getProducts(), context,productListener));
             product_recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             product_recyclerView.setHasFixedSize(true);
         }

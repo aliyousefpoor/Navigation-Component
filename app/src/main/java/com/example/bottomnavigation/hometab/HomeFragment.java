@@ -20,6 +20,8 @@ import androidx.lifecycle.Observer;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,6 +37,7 @@ import com.example.bottomnavigation.hometab.di.HomeTabModule;
 import com.example.bottomnavigation.hometab.homeadapter.MultipleTypeAdapter;
 import com.example.bottomnavigation.data.model.Homeitem;
 import com.example.bottomnavigation.data.model.Store;
+import com.example.bottomnavigation.productdetail.ProductListener;
 import com.example.bottomnavigation.utils.ApiBuilder;
 
 import java.util.List;
@@ -46,12 +49,11 @@ import retrofit2.Retrofit;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-
+    private NavController navController;
     private ImageView arrow;
     private TextView pullDown;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeViewModel homeViewModel;
-
     private RecyclerView recyclerView;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder builder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -79,7 +81,7 @@ public class HomeFragment extends Fragment {
         pullDown = view.findViewById(R.id.pull_down);
         swipeRefreshLayout = view.findViewById(R.id.swipRefreshing);
         recyclerView = view.findViewById(R.id.rec_view);
-
+        navController = Navigation.findNavController(view);
 
         Log.d(TAG, "onViewCreated: ");
 
@@ -146,7 +148,14 @@ public class HomeFragment extends Fragment {
         List<Homeitem> homeList = response.getHomeitem();
         List<Product> headerList = response.getHeaderitem();
 
-        MultipleTypeAdapter adapter = new MultipleTypeAdapter(getContext(), homeList, headerList);
+        MultipleTypeAdapter adapter = new MultipleTypeAdapter(getContext(), homeList, headerList, new ProductListener() {
+            @Override
+            public void onClick(int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("productId", id);
+                navController.navigate(R.id.action_homeFragment_to_productDetailFragment,bundle);
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
