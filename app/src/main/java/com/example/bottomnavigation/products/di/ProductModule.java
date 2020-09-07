@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.products.di;
 
 import com.example.bottomnavigation.ApiService;
+import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 import com.example.bottomnavigation.productdetail.ProductDetailViewModelFactory;
@@ -17,7 +18,8 @@ public class ProductModule {
     public static ProductDetailRemoteDataSource provideProductDetailRemoteDataSource(ApiService apiService){
         return new ProductDetailRemoteDataSource(apiService);
     }
-    public static ProductDetailViewModelFactory provideProductDetailViewModelFactory(ProductDetailRemoteDataSource productDetailRemoteDataSource){
-        return new ProductDetailViewModelFactory(productDetailRemoteDataSource);
+    public static ProductDetailViewModelFactory provideProductDetailViewModelFactory(ProductDetailRemoteDataSource productDetailRemoteDataSource
+    , UserLocaleDataSourceImpl userLocaleDataSource){
+        return new ProductDetailViewModelFactory(productDetailRemoteDataSource,userLocaleDataSource);
     }
 }
