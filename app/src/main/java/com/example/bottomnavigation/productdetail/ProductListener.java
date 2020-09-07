@@ -1,5 +1,5 @@
 package com.example.bottomnavigation.productdetail;
 
-public interface ProductIdListener {
+public interface ProductListener {
     void onClick(int id);
 }

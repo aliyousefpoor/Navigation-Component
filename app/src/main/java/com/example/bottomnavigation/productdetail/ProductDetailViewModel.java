@@ -12,6 +12,7 @@ import com.example.bottomnavigation.data.model.ProductsList;
 import java.util.List;
 
 public class ProductDetailViewModel extends ViewModel {
+    private Integer id;
     private ProductDetailRemoteDataSource productDetailRemoteDataSource;
 
     public ProductDetailViewModel(ProductDetailRemoteDataSource productDetailRemoteDataSource) {
@@ -27,7 +28,7 @@ public class ProductDetailViewModel extends ViewModel {
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
     public LiveData<Boolean> loadingLiveData = _loadingLiveData;
 
-    public void getProductDetails(int id) {
+    public void getProductDetails() {
         _loadingLiveData.setValue(true);
         productDetailRemoteDataSource.getProductDetail(id, new DataSourceListener<ProductsList>() {
             @Override
@@ -35,7 +36,6 @@ public class ProductDetailViewModel extends ViewModel {
                 _productDetailLiveData.setValue(response);
                 _loadingLiveData.setValue(false);
             }
-
             @Override
             public void onFailure(Throwable throwable) {
                 _loadingLiveData.setValue(false);
@@ -43,18 +43,26 @@ public class ProductDetailViewModel extends ViewModel {
         });
     }
 
-    public void getProductComment(int id) {
+    public void getProductComment() {
         productDetailRemoteDataSource.getProductComment(id, new DataSourceListener<List<Comment>>() {
             @Override
             public void onResponse(List<Comment> response) {
                 _productComment.setValue(response);
                 _loadingLiveData.setValue(false);
             }
-
             @Override
             public void onFailure(Throwable throwable) {
                 _loadingLiveData.setValue(false);
             }
         });
+    }
+
+    public void getProductDetail() {
+        getProductDetails();
+        getProductComment();
+    }
+
+    public void setProductId(int id) {
+        this.id = id;
     }
 }

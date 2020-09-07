@@ -15,6 +15,7 @@ import java.util.List;
 public class ProductListViewModel extends ViewModel {
     private ProductListRemoteDataSource productListRemoteDataSource;
     int offset = 0;
+    Integer categoryId;
     private List<ProductsList> productsLists = new ArrayList<>();
 
     public ProductListViewModel(ProductListRemoteDataSource productListRemoteDataSource) {
@@ -31,9 +32,9 @@ public class ProductListViewModel extends ViewModel {
     private MutableLiveData<Boolean> _errorStateLiveData = new MutableLiveData<>();
     public LiveData<Boolean> errorStateLiveData = _errorStateLiveData;
 
-    public void getProductList(int id) {
+    public void loadData() {
         _loadingLiveData.setValue(true);
-        productListRemoteDataSource.getProductList(id, offset, new DataSourceListener<List<ProductsList>>() {
+        productListRemoteDataSource.getProductList(this.categoryId, offset, new DataSourceListener<List<ProductsList>>() {
             @Override
             public void onResponse(List<ProductsList> response) {
                 _loadingLiveData.setValue(false);
@@ -52,7 +53,13 @@ public class ProductListViewModel extends ViewModel {
         });
     }
 
-    public boolean isProductListEmpty() {
-        return productsLists.size() == 0;
+    public void getFirstData() {
+        if(productsLists.size() == 0){
+            loadData();
+        }
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId=categoryId;
     }
 }

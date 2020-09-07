@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.products;
 
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
 import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.di.ApiBuilderModule;
-import com.example.bottomnavigation.productdetail.ProductIdListener;
+import com.example.bottomnavigation.productdetail.ProductListener;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -44,7 +43,6 @@ public class ProductListFragment extends Fragment {
     private View progressBar;
     private RecyclerView recyclerView;
     private NavController navController;
-    private int categoryId;
     private ProductListViewModel productListViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
@@ -52,13 +50,11 @@ public class ProductListFragment extends Fragment {
     private ProductListRemoteDataSource productListRemoteDataSource = ProductModule.provideProductListRemoteDataSource(apiService);
     private ProductListViewModelFactory productListViewModelFactory = ProductModule.provideProductListViewModelFactory(productListRemoteDataSource);
     private ProductListAdapter adapter;
-    private ProductIdListener productIdListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_list_fragment, container, false);
-        passProductId();
         return view;
     }
 
@@ -68,7 +64,7 @@ public class ProductListFragment extends Fragment {
 
         productListViewModel = new ViewModelProvider(this, productListViewModelFactory).get(ProductListViewModel.class);
 
-        categoryId = getArguments().getInt("categoryId");
+        int categoryId = getArguments().getInt("categoryId");
         String categoryTitle = getArguments().getString("categoryTitle");
         refresh = view.findViewById(R.id.refresh);
         arrow = view.findViewById(R.id.productArrow);
@@ -84,19 +80,18 @@ public class ProductListFragment extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getData();
+                productListViewModel.loadData();
             }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                productListViewModel.loadData();
             }
         });
-
-        if (productListViewModel.isProductListEmpty())
-            getData();
+        productListViewModel.setCategoryId(categoryId);
+        productListViewModel.getFirstData();
     }
 
     public void observeProductListViewModel() {
@@ -153,8 +148,14 @@ public class ProductListFragment extends Fragment {
     }
 
     public void showProductList() {
-
-        adapter = new ProductListAdapter(getContext(), productIdListener);
+        adapter = new ProductListAdapter(getContext(), new ProductListener() {
+            @Override
+            public void onClick(int id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("productId", id);
+                navController.navigate(R.id.action_productListFragment_to_productDetailFragment, bundle);
+            }
+        });
         recyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -174,23 +175,8 @@ public class ProductListFragment extends Fragment {
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
                     .findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                getData();
+                productListViewModel.loadData();
             }
         }
     };
-
-    public void getData() {
-        productListViewModel.getProductList(categoryId);
-    }
-
-    public void passProductId() {
-        productIdListener = new ProductIdListener() {
-            @Override
-            public void onClick(int id) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("productId", id);
-                navController.navigate(R.id.action_productListFragment_to_productDetailFragment, bundle);
-            }
-        };
-    }
 }

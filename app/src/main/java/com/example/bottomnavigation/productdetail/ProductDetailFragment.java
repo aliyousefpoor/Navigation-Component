@@ -31,8 +31,6 @@ import java.util.List;
 import retrofit2.Retrofit;
 
 public class ProductDetailFragment extends Fragment {
-    private static final String TAG = "ProductDetailFragment";
-    private int id;
     private ImageView avatar;
     private TextView productName;
     private RecyclerView recyclerView;
@@ -54,13 +52,14 @@ public class ProductDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productDetailViewModel = new ViewModelProvider(this, productDetailViewModelFactory).get(ProductDetailViewModel.class);
-        id = getArguments().getInt("productId");
+        int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
 
+        productDetailViewModel.setProductId(id);
+        productDetailViewModel.getProductDetail();
         observeProductDetailViewModel();
-        getProductDetail();
 
     }
 
@@ -86,11 +85,6 @@ public class ProductDetailFragment extends Fragment {
                 showComment(comments);
             }
         });
-    }
-
-    public void getProductDetail() {
-        productDetailViewModel.getProductDetails(id);
-        productDetailViewModel.getProductComment(id);
     }
 
     public void showComment(List<Comment> comments) {
