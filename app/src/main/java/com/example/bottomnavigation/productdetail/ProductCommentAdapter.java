@@ -50,7 +50,7 @@ public class ProductCommentAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public ProductCommentViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cmCardView);
-            comment = itemView.findViewById(R.id.comment);
+            comment = itemView.findViewById(R.id.commentText);
         }
 
         public void onBind(Comment comments) {

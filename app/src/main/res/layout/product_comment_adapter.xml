@@ -9,7 +9,7 @@
         android:id="@+id/cmCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="8dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +18,7 @@
 
         <TextView
             android:gravity="center_vertical"
-            android:id="@+id/comment"
+            android:id="@+id/commentText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="15sp"
