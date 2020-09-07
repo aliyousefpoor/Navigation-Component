@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
 import java.util.ArrayList;
@@ -16,15 +16,15 @@ public class ProductListViewModel extends ViewModel {
     private ProductListRemoteDataSource productListRemoteDataSource;
     int offset = 0;
     Integer categoryId;
-    private List<ProductsList> productsLists = new ArrayList<>();
+    private List<Product> productsLists = new ArrayList<>();
 
     public ProductListViewModel(ProductListRemoteDataSource productListRemoteDataSource) {
         this.productListRemoteDataSource = productListRemoteDataSource;
 
     }
 
-    private MutableLiveData<List<ProductsList>> _productListLiveData = new SingleLiveEvent<>();
-    public LiveData<List<ProductsList>> productListLiveData = _productListLiveData;
+    private MutableLiveData<List<Product>> _productListLiveData = new SingleLiveEvent<>();
+    public LiveData<List<Product>> productListLiveData = _productListLiveData;
 
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
     public LiveData<Boolean> loadingLiveData = _loadingLiveData;
@@ -34,9 +34,9 @@ public class ProductListViewModel extends ViewModel {
 
     public void loadData() {
         _loadingLiveData.setValue(true);
-        productListRemoteDataSource.getProductList(this.categoryId, offset, new DataSourceListener<List<ProductsList>>() {
+        productListRemoteDataSource.getProductList(this.categoryId, offset, new DataSourceListener<List<Product>>() {
             @Override
-            public void onResponse(List<ProductsList> response) {
+            public void onResponse(List<Product> response) {
                 _loadingLiveData.setValue(false);
                 _errorStateLiveData.setValue(false);
                 productsLists.addAll(response);

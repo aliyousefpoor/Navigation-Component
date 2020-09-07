@@ -25,7 +25,7 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductListRemoteDataSource;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.productdetail.ProductListener;
 import com.example.bottomnavigation.products.di.ProductModule;
@@ -133,9 +133,9 @@ public class ProductListFragment extends Fragment {
             }
         });
 
-        productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<ProductsList>>() {
+        productListViewModel.productListLiveData.observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
             @Override
-            public void onChanged(List<ProductsList> productLists) {
+            public void onChanged(List<Product> productLists) {
                 if (!productLists.isEmpty()) {
                     progressBar.setVisibility(View.GONE);
                     adapter.addList(productLists);

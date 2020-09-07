@@ -21,7 +21,7 @@ import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.di.ApiBuilderModule;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -71,9 +71,9 @@ public class ProductDetailFragment extends Fragment {
             }
         });
 
-        productDetailViewModel.productDetailLiveData.observe(getViewLifecycleOwner(), new Observer<ProductsList>() {
+        productDetailViewModel.productDetailLiveData.observe(getViewLifecycleOwner(), new Observer<Product>() {
             @Override
-            public void onChanged(ProductsList productsList) {
+            public void onChanged(Product productsList) {
                 productName.setText(productsList.getName());
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
             }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ public class ProductDetailViewModel extends ViewModel {
         this.productDetailRemoteDataSource = productDetailRemoteDataSource;
     }
 
-    private MutableLiveData<ProductsList> _productDetailLiveData = new MutableLiveData<>();
-    public LiveData<ProductsList> productDetailLiveData = _productDetailLiveData;
+    private MutableLiveData<Product> _productDetailLiveData = new MutableLiveData<>();
+    public LiveData<Product> productDetailLiveData = _productDetailLiveData;
 
     private MutableLiveData<List<Comment>> _productComment = new MutableLiveData<>();
     public LiveData<List<Comment>> productComment = _productComment;
@@ -30,9 +30,9 @@ public class ProductDetailViewModel extends ViewModel {
 
     public void getProductDetails() {
         _loadingLiveData.setValue(true);
-        productDetailRemoteDataSource.getProductDetail(id, new DataSourceListener<ProductsList>() {
+        productDetailRemoteDataSource.getProductDetail(id, new DataSourceListener<Product>() {
             @Override
-            public void onResponse(ProductsList response) {
+            public void onResponse(Product response) {
                 _productDetailLiveData.setValue(response);
                 _loadingLiveData.setValue(false);
             }

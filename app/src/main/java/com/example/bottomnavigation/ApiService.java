@@ -5,11 +5,11 @@ import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.data.model.ProfileResponse;
 import com.example.bottomnavigation.data.model.UpdateProfile;
 import com.example.bottomnavigation.data.model.UpdateResponse;
 import com.example.bottomnavigation.data.model.LoginStepTwoResponse;
-import com.example.bottomnavigation.data.model.ProductsList;
 import com.example.bottomnavigation.data.model.Store;
 import com.example.bottomnavigation.data.model.LoginStepTwoRequest;
 
@@ -52,11 +52,11 @@ public interface ApiService {
     Call<UpdateResponse> updateImage(@Part MultipartBody.Part avatar);
 
     @GET("listproducts/{categoryId}")
-    Call<List<ProductsList>> getProductList(@Path("categoryId") int categoryId,
+    Call<List<Product>> getProductList(@Path("categoryId") int categoryId,
                                             @Query("limit") int limit,
                                             @Query("offset") int offset);
     @GET("product/{productId}?device_os=ios")
-    Call<ProductsList> getProductDetail(@Path("productId") int productId);
+    Call<Product> getProductDetail(@Path("productId") int productId);
     @GET("comment/{productId}")
     Call<List<Comment>> getComment(@Path("productId") int productId);
 }

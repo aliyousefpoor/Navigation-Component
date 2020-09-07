@@ -154,7 +154,7 @@ public class Product {
     }
 
     public Object getAvatar() {
-        return AppConstants.baseUrl + avatar;
+        return AppConstants.baseUrl + avatar.getXhdpi();
     }
 
     public void setAvatar(Avatar avatar) {

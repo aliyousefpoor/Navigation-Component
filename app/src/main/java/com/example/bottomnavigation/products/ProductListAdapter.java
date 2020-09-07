@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.model.ProductsList;
+import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.productdetail.ProductListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<ProductsList> products;
+    private List<Product> products;
     private Context context;
     private ProductListener productListener;
 
@@ -62,7 +62,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView = itemView.findViewById(R.id.productListCardView);
         }
 
-        public void onBind(final ProductsList productsList, final Context context, final ProductListener productListener) {
+        public void onBind(final Product productsList, final Context context, final ProductListener productListener) {
             title.setText(productsList.getName());
             Glide.with(context).load(productsList.getAvatar()).into(avatar);
 
@@ -75,7 +75,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void addList(List<ProductsList> productLists) {
+    public void addList(List<Product> productLists) {
         final ProductListDiffCallback diffCallback = new ProductListDiffCallback(this.products, productLists);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
         products = productLists;
