@@ -2,6 +2,7 @@ package com.example.bottomnavigation;
 
 import com.example.bottomnavigation.data.model.Category;
 import com.example.bottomnavigation.data.model.Comment;
+import com.example.bottomnavigation.data.model.CommentPostResponse;
 import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 
@@ -19,6 +20,8 @@ import okhttp3.MultipartBody;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -59,4 +62,10 @@ public interface ApiService {
     Call<Product> getProductDetail(@Path("productId") int productId);
     @GET("comment/{productId}")
     Call<List<Comment>> getComment(@Path("productId") int productId);
+    @POST("comment/{productId}")
+    @FormUrlEncoded
+    Call<CommentPostResponse> sendComment(@Field("title") String title,
+                                          @Field("score") int score,
+                                          @Field("comment_text") String commentText,
+                                          @Path("productId") int productId);
 }
