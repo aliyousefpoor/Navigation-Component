@@ -61,7 +61,7 @@ public class CommentDialogFragment extends DialogFragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int score = ratingBar.getNumStars();
+                int score = (int) ratingBar.getRating();
                 commentViewModel.sendComment(title, score, comment.getText().toString(), id);
 
                 dialog = new ProgressDialog(getContext());

@@ -1,7 +1,6 @@
 package com.example.bottomnavigation.productdetail;
 
 import android.os.Bundle;
-import android.text.LoginFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,9 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
 import com.example.bottomnavigation.R;
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
-import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.data.model.User;
@@ -48,15 +43,13 @@ public class ProductDetailFragment extends Fragment {
     private ImageView avatar;
     private TextView productName;
     private RecyclerView recyclerView;
-    private NavController navController;
     private ProductDetailViewModel productDetailViewModel;
     private LoginSharedViewModel sharedViewModel;
+    private UserDatabase database = LoginModule.provideUserDatabase();
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
-    private UserDatabase database = LoginModule.provideUserDatabase();
-    private ProductDetailRemoteDataSource productDetailRemoteDataSource = ProductModule.provideProductDetailRemoteDataSource(apiService);
-    private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource);
+    private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(apiService);
     private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService, database.userDao());
     private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
     private String title;
@@ -78,7 +71,6 @@ public class ProductDetailFragment extends Fragment {
         productName = view.findViewById(R.id.productName);
         commentButton = view.findViewById(R.id.commentButton);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
-        navController = Navigation.findNavController(view);
 
 
         productDetailViewModel.setProductId(id);

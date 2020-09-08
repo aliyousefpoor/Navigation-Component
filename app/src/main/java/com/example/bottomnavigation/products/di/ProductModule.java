@@ -19,8 +19,8 @@ public class ProductModule {
     public static ProductDetailRemoteDataSource provideProductDetailRemoteDataSource(ApiService apiService){
         return new ProductDetailRemoteDataSource(apiService);
     }
-    public static ProductDetailViewModelFactory provideProductDetailViewModelFactory(ProductDetailRemoteDataSource productDetailRemoteDataSource){
-        return new ProductDetailViewModelFactory(productDetailRemoteDataSource);
+    public static ProductDetailViewModelFactory provideProductDetailViewModelFactory(ApiService apiService){
+        return new ProductDetailViewModelFactory(provideProductDetailRemoteDataSource(apiService));
     }
     public static SendCommentRemoteDataSource provideSendCommentRemoteDataSource(ApiService apiService){
         return new SendCommentRemoteDataSource(apiService);
