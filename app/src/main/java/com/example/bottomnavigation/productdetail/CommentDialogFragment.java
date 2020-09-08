@@ -37,6 +37,7 @@ public class CommentDialogFragment extends DialogFragment {
     private int id;
     private String title;
     private int score = 4;
+    private ProgressDialog dialog;
 
 
     public CommentDialogFragment(int id, String title) {
@@ -62,12 +63,19 @@ public class CommentDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 commentViewModel.sendComment(title, score, comment.getText().toString(), id);
+                dialog = new ProgressDialog(getContext());
+                dialog.setTitle(R.string.progressDialogTitle);
+                dialog.setMessage(getString(R.string.loadingProgress));
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.show();
             }
         });
 
         commentViewModel.commentResponse.observe(getViewLifecycleOwner(), new Observer<CommentPostResponse>() {
             @Override
             public void onChanged(CommentPostResponse commentPostResponse) {
+                dismiss();
+                dialog.dismiss();
                 Toast.makeText(getContext(), commentPostResponse.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
