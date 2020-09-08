@@ -39,10 +39,10 @@ import java.util.List;
 import retrofit2.Retrofit;
 
 public class ProductDetailFragment extends Fragment {
-    private Button commentButton;
     private ImageView avatar;
     private TextView productName;
     private RecyclerView recyclerView;
+    private View progressBar;
     private ProductDetailViewModel productDetailViewModel;
     private LoginSharedViewModel sharedViewModel;
     private UserDatabase database = LoginModule.provideUserDatabase();
@@ -69,8 +69,9 @@ public class ProductDetailFragment extends Fragment {
         final int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
-        commentButton = view.findViewById(R.id.commentButton);
+        Button commentButton = view.findViewById(R.id.commentButton);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
+        progressBar = view.findViewById(R.id.productProgressBar);
 
 
         productDetailViewModel.setProductId(id);
@@ -106,16 +107,18 @@ public class ProductDetailFragment extends Fragment {
     }
 
     public void observeProductDetailViewModel() {
+        progressBar.setVisibility(View.VISIBLE);
         productDetailViewModel.loadingLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean aBoolean) {
-
+            public void onChanged(Boolean loadingState) {
+progressBar.setVisibility(View.VISIBLE);
             }
         });
 
         productDetailViewModel.productDetailLiveData.observe(getViewLifecycleOwner(), new Observer<Product>() {
             @Override
             public void onChanged(Product productsList) {
+                progressBar.setVisibility(View.GONE);
                 productName.setText(productsList.getName());
                 title = productsList.getName();
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
@@ -125,6 +128,7 @@ public class ProductDetailFragment extends Fragment {
         productDetailViewModel.productComment.observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
             @Override
             public void onChanged(List<Comment> comments) {
+                progressBar.setVisibility(View.GONE);
                 showComment(comments);
             }
         });
