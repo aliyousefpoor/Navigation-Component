@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,6 @@ import com.example.bottomnavigation.utils.ApiBuilder;
 import retrofit2.Retrofit;
 
 public class CommentDialogFragment extends DialogFragment {
-    private Button submit;
     private EditText comment;
     private CommentViewModel commentViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
@@ -36,7 +36,6 @@ public class CommentDialogFragment extends DialogFragment {
     private CommentViewModelFactory commentViewModelFactory = ProductModule.provideCommentViewModelFactory(apiService);
     private int id;
     private String title;
-    private int score = 4;
     private ProgressDialog dialog;
 
 
@@ -56,13 +55,16 @@ public class CommentDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
-        submit = view.findViewById(R.id.submitComment);
+        Button submit = view.findViewById(R.id.submitComment);
         comment = view.findViewById(R.id.commentEditText);
+        final RatingBar ratingBar = view.findViewById(R.id.ratingPost);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int score = ratingBar.getNumStars();
                 commentViewModel.sendComment(title, score, comment.getText().toString(), id);
+
                 dialog = new ProgressDialog(getContext());
                 dialog.setTitle(R.string.progressDialogTitle);
                 dialog.setMessage(getString(R.string.loadingProgress));
