@@ -1,6 +1,7 @@
 package com.example.bottomnavigation.productdetail;
 
 import android.os.Bundle;
+import android.text.LoginFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,10 @@ import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDa
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
 import com.example.bottomnavigation.data.model.User;
+import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.login.LoginSharedViewModel;
+import com.example.bottomnavigation.login.LoginSharedViewModelFactory;
 import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
 import com.example.bottomnavigation.login.LoginStepTwoListener;
 import com.example.bottomnavigation.login.di.LoginModule;
@@ -46,14 +50,17 @@ public class ProductDetailFragment extends Fragment {
     private RecyclerView recyclerView;
     private NavController navController;
     private ProductDetailViewModel productDetailViewModel;
+    private LoginSharedViewModel sharedViewModel;
     private Retrofit retrofit = CustomApp.getInstance().getAppModule().provideRetrofit();
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private UserDatabase database = LoginModule.provideUserDatabase();
     private ProductDetailRemoteDataSource productDetailRemoteDataSource = ProductModule.provideProductDetailRemoteDataSource(apiService);
-    private UserLocaleDataSourceImpl userLocaleDataSource = LoginModule.provideUserLocaleDataSource(database.userDao());
-    private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource, userLocaleDataSource);
-private String title;
+    private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource);
+    private LoginRepository loginRepository = LoginModule.provideLoginRepository(apiService, database.userDao());
+    private LoginSharedViewModelFactory loginSharedViewModelFactory = LoginModule.provideShareViewModelFactory(loginRepository);
+    private String title;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +72,7 @@ private String title;
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productDetailViewModel = new ViewModelProvider(this, productDetailViewModelFactory).get(ProductDetailViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity(), loginSharedViewModelFactory).get(LoginSharedViewModel.class);
         final int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
@@ -77,17 +85,18 @@ private String title;
         productDetailViewModel.getProductDetail();
         observeProductDetailViewModel();
 
-        productDetailViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
+        sharedViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isLogin) {
                 if (isLogin) {
-                    CommentDialogFragment commentDialogFragment = new CommentDialogFragment(id,title);
+                    CommentDialogFragment commentDialogFragment = new CommentDialogFragment(id, title);
                     commentDialogFragment.show(getParentFragmentManager(), "CommentDialogFragment");
                 } else {
                     LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(new LoginStepTwoListener() {
                         @Override
                         public void onResponse(User user) {
-
+                            CommentDialogFragment commentDialogFragment = new CommentDialogFragment(id, title);
+                            commentDialogFragment.show(getParentFragmentManager(), "CommentDialogFragment");
                         }
                     });
                     loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
@@ -98,7 +107,7 @@ private String title;
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productDetailViewModel.isLogin();
+                sharedViewModel.isLogin();
             }
         });
 
@@ -116,7 +125,7 @@ private String title;
             @Override
             public void onChanged(Product productsList) {
                 productName.setText(productsList.getName());
-                title=productsList.getName();
+                title = productsList.getName();
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
             }
         });

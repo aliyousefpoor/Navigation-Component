@@ -5,23 +5,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
-import com.example.bottomnavigation.data.datasource.local.UserLocaleDataSourceImpl;
-import com.example.bottomnavigation.data.datasource.local.database.IsLoginListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
-import com.example.bottomnavigation.moretab.SingleLiveEvent;
 
 import java.util.List;
 
 public class ProductDetailViewModel extends ViewModel {
     private Integer id;
     private ProductDetailRemoteDataSource productDetailRemoteDataSource;
-    private UserLocaleDataSourceImpl userLocaleDataSource;
 
-    public ProductDetailViewModel(ProductDetailRemoteDataSource productDetailRemoteDataSource,UserLocaleDataSourceImpl userLocaleDataSource) {
+    public ProductDetailViewModel(ProductDetailRemoteDataSource productDetailRemoteDataSource) {
         this.productDetailRemoteDataSource = productDetailRemoteDataSource;
-        this.userLocaleDataSource=userLocaleDataSource;
     }
 
     private MutableLiveData<Product> _productDetailLiveData = new MutableLiveData<>();
@@ -32,9 +27,6 @@ public class ProductDetailViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> _loadingLiveData = new MutableLiveData<>();
     public LiveData<Boolean> loadingLiveData = _loadingLiveData;
-
-    private SingleLiveEvent<Boolean> _isLogin = new SingleLiveEvent<>();
-    public SingleLiveEvent<Boolean> isLogin = _isLogin;
 
     public void getProductDetails() {
         _loadingLiveData.setValue(true);
@@ -74,18 +66,4 @@ public class ProductDetailViewModel extends ViewModel {
         this.id = id;
     }
 
-
-    public void isLogin(){
-        userLocaleDataSource.isLogin(new IsLoginListener() {
-            @Override
-            public void isLogin(Boolean isLogin) {
-                if (isLogin){
-                    _isLogin.postValue(true);
-                }
-                else {
-                    _isLogin.postValue(false);
-                }
-            }
-        });
-    }
 }
