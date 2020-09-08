@@ -58,5 +58,18 @@ public class CommentDialogFragment extends DialogFragment {
         submit = view.findViewById(R.id.submitComment);
         comment = view.findViewById(R.id.commentEditText);
 
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentViewModel.sendComment(title, score, comment.getText().toString(), id);
+            }
+        });
+
+        commentViewModel.commentResponse.observe(getViewLifecycleOwner(), new Observer<CommentPostResponse>() {
+            @Override
+            public void onChanged(CommentPostResponse commentPostResponse) {
+                Toast.makeText(getContext(), commentPostResponse.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
