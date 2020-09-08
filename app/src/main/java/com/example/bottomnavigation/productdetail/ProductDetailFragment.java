@@ -27,7 +27,10 @@ import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.di.ApiBuilderModule;
+import com.example.bottomnavigation.login.LoginStepOneDialogFragment;
+import com.example.bottomnavigation.login.LoginStepTwoListener;
 import com.example.bottomnavigation.login.di.LoginModule;
 import com.example.bottomnavigation.products.di.ProductModule;
 import com.example.bottomnavigation.utils.ApiBuilder;
@@ -50,7 +53,7 @@ public class ProductDetailFragment extends Fragment {
     private ProductDetailRemoteDataSource productDetailRemoteDataSource = ProductModule.provideProductDetailRemoteDataSource(apiService);
     private UserLocaleDataSourceImpl userLocaleDataSource = LoginModule.provideUserLocaleDataSource(database.userDao());
     private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource, userLocaleDataSource);
-
+private String title;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class ProductDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productDetailViewModel = new ViewModelProvider(this, productDetailViewModelFactory).get(ProductDetailViewModel.class);
-        int id = getArguments().getInt("productId");
+        final int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
         commentButton = view.findViewById(R.id.commentButton);
@@ -73,6 +76,31 @@ public class ProductDetailFragment extends Fragment {
         productDetailViewModel.setProductId(id);
         productDetailViewModel.getProductDetail();
         observeProductDetailViewModel();
+
+        productDetailViewModel.isLogin.observeSingleEvent(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLogin) {
+                if (isLogin) {
+                    CommentDialogFragment commentDialogFragment = new CommentDialogFragment(id,title);
+                    commentDialogFragment.show(getParentFragmentManager(), "CommentDialogFragment");
+                } else {
+                    LoginStepOneDialogFragment loginStepOneDialogFragment = new LoginStepOneDialogFragment(new LoginStepTwoListener() {
+                        @Override
+                        public void onResponse(User user) {
+
+                        }
+                    });
+                    loginStepOneDialogFragment.show(getParentFragmentManager(), "LoginStepOneDialogFragment");
+                }
+            }
+        });
+
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productDetailViewModel.isLogin();
+            }
+        });
 
     }
 
@@ -88,6 +116,7 @@ public class ProductDetailFragment extends Fragment {
             @Override
             public void onChanged(Product productsList) {
                 productName.setText(productsList.getName());
+                title=productsList.getName();
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
             }
         });

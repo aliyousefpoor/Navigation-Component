@@ -34,7 +34,15 @@ public class CommentDialogFragment extends DialogFragment {
     private ApiBuilder apiBuilder = ApiBuilderModule.provideApiBuilder(retrofit);
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private CommentViewModelFactory commentViewModelFactory = ProductModule.provideCommentViewModelFactory(apiService);
+    private int id;
+    private String title;
+    private int score = 4;
 
+
+    public CommentDialogFragment(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 
     @Nullable
     @Override
