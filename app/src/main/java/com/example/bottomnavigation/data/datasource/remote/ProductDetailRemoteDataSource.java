@@ -4,6 +4,7 @@ import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.data.model.ProductDetails;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,15 +21,15 @@ public class ProductDetailRemoteDataSource {
         this.apiService = apiService;
     }
 
-    public void getProductDetail(int id, final DataSourceListener<Product> dataSourceListener) {
-        apiService.getProductDetail(id).enqueue(new Callback<Product>() {
+    public void getProductDetail(int id, final DataSourceListener<ProductDetails> dataSourceListener) {
+        apiService.getProductDetail(id).enqueue(new Callback<ProductDetails>() {
             @Override
-            public void onResponse(@NotNull Call<Product> call, @NotNull Response<Product> response) {
+            public void onResponse(@NotNull Call<ProductDetails> call, @NotNull Response<ProductDetails> response) {
                 dataSourceListener.onResponse(response.body());
             }
 
             @Override
-            public void onFailure(@NotNull Call<Product> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ProductDetails> call, @NotNull Throwable t) {
                 dataSourceListener.onFailure(t);
             }
         });

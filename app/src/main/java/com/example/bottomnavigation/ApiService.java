@@ -7,6 +7,7 @@ import com.example.bottomnavigation.data.model.LoginStepOneRequest;
 import com.example.bottomnavigation.data.model.LoginStepOneResponse;
 
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.data.model.ProductDetails;
 import com.example.bottomnavigation.data.model.ProfileResponse;
 import com.example.bottomnavigation.data.model.UpdateProfile;
 import com.example.bottomnavigation.data.model.UpdateResponse;
@@ -59,7 +60,7 @@ public interface ApiService {
                                             @Query("limit") int limit,
                                             @Query("offset") int offset);
     @GET("product/{productId}?device_os=ios")
-    Call<Product> getProductDetail(@Path("productId") int productId);
+    Call<ProductDetails> getProductDetail(@Path("productId") int productId);
     @GET("comment/{productId}")
     Call<List<Comment>> getComment(@Path("productId") int productId);
     @POST("comment/{productId}")

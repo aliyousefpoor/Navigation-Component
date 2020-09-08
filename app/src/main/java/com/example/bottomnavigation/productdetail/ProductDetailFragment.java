@@ -23,6 +23,7 @@ import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.local.database.UserDatabase;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.data.model.ProductDetails;
 import com.example.bottomnavigation.data.model.User;
 import com.example.bottomnavigation.data.repository.LoginRepository;
 import com.example.bottomnavigation.di.ApiBuilderModule;
@@ -111,13 +112,13 @@ public class ProductDetailFragment extends Fragment {
         productDetailViewModel.loadingLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loadingState) {
-progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
-        productDetailViewModel.productDetailLiveData.observe(getViewLifecycleOwner(), new Observer<Product>() {
+        productDetailViewModel.productDetailLiveData.observe(getViewLifecycleOwner(), new Observer<ProductDetails>() {
             @Override
-            public void onChanged(Product productsList) {
+            public void onChanged(ProductDetails productsList) {
                 progressBar.setVisibility(View.GONE);
                 productName.setText(productsList.getName());
                 title = productsList.getName();

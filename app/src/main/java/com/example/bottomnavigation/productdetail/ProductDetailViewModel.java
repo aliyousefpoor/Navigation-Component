@@ -8,6 +8,7 @@ import com.example.bottomnavigation.data.datasource.DataSourceListener;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
 import com.example.bottomnavigation.data.model.Product;
+import com.example.bottomnavigation.data.model.ProductDetails;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class ProductDetailViewModel extends ViewModel {
         this.productDetailRemoteDataSource = productDetailRemoteDataSource;
     }
 
-    private MutableLiveData<Product> _productDetailLiveData = new MutableLiveData<>();
-    public LiveData<Product> productDetailLiveData = _productDetailLiveData;
+    private MutableLiveData<ProductDetails> _productDetailLiveData = new MutableLiveData<>();
+    public LiveData<ProductDetails> productDetailLiveData = _productDetailLiveData;
 
     private MutableLiveData<List<Comment>> _productComment = new MutableLiveData<>();
     public LiveData<List<Comment>> productComment = _productComment;
@@ -30,9 +31,9 @@ public class ProductDetailViewModel extends ViewModel {
 
     public void getProductDetails() {
         _loadingLiveData.setValue(true);
-        productDetailRemoteDataSource.getProductDetail(id, new DataSourceListener<Product>() {
+        productDetailRemoteDataSource.getProductDetail(id, new DataSourceListener<ProductDetails>() {
             @Override
-            public void onResponse(Product response) {
+            public void onResponse(ProductDetails response) {
                 _productDetailLiveData.setValue(response);
                 _loadingLiveData.setValue(false);
             }
