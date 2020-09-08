@@ -32,6 +32,16 @@
         android:name="com.example.bottomnavigation.productdetail.ProductDetailFragment"
         android:label="ProductDetailFragment"
         tools:layout="@layout/product_detail_layout"
+        >
+        <action
+            android:id="@+id/action_productDetailFragment_to_commentDialogFragment"
+            app:destination="@id/commentDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentDialogFragment"
+        android:name="com.example.bottomnavigation.productdetail.CommentDialogFragment"
+        android:label="CommentDialogFragment"
+        tools:layout="@layout/comment_dialog_fragment"
         />
 
 </navigation>
