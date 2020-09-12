@@ -49,6 +49,9 @@ public class Product {
     @SerializedName("comments")
     @Expose
     private Integer comments;
+    @SerializedName("files")
+    @Expose
+    private List<File> file = null;
     @SerializedName("is_bookmarked")
     @Expose
     private Boolean isBookmarked;
@@ -200,6 +203,15 @@ public class Product {
     public void setComments(Integer comments) {
         this.comments = comments;
     }
+
+    public List<File> getFile() {
+        return file;
+    }
+
+    public void setFile(List<File> file) {
+        this.file = file;
+    }
+
 
     public Boolean getIsBookmarked() {
         return isBookmarked;

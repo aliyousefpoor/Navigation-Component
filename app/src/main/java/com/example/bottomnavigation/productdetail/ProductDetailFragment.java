@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,12 +56,18 @@ public class ProductDetailFragment extends Fragment {
         int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
+        Button commentButton = view.findViewById(R.id.commentButton);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
 
         productDetailViewModel.setProductId(id);
         productDetailViewModel.getProductDetail();
         observeProductDetailViewModel();
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
     public void observeProductDetailViewModel() {
