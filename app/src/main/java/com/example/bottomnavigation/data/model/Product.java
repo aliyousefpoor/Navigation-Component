@@ -1,5 +1,6 @@
 package com.example.bottomnavigation.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.bottomnavigation.utils.AppConstants;
@@ -51,7 +52,7 @@ public class Product {
     private Integer comments;
     @SerializedName("files")
     @Expose
-    private File file ;
+    private List<File> file ;
     @SerializedName("is_bookmarked")
     @Expose
     private Boolean isBookmarked;
@@ -204,14 +205,13 @@ public class Product {
         this.comments = comments;
     }
 
-    public File getFile() {
+    public List<File> getFile() {
         return file;
     }
 
-    public void setFile(File file) {
+    public void setFile(List<File> file) {
         this.file = file;
     }
-
 
     public Boolean getIsBookmarked() {
         return isBookmarked;

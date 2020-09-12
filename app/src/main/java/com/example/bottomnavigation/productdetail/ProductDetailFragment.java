@@ -92,7 +92,7 @@ public class ProductDetailFragment extends Fragment {
             public void onChanged(Product productsList) {
                 productName.setText(productsList.getName());
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
-                fileUri = productsList.getFile().getFile();
+                fileUri = productsList.getFile().get(0).getFileRedirect();
             }
         });
 
