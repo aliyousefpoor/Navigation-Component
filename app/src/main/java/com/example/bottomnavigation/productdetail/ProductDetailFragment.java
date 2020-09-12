@@ -1,5 +1,6 @@
 package com.example.bottomnavigation.productdetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bottomnavigation.ApiService;
 import com.example.bottomnavigation.CustomApp;
+import com.example.bottomnavigation.ExoPlayerActivity;
 import com.example.bottomnavigation.R;
 import com.example.bottomnavigation.data.datasource.remote.ProductDetailRemoteDataSource;
 import com.example.bottomnavigation.data.model.Comment;
@@ -44,6 +46,7 @@ public class ProductDetailFragment extends Fragment {
     private ApiService apiService = ApiBuilderModule.provideApiService(apiBuilder);
     private ProductDetailRemoteDataSource productDetailRemoteDataSource = ProductModule.provideProductDetailRemoteDataSource(apiService);
     private ProductDetailViewModelFactory productDetailViewModelFactory = ProductModule.provideProductDetailViewModelFactory(productDetailRemoteDataSource);
+    private String fileUri;
 
     @Nullable
     @Override
@@ -59,17 +62,19 @@ public class ProductDetailFragment extends Fragment {
         int id = getArguments().getInt("productId");
         avatar = view.findViewById(R.id.productAvatar);
         productName = view.findViewById(R.id.productName);
-        Button commentButton = view.findViewById(R.id.commentButton);
+        ImageView play = view.findViewById(R.id.playIcon);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
         navController = Navigation.findNavController(view);
 
         productDetailViewModel.setProductId(id);
         productDetailViewModel.getProductDetail();
         observeProductDetailViewModel();
-        commentButton.setOnClickListener(new View.OnClickListener() {
+        play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_productDetailFragment_to_exoPlayerActivity);
+                Intent intent = new Intent(getActivity(), ExoPlayerActivity.class);
+                intent.putExtra("fileUri", fileUri);
+                startActivity(intent);
             }
         });
     }
@@ -87,6 +92,7 @@ public class ProductDetailFragment extends Fragment {
             public void onChanged(Product productsList) {
                 productName.setText(productsList.getName());
                 Glide.with(getContext()).load(productsList.getAvatar()).into(avatar);
+                fileUri = productsList.getFile().getFile();
             }
         });
 

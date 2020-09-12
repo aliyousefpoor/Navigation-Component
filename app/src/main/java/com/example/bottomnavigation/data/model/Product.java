@@ -51,7 +51,7 @@ public class Product {
     private Integer comments;
     @SerializedName("files")
     @Expose
-    private List<File> file = null;
+    private File file ;
     @SerializedName("is_bookmarked")
     @Expose
     private Boolean isBookmarked;
@@ -204,11 +204,11 @@ public class Product {
         this.comments = comments;
     }
 
-    public List<File> getFile() {
+    public File getFile() {
         return file;
     }
 
-    public void setFile(List<File> file) {
+    public void setFile(File file) {
         this.file = file;
     }
 

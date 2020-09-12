@@ -23,16 +23,20 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 public class ExoPlayerActivity extends AppCompatActivity {
     private PlayerView playerView;
     private SimpleExoPlayer simpleExoPlayer;
+    private String uri;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        uri =bundle.getString("fileUri");
         setContentView(R.layout.exoplayer_activity);
         playerView = findViewById(R.id.videoPlayer);
         initializePlayer();
     }
 
     private void initializePlayer(){
-        Uri videoUri = Uri.parse();
+
+        Uri videoUri = Uri.parse(uri);
         LoadControl loadControl = new DefaultLoadControl();
         TrackSelector trackSelector = new DefaultTrackSelector();
         simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this,trackSelector,loadControl);
