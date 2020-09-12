@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ import retrofit2.Retrofit;
 
 public class ProductDetailFragment extends Fragment {
     private ImageView avatar;
+    private NavController navController;
     private TextView productName;
     private RecyclerView recyclerView;
     private ProductDetailViewModel productDetailViewModel;
@@ -58,6 +61,7 @@ public class ProductDetailFragment extends Fragment {
         productName = view.findViewById(R.id.productName);
         Button commentButton = view.findViewById(R.id.commentButton);
         recyclerView = view.findViewById(R.id.commentRecyclerView);
+        navController = Navigation.findNavController(view);
 
         productDetailViewModel.setProductId(id);
         productDetailViewModel.getProductDetail();
@@ -65,7 +69,7 @@ public class ProductDetailFragment extends Fragment {
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navController.navigate(R.id.action_productDetailFragment_to_exoPlayerActivity);
             }
         });
     }
