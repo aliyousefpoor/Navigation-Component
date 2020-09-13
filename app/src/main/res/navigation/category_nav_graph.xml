@@ -33,15 +33,6 @@
         android:label="ProductDetailFragment"
         tools:layout="@layout/product_detail_layout"
         >
-        <action
-            android:id="@+id/action_productDetailFragment_to_exoPlayerActivity"
-            app:destination="@id/exoPlayerActivity" />
     </fragment>
-    <activity
-        android:id="@+id/exoPlayerActivity"
-        android:name="com.example.bottomnavigation.ExoPlayerActivity"
-        android:label="ExoPlayerActivity"
-        tools:layout="@layout/exoplayer_activity"
-        />
 
 </navigation>

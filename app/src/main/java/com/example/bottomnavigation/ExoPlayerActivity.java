@@ -1,39 +1,38 @@
 package com.example.bottomnavigation;
 
-import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.media.MediaBrowserCompat;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.Extractor;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.LoopingMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 public class ExoPlayerActivity extends AppCompatActivity {
     private PlayerView playerView;
+    private View progressBar;
     private SimpleExoPlayer simpleExoPlayer;
     private String uri;
 
@@ -44,11 +43,12 @@ public class ExoPlayerActivity extends AppCompatActivity {
         uri = bundle.getString("fileUri");
         setContentView(R.layout.exoplayer_activity);
         playerView = findViewById(R.id.videoPlayer);
+        progressBar = findViewById(R.id.videoProgressBar);
         initializePlayer();
     }
 
     private void initializePlayer() {
-
+        progressBar.setVisibility(View.GONE);
         Uri videoUri = Uri.parse(uri);
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -59,14 +59,71 @@ public class ExoPlayerActivity extends AppCompatActivity {
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this
                 , Util.getUserAgent(this, "Exo2"), defaultBandwidthMeter);
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        DefaultHttpDataSourceFactory factory = new DefaultHttpDataSourceFactory("exoplayer_video");
-        HlsMediaSource hlsMediaSource = new HlsMediaSource(videoUri,dataSourceFactory,1,null,null);
+        HlsMediaSource hlsMediaSource = new HlsMediaSource(videoUri, dataSourceFactory, 1, null, null);
         playerView.setPlayer(simpleExoPlayer);
         playerView.requestFocus();
         simpleExoPlayer.prepare(hlsMediaSource);
         simpleExoPlayer.setPlayWhenReady(true);
         playerView.setKeepScreenOn(true);
+        simpleExoPlayer.addListener(new Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+                if (isLoading) {
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == ExoPlayer.STATE_BUFFERING) {
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
+            }
+        });
     }
 
     @Override
@@ -81,7 +138,6 @@ public class ExoPlayerActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         simpleExoPlayer.setPlayWhenReady(true);
-        simpleExoPlayer.getPlaybackState();
     }
 
     @Override
