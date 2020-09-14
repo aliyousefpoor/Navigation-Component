@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.example.bottomnavigation.categorytab.CategoryFragment"
+        android:name="com.example.StreamApp.categorytab.CategoryFragment"
         android:label="CategoryFragment"
         tools:layout="@layout/category_fragment"
         >
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/productListFragment"
-        android:name="com.example.bottomnavigation.products.ProductListFragment"
+        android:name="com.example.StreamApp.products.ProductListFragment"
         android:label="ProductListFragment"
         tools:layout="@layout/product_list_fragment"
         >
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
-        android:name="com.example.bottomnavigation.productdetail.ProductDetailFragment"
+        android:name="com.example.StreamApp.productdetail.ProductDetailFragment"
         android:label="ProductDetailFragment"
         tools:layout="@layout/product_detail_layout"
         >

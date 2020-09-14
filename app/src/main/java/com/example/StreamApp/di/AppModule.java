@@ -1,0 +1,28 @@
+package com.example.StreamApp.di;
+
+import com.example.StreamApp.utils.AppConstants;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class AppModule {
+    private static final String TAG = "AppModule";
+
+    private Retrofit retrofit = null;
+
+    public Retrofit provideRetrofit() {
+
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(loggingInterceptor);
+        httpClient.addInterceptor(new TokenInterceptor());
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder().baseUrl(AppConstants.baseUrl)
+                    .addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        }
+        return retrofit;
+    }
+}

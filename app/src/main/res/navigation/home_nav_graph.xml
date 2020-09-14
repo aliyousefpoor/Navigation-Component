@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.bottomnavigation.hometab.HomeFragment"
+        android:name="com.example.StreamApp.hometab.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/home_fragment"
         >
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
-        android:name="com.example.bottomnavigation.productdetail.ProductDetailFragment"
+        android:name="com.example.StreamApp.productdetail.ProductDetailFragment"
         android:label="ProductDetailFragment"
         tools:layout="@layout/product_detail_layout"
         />

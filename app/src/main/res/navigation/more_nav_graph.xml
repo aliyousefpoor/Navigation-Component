@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/moreFragment"
-        android:name="com.example.bottomnavigation.moretab.MoreFragment"
+        android:name="com.example.StreamApp.moretab.MoreFragment"
         android:label="MoreFragment"
         tools:layout="@layout/more_fragment">
 
@@ -24,19 +24,19 @@
     </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.example.bottomnavigation.moretab.AboutUsFragment"
+        android:name="com.example.StreamApp.moretab.AboutUsFragment"
         android:label="AboutUsFragment"
         tools:layout="@layout/about_fragment"
         />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.bottomnavigation.moretab.profile.ProfileFragment"
+        android:name="com.example.StreamApp.moretab.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_fragment"
         />
     <fragment
         android:id="@+id/contactFragment"
-        android:name="com.example.bottomnavigation.moretab.ContactFragment"
+        android:name="com.example.StreamApp.moretab.ContactFragment"
         android:label="ContactFragment"
         tools:layout="@layout/contact_fragment"
         />

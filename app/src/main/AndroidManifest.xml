@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bottomnavigation">
+    package="com.example.StreamApp">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -14,15 +14,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".CustomApp"
+        android:name="com.example.StreamApp.CustomApp"
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/config"
         android:usesCleartextTraffic="true"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.StreamApp.MainActivity">
 
         </activity>
-        <activity android:name=".SplashActivity"
+        <activity android:name="com.example.StreamApp.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
 
             >
@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<activity android:name=".ExoPlayerActivity">
+<activity android:name="com.example.StreamApp.ExoPlayerActivity">
 
 </activity>
         <meta-data
